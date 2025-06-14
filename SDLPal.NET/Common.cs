@@ -1,0 +1,80 @@
+﻿using SDL3;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using static PalMap;
+using static PalSave;
+using static SafeSys;
+
+public unsafe class PalCommon
+{
+   public   static   string
+#if DEBUG
+   WORK_PATH            = $@"E:\SDLPal.NET",
+#else
+   WORK_PATH            = $@".",
+#endif // DEBUG
+   GAME_PATH            = $@"{WORK_PATH}\Game",
+   LOG_PATH             = $@"{GAME_PATH}\..\Log",
+   SAVE_PATH            = $@"{GAME_PATH}\..\Save",
+   SCREENSHOT_PATH      = $@"{GAME_PATH}\..\Screenshot",
+   FONT_PATH            = $@"{GAME_PATH}\Font",
+   UI_PATH              = $@"{GAME_PATH}\Ui",
+   WAV_PATH             = $@"{GAME_PATH}\Wav",
+   MUS_PATH             = $@"{GAME_PATH}\Music",
+   MAP_MAIN_PATH        = $@"{GAME_PATH}\MapData",
+   MAP_PATH             = $@"{MAP_MAIN_PATH}\MAP",
+   TILE_PATH            = $@"{MAP_MAIN_PATH}\GOP",
+   DATA_PATH            = $@"{GAME_PATH}\Data",
+   IMG_PATH             = $@"{GAME_PATH}\Bitmap",
+   IMG_CHAR_PATH        = $@"{IMG_PATH}\Char",
+   IMG_MGO_PATH         = $@"{IMG_PATH}\Mgo",
+   IMG_FACE_PATH        = $@"{IMG_PATH}\Face",
+   IMG_ITEM_PATH        = $@"{IMG_PATH}\Item",
+   IMG_FIGHT_PATH       = $@"{IMG_PATH}\Fight";
+
+   public   static   int
+      MAX_SAVE_NUM      = 99,
+      MAX_HERO_NUM      = 6,
+      //MAX_HERO_MAGICS   = 32,
+      //MAX_SCENE_NUM     = 300,
+      //MAX_OBJECT_NUM    = 500,
+      //MAX_INVENTORY_NUM = 150,
+      INIT_EXP_SEED     = 15;
+
+   public   static   string[]
+      DIRECTION   = ["South", "West", "North", "East"];
+
+   public   static   SDL.Color
+      COLOR_NONE     = SC_Color(0x2BF666FF),
+      COLOR_BLACK    = SC_Color(0x000000FF),
+      COLOR_WHITE    = SC_Color(0xFFFFFFFF),
+      COLOR_GOLD     = SC_Color(0xFFD700FF),
+      COLOR_YELLOW   = SC_Color(0xEF7D31FF),
+      COLOR_RED      = SC_Color(0xFF0000FF),
+      COLOR_GREEN    = SC_Color(0x00FF00FF),
+      COLOR_BLUE     = SC_Color(0x0000FFFF),
+      COLOR_CYAN     = SC_Color(0x00FFFFFF),
+      COLOR_PINK     = SC_Color(0xFF6969FF);
+
+   public   static   Pos
+      POS_ZERO = new Pos(0, 0);
+
+   public enum PalDirection
+   {
+      South = 0,
+      West,
+      North,
+      East,
+      Unknown
+   }
+
+   public enum PalAlign
+   {
+      Left,
+      Middle,
+      Right,
+   }
+}
