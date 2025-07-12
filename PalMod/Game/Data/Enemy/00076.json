@@ -1,0 +1,70 @@
+{
+  "Name": "赤鬼王",
+  "Frame": {
+    "BitmapID": 76,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 22
+    },
+    "Idle": 1,
+    "Magic": 1,
+    "Attack": 1,
+    "IdleWaitFrames": 99,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 265,
+    "ActionID": 0,
+    "MagicID": 0,
+    "DeathID": 266,
+    "BeginBattleID": 91
+  },
+  "Attribute": {
+    "Level": 12,
+    "HP": 5700,
+    "MaxHP": 5700,
+    "AttackStrength": 0,
+    "MagicStrength": 0,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 4.0,
+      "Thunder": 6.0,
+      "Water": 3.0,
+      "Fire": 7.0,
+      "Earth": 10.0
+    },
+    "Physics": 2.0,
+    "Poison": 8.0,
+    "Sorcery": 5.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 64,
+    "MagicRate": 6,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 102,
+    "StealItemCount": 2,
+    "Exp": 950,
+    "Level": 0,
+    "Cash": 1750,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 0
+  },
+  "Script": {
+    "TurnStart": "Null",
+    "BattleWon": "Null",
+    "ReadyToAction": "Enemy_00076_ReadyToAction"
+  }
+}

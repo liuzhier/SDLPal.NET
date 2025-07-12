@@ -1,0 +1,32 @@
+{
+  "Comment": "胁李大婶黑苗头领",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 214,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 0,
+        "Y": 0
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 0
+  },
+  "Script": {
+    "SrcTrigger": "Null",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

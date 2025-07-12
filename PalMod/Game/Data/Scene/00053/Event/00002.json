@@ -1,0 +1,32 @@
+{
+  "Comment": "睡灵儿",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 238,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 1456,
+        "Y": 584
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 2
+  },
+  "Script": {
+    "SrcTrigger": "Event_00053_00002_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

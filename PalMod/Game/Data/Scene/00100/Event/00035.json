@@ -1,0 +1,32 @@
+{
+  "Comment": "儿童",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 149,
+    "SpriteFrames": 3,
+    "Pos": {
+      "Pos": {
+        "X": 384,
+        "Y": 464
+      },
+      "Direction": 1,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 2
+  },
+  "Script": {
+    "SrcTrigger": "Event_00100_00035_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

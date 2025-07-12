@@ -1,0 +1,32 @@
+{
+  "Comment": "挎包书生",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 83,
+    "SpriteFrames": 3,
+    "Pos": {
+      "Pos": {
+        "X": 1120,
+        "Y": 1344
+      },
+      "Direction": 3,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": true,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 2
+  },
+  "Script": {
+    "SrcTrigger": "Event_00102_00004_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

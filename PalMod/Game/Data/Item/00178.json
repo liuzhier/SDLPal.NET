@@ -1,0 +1,30 @@
+{
+  "Name": "绣花鞋",
+  "Description": [
+    "以丝缎缝制，鞋面绣有龙头凤尾",
+    "花。",
+    "防御+4"
+  ],
+  "Bitmap": 107,
+  "Price": 450,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": false,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": false
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00178_Equip",
+    "Throw": "Null"
+  }
+}

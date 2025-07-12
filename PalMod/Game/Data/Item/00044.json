@@ -1,0 +1,30 @@
+{
+  "Name": "鼠儿果",
+  "Description": [
+    "产於山间野地，多为鼠类所食，",
+    "经人发现移种平地。",
+    "MP+36"
+  ],
+  "Bitmap": 142,
+  "Price": 80,
+  "Scope": {
+    "Usable": true,
+    "Throwable": false,
+    "Equipable": false,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00044_Use",
+    "Equip": "Null",
+    "Throw": "Null"
+  }
+}

@@ -32,6 +32,7 @@ public unsafe class PalText
    private  static   SDL.Color      colorChar   = COLOR_WHITE;
    private  static   bool           fIsName     = false;
    private  static   int            nLine       = 0;
+   private  static   int            iOffsetPosY = 0;
    private  static   bool           fAutoUpdate = false;
    private  static   int            iDelayTime  = 0;
    private  static   bool           fUserSkip   = false;
@@ -203,20 +204,66 @@ public unsafe class PalText
       return texture;
    }
 
+   public static bool
+   IsFullWidth(
+      char     c
+   )
+   {
+      int code = (int)c;
+
+      return (code >= 0x3000 && code <= 0x3003) ||    // Full-width space, Chinese comma, Chinese period
+         (code >= 0xFF01 && code <= 0xFF5E) ||        // Full-width ASCII characters
+         (code >= 0x4E00 && code <= 0x9FFF) ||        // CJK is a unified ideographic script
+         (code >= 0x3400 && code <= 0x4DBF) ||        // CJK Extension A
+         (code >= 0x20000 && code <= 0x2A6DF);        // CJK Extension B
+   }
+
    public static int
    GetTextWidth(
       string      strText
    )
    {
-      return S_GetTextSize(strText) * FONT_OFFSET;
+      int      i, width;
+      char     charWord;
+
+      for (i = 0, width = 0; i < strText.Length; i++)
+      {
+         charWord = strText[i];
+
+         switch (charWord)
+         {
+            case '_':
+            case '@':
+            case '\'':
+            case '\"':
+               break;
+
+            case '$':
+            case '~':
+               i += 2;
+               break;
+
+            default:
+               width += IsFullWidth(charWord) ? FONT_OFFSET : FONT_OFFSET_HALF;
+               break;
+         }
+      }
+
+      //
+      // Fix unknown bug......
+      //
+      if (width % FONT_OFFSET != 0) width += FONT_OFFSET_HALF / 2;
+
+      return width;
    }
 
    public static int
    GetNumWidth(
-      string      strText
+      string      strText,
+      bool        fIsText  = false
    )
    {
-      return S_GetTextSize(strText) * FONT_OFFSET_W_NUM;
+      return S_GetTextSize(strText) * ((fIsText) ? FONT_OFFSET_H_NUM : FONT_OFFSET_W_NUM);
    }
 
    public static void
@@ -253,11 +300,11 @@ public unsafe class PalText
             break;
 
          case PalAlign.Middle:
-            posActual.X -= fontOffset * nLineWord / 2;
+            pos1.X -= fontOffset * nLineWord / 2;
             break;
 
          case PalAlign.Right:
-            posActual.X -= fontOffset * nLineWord;
+            pos1.X -= fontOffset * nLineWord;
             break;
       }
 
@@ -279,6 +326,8 @@ public unsafe class PalText
          //
          g_pText = SC_Texture(pText);
          g_pTextShadow = SC_Texture(pTextShadow);
+         S_SetTexScale(g_pText, SDL.ScaleMode.Linear);
+         S_SetTexScale(g_pTextShadow, SDL.ScaleMode.Linear);
 
          //
          // The characters are centered and displayed
@@ -406,7 +455,7 @@ public unsafe class PalText
       TTF.Direction     direction   = TTF.Direction.LTR
    )
    {
-      int      i, nLineWord, iOffsetX = 0, iOffsetY = 0;
+      int      i, nLineWord, iOffsetX = 0, iOffsetY = 0, iFontOffset;
       char     charWord;
 
       posActual = pos.Clone();
@@ -421,7 +470,6 @@ public unsafe class PalText
          case TTF.Direction.LTR:
          case TTF.Direction.RTL:
          default:
-            iOffsetX = FONT_OFFSET;
             nLineWord = S_GetTextSize(strText);
             break;
 
@@ -439,11 +487,11 @@ public unsafe class PalText
             break;
 
          case PalAlign.Middle:
-            posActual.X -= FONT_OFFSET * nLineWord / 2;
+            posActual.X -= GetTextWidth(strText) / 2;
             break;
 
          case PalAlign.Right:
-            posActual.X -= FONT_OFFSET * nLineWord;
+            posActual.X -= GetTextWidth(strText);
             break;
       }
 
@@ -467,9 +515,22 @@ public unsafe class PalText
 
          charWord = strText[i];
 
+         iFontOffset = IsFullWidth(charWord) ? FONT_OFFSET : FONT_OFFSET_HALF;
+
+         //
+         // Align the text
+         //
+         switch (direction)
+         {
+            case TTF.Direction.LTR:
+            case TTF.Direction.RTL:
+               iOffsetX = iFontOffset;
+               break;
+         }
+
          switch (charWord)
          {
-            case '-':
+            case '_':
                //
                // Cyan text
                //
@@ -499,7 +560,15 @@ public unsafe class PalText
                // Set the delay time of text-displaying
                //
                SetOutputDelay(S_INT(strText.Substring(i + 1, 2)));
-               i += 3;
+               i += 2;
+               continue;
+
+            case '~':
+               //
+               // Set the delay time of text-displaying
+               //
+               //SetOutputDelay(S_INT(strText.Substring(i + 1, 2)));
+               i += 2;
                continue;
 
             origin:
@@ -604,10 +673,16 @@ public unsafe class PalText
                }
                else
                {
-                  nLine++;
-                  posCurr.Y += FONT_OFFSET;
+                  //nLine++;
+                  iOffsetPosY = FONT_OFFSET;
                }
             }
+
+            //
+            // When there is no name of the interlocutor,
+            // the dialogue should be moved down by one line
+            //
+            posCurr.Y += iOffsetPosY;
 
             //
             // Check whether there is a portrait
@@ -755,7 +830,8 @@ public unsafe class PalText
    DialogNextPage()
    {
       DialogWaitForKey();
-      nLine = 1;
+      nLine = 0;
+      iOffsetPosY = 0;
       Screen.Restore(g_pScreen);
       Screen.Update();
    }
@@ -785,6 +861,7 @@ public unsafe class PalText
       }
 
       nLine = 0;
+      iOffsetPosY = 0;
 
       if (_DialogBox == DialogBox.Middle)
       {

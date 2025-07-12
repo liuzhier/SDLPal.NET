@@ -1,0 +1,70 @@
+{
+  "Name": "毒神龙",
+  "Frame": {
+    "BitmapID": 141,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 8
+    },
+    "Idle": 1,
+    "Magic": 0,
+    "Attack": 0,
+    "IdleWaitFrames": 99,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 236,
+    "ActionID": 0,
+    "MagicID": 230,
+    "DeathID": 179,
+    "BeginBattleID": 91
+  },
+  "Attribute": {
+    "Level": 30,
+    "HP": 7350,
+    "MaxHP": 7350,
+    "AttackStrength": 0,
+    "MagicStrength": 0,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 6.0,
+      "Thunder": 6.0,
+      "Water": 6.0,
+      "Fire": 6.0,
+      "Earth": 6.0
+    },
+    "Physics": 2.0,
+    "Poison": 10.0,
+    "Sorcery": 10.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 78,
+    "MagicRate": 4,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 218,
+    "StealItemCount": 13,
+    "Exp": 3108,
+    "Level": 0,
+    "Cash": 0,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 9
+  },
+  "Script": {
+    "TurnStart": "Enemy_00142_TurnStart",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

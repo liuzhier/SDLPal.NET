@@ -218,6 +218,7 @@ public unsafe class PalMap
 
          goto end;
 
+#if false
          if (Segment != 0)
          {
             if ((X - w16) < 0 || (Y - h8) < 0)
@@ -308,6 +309,7 @@ public unsafe class PalMap
                }
                break;
          }
+#endif // false
 
       end:
          return new BlockPos(x, y, h);
@@ -486,8 +488,6 @@ public unsafe class PalMap
       Palette*          lpPat;
       int               i, len;
       SDL.Color[]       palette;
-      nint              pSurfTemp1, pSurfTemp2;
-      SDL.Surface*      lpSurf;
 
       //
       // Read the palette data
@@ -538,11 +538,13 @@ public unsafe class PalMap
          H = H15,
       });
 
+#if false
       g_pMapTile = SC_Texture($@"{GAME_PATH}\Temp\MapTile.png");
       S_SetTexScale(g_pMapTile, SDL.ScaleMode.Nearest);
 
       g_pMapTile2 = SC_Texture($@"{GAME_PATH}\Temp\MapTile1.png");
       S_SetTexScale(g_pMapTile, SDL.ScaleMode.Nearest);
+#endif // false
    }
 
    public static void
@@ -565,6 +567,11 @@ public unsafe class PalMap
       int      i;
 
       S_FREE(ref pTileSprite);
+
+#if false
+      SF_Texture(ref g_pMapTile);
+      SF_Texture(ref g_pMapTile2);
+#endif // false
 
       if (arrTileTex != null)
       {

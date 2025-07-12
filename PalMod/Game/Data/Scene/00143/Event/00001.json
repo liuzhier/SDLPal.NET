@@ -1,0 +1,32 @@
+{
+  "Comment": "卧病刘晋元",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": -1,
+    "SpriteID": 449,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 912,
+        "Y": 552
+      },
+      "Direction": 0,
+      "FrameID": 2
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 0
+  },
+  "Script": {
+    "SrcTrigger": "Null",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

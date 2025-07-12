@@ -1,0 +1,167 @@
+{
+  "Name": "赵灵儿",
+  "CoveredBy": 0,
+  "WalkFrames": 9,
+  "Resistance": {
+    "Elemental": {
+      "Wind": 0.0,
+      "Thunder": 0.0,
+      "Water": 0.0,
+      "Fire": 0.0,
+      "Earth": 0.0
+    },
+    "Physics": 0.3,
+    "Poison": 0.0,
+    "Sorcery": 0.3,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "HeroBase": {
+    "AvatarID": 11,
+    "SpriteIDInBattle": 1,
+    "SpriteID": 3,
+    "MaxSP": 0,
+    "AttackAll": 0,
+    "SP": 0,
+    "Level": 5,
+    "MaxHP": 240,
+    "MaxMP": 240,
+    "HP": 28,
+    "MP": 10,
+    "_Equip": {
+      "Head": 137,
+      "Body": 0,
+      "Armour": 150,
+      "Backside": 110,
+      "Hand": 177,
+      "Foot": 188
+    },
+    "Attribute": {
+      "AttackStrength": 20,
+      "MagicStrength": 64,
+      "Defense": 28,
+      "Dexterity": 55,
+      "FleeRate": 18
+    },
+    "PoisonResistance": 0,
+    "ElementalResistance": {
+      "Wind": 0,
+      "Thunder": 0,
+      "Water": 0,
+      "Fire": 0,
+      "Earth": 0
+    }
+  },
+  "Magic": {
+    "Cooperative": 87,
+    "listLearned": [
+      18,
+      22,
+      27,
+      33,
+      38,
+      12,
+      3,
+      15,
+      9,
+      13
+    ],
+    "listLearnable": [
+      {
+        "Level": 7,
+        "MagicID": 313
+      },
+      {
+        "Level": 8,
+        "MagicID": 300
+      },
+      {
+        "Level": 9,
+        "MagicID": 322
+      },
+      {
+        "Level": 10,
+        "MagicID": 333
+      },
+      {
+        "Level": 11,
+        "MagicID": 317
+      },
+      {
+        "Level": 13,
+        "MagicID": 328
+      },
+      {
+        "Level": 15,
+        "MagicID": 314
+      },
+      {
+        "Level": 17,
+        "MagicID": 323
+      },
+      {
+        "Level": 20,
+        "MagicID": 334
+      },
+      {
+        "Level": 22,
+        "MagicID": 318
+      },
+      {
+        "Level": 25,
+        "MagicID": 335
+      },
+      {
+        "Level": 28,
+        "MagicID": 319
+      },
+      {
+        "Level": 29,
+        "MagicID": 330
+      },
+      {
+        "Level": 32,
+        "MagicID": 351
+      },
+      {
+        "Level": 0,
+        "MagicID": 0
+      },
+      {
+        "Level": 0,
+        "MagicID": 0
+      },
+      {
+        "Level": 0,
+        "MagicID": 0
+      },
+      {
+        "Level": 0,
+        "MagicID": 0
+      },
+      {
+        "Level": 0,
+        "MagicID": 0
+      },
+      {
+        "Level": 0,
+        "MagicID": 0
+      }
+    ]
+  },
+  "Sound": {
+    "Death": 24,
+    "Attack": 38,
+    "Weapon": 2,
+    "Critical": 6,
+    "Magic": 10,
+    "Cover": 16,
+    "Dying": 20
+  },
+  "Script": {
+    "FriendDeath": "Null",
+    "Dying": "Hero_00002_Dying"
+  }
+}

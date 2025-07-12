@@ -1,0 +1,8 @@
+{
+  "Name": "回魂仙梦·余杭·集市·各无人分立屋宇·废屋",
+  "MapID": 13,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

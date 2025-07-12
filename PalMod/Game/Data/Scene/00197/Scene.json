@@ -1,0 +1,8 @@
+{
+  "Name": "忆往昔·扬州夜月如幽叹",
+  "MapID": 90,
+  "Script": {
+    "ScrEnter": "Scene_00197_Enter",
+    "ScrTeleport": "Null"
+  }
+}

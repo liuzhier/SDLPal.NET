@@ -1,0 +1,70 @@
+{
+  "Name": "五彩蜘蛛",
+  "Frame": {
+    "BitmapID": 115,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "Idle": 2,
+    "Magic": 9,
+    "Attack": 5,
+    "IdleWaitFrames": 4,
+    "ActWaitFrames": 1
+  },
+  "Sound": {
+    "AttackID": 0,
+    "ActionID": 0,
+    "MagicID": 0,
+    "DeathID": 183,
+    "BeginBattleID": 92
+  },
+  "Attribute": {
+    "Level": 16,
+    "HP": 500,
+    "MaxHP": 500,
+    "AttackStrength": 6,
+    "MagicStrength": 0,
+    "Defense": 0,
+    "Dexterity": -60,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 3.0,
+      "Thunder": 3.0,
+      "Water": 3.0,
+      "Fire": 2.0,
+      "Earth": 3.0
+    },
+    "Physics": 2.0,
+    "Poison": 6.0,
+    "Sorcery": 0.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 0,
+    "MagicRate": 0,
+    "AttackEquivItemID": 67,
+    "AttackEquivItemRate": 3,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 99,
+    "StealItemCount": 1,
+    "Exp": 45,
+    "Level": 0,
+    "Cash": 23,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 1
+  },
+  "Script": {
+    "TurnStart": "Null",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

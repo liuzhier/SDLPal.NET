@@ -87,12 +87,13 @@ public unsafe class PalInput
       Auto        = (1 << 9),
       Defend      = (1 << 10),
       UseItem     = (1 << 11),
-      ThrowItem   = (1 << 12),
-      Flee        = (1 << 13),
-      Status      = (1 << 14),
-      Force       = (1 << 15),
-      Home        = (1 << 16),
-      End         = (1 << 17),
+      EquipItem   = (1 << 12),
+      ThrowItem   = (1 << 13),
+      Flee        = (1 << 14),
+      Status      = (1 << 15),
+      Force       = (1 << 16),
+      Home        = (1 << 17),
+      End         = (1 << 18),
    };
 
    public class InputState

@@ -1,0 +1,30 @@
+{
+  "Name": "还魂香",
+  "Description": [
+    "点燃后会散发奇异的香气，",
+    "能牵引离体魂魄回归躯体。",
+    "HP恢复10%"
+  ],
+  "Bitmap": 154,
+  "Price": 550,
+  "Scope": {
+    "Usable": true,
+    "Throwable": false,
+    "Equipable": false,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00035_Use",
+    "Equip": "Null",
+    "Throw": "Null"
+  }
+}

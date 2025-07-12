@@ -1,0 +1,8 @@
+{
+  "Name": "长安·尚书府·刘晋元居所外·毒仙林关闭",
+  "MapID": 109,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

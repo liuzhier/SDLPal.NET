@@ -1,0 +1,30 @@
+{
+  "Name": "雄黄酒",
+  "Description": [
+    "一点点的雄黄，撒在酒中，",
+    "习俗在端午节喝这种酒；",
+    "可解赤毒、瘴毒。"
+  ],
+  "Bitmap": 222,
+  "Price": 150,
+  "Scope": {
+    "Usable": true,
+    "Throwable": true,
+    "Equipable": false,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00028_Use",
+    "Equip": "Null",
+    "Throw": "Null"
+  }
+}

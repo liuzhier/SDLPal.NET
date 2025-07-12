@@ -1,0 +1,8 @@
+{
+  "Name": "锁妖塔·七层",
+  "MapID": 142,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

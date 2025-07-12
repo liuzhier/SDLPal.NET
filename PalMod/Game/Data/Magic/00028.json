@@ -1,0 +1,53 @@
+{
+  "Name": "玄冰咒",
+  "Description": [
+    "冰系中级法术，",
+    "攻击敌方全体。"
+  ],
+  "BaseDamage": 95,
+  "CostMP": 12,
+  "SoundID": 109,
+  "SummonID": -1,
+  "Genus": {
+    "Sword": false,
+    "Wind": false,
+    "Thunder": false,
+    "Water": true,
+    "Fire": false,
+    "Earth": false,
+    "Poison": false,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": false,
+    "Buff": false
+  },
+  "AttackMode": 1,
+  "Frame": {
+    "BitmapID": 2,
+    "OffsetPos": {
+      "X": -10,
+      "Y": 12
+    },
+    "LayerOffset": 13,
+    "Preview": 0,
+    "Speed": 0,
+    "KeepEffect": false,
+    "TotalTimes": 1,
+    "Shake": 0,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": true,
+    "UsableToEnemy": false,
+    "ApplyToAllHero": true,
+    "ApplyToAllEnemy": true
+  },
+  "Script": {
+    "Success": "Null",
+    "Use": "Null"
+  }
+}

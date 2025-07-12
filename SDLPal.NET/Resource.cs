@@ -67,7 +67,6 @@ public unsafe class PalResource
    --*/
    {
       int            i, j;
-      List<nint>     dirThis;
 
       if (arrSprite == null) return;
 
@@ -223,12 +222,10 @@ public unsafe class PalResource
          // Read the save slot
          //
          PalGlobal.Init(PalGlobal.CurrSaveID);
-         PalAudio.PlayMusic(PalGlobal.Save.MusicID);
+         PalAudio.PlayMusic(S_GetSave().MusicID);
       }
 
-      save = PalGlobal.Save;
-
-      S_SetNearestScale(true);
+      save = S_GetSave();
 
       //
       // Load scene
@@ -269,8 +266,8 @@ public unsafe class PalResource
 
             if (idSprite == 0) continue;
 
-            //listEvent[i]._Frame.SpriteFrames = LoadNpcSprite(arrEventSprite[i], idSprite);
-            LoadNpcSprite(arrEventSprite[i], idSprite);
+            listEvent[i]._Frame.Trail.SpriteFramesAuto = LoadNpcSprite(arrEventSprite[i], idSprite);
+            //LoadNpcSprite(arrEventSprite[i], idSprite);
          }
       }
 
@@ -302,7 +299,7 @@ public unsafe class PalResource
 
             idSprite = save._Entity.Hero[index]._HeroBase.SpriteID;
 
-            arrParty[i]._Trail.SpriteFramesAuto = LoadNpcSprite(arrRoleSprite[i], idSprite);
+            arrParty[i].Trail.SpriteFramesAuto = LoadNpcSprite(arrRoleSprite[i], idSprite);
          }
 
          for (j = 0; j < listFollower.Count; j++)
@@ -314,8 +311,6 @@ public unsafe class PalResource
             LoadNpcSprite(arrRoleSprite[i + j] , idSprite);
          }
       }
-
-      S_SetNearestScale(false);
 
       //
       // Clear all of the load flags

@@ -1,0 +1,50 @@
+{
+  "Name": "火龙掌",
+  "Description": [],
+  "BaseDamage": 205,
+  "CostMP": 0,
+  "SoundID": 175,
+  "SummonID": -1,
+  "Genus": {
+    "Sword": false,
+    "Wind": false,
+    "Thunder": false,
+    "Water": false,
+    "Fire": true,
+    "Earth": false,
+    "Poison": false,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": false,
+    "Buff": false
+  },
+  "AttackMode": 0,
+  "Frame": {
+    "BitmapID": 45,
+    "OffsetPos": {
+      "X": -10,
+      "Y": 24
+    },
+    "LayerOffset": -25,
+    "Preview": 0,
+    "Speed": 4,
+    "KeepEffect": true,
+    "TotalTimes": 0,
+    "Shake": 0,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": true,
+    "UsableToEnemy": false,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false
+  },
+  "Script": {
+    "Success": "Null",
+    "Use": "Magic_00048_Use"
+  }
+}

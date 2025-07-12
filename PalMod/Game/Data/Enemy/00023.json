@@ -1,0 +1,70 @@
+{
+  "Name": "跳跳蛙",
+  "Frame": {
+    "BitmapID": 23,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "Idle": 2,
+    "Magic": 0,
+    "Attack": 1,
+    "IdleWaitFrames": 5,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 219,
+    "ActionID": 0,
+    "MagicID": 219,
+    "DeathID": 254,
+    "BeginBattleID": 91
+  },
+  "Attribute": {
+    "Level": 29,
+    "HP": 880,
+    "MaxHP": 880,
+    "AttackStrength": 2,
+    "MagicStrength": 0,
+    "Defense": 0,
+    "Dexterity": 100,
+    "FleeRate": 2
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 5.0,
+      "Thunder": 5.0,
+      "Water": 5.0,
+      "Fire": 5.0,
+      "Earth": 5.0
+    },
+    "Physics": 2.0,
+    "Poison": 0.0,
+    "Sorcery": 0.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 0,
+    "MagicRate": 0,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 52,
+    "StealItemCount": 1,
+    "Exp": 80,
+    "Level": 0,
+    "Cash": 70,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 1
+  },
+  "Script": {
+    "TurnStart": "Enemy_00023_TurnStart",
+    "BattleWon": "Null",
+    "ReadyToAction": "Enemy_00023_ReadyToAction"
+  }
+}

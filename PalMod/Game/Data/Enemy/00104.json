@@ -1,0 +1,70 @@
+{
+  "Name": "盖罗娇1",
+  "Frame": {
+    "BitmapID": 102,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "Idle": 1,
+    "Magic": 3,
+    "Attack": 1,
+    "IdleWaitFrames": 99,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 11,
+    "ActionID": 0,
+    "MagicID": 11,
+    "DeathID": 25,
+    "BeginBattleID": 94
+  },
+  "Attribute": {
+    "Level": 42,
+    "HP": 7500,
+    "MaxHP": 7500,
+    "AttackStrength": 11,
+    "MagicStrength": 22,
+    "Defense": -30,
+    "Dexterity": 50,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 5.0,
+      "Thunder": 5.0,
+      "Water": 5.0,
+      "Fire": 5.0,
+      "Earth": 5.0
+    },
+    "Physics": 2.0,
+    "Poison": 5.0,
+    "Sorcery": 10.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 82,
+    "MagicRate": 7,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 62,
+    "StealItemCount": 5,
+    "Exp": 4500,
+    "Level": 0,
+    "Cash": 4500,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 0
+  },
+  "Script": {
+    "TurnStart": "Enemy_00104_TurnStart",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "Name": "紫罂粟",
+  "Description": [
+    "服食者会生成幻觉，敌我不分。",
+    "疯魔四回合。"
+  ],
+  "Bitmap": 170,
+  "Price": 0,
+  "Scope": {
+    "Usable": true,
+    "Throwable": true,
+    "Equipable": false,
+    "Sellable": false,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00068_Use",
+    "Equip": "Null",
+    "Throw": "Item_00068_Throw"
+  }
+}

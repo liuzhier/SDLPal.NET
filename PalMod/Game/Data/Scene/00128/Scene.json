@@ -1,0 +1,8 @@
+{
+  "Name": "长安·荒酒楼·无人",
+  "MapID": 115,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

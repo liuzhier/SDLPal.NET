@@ -1,0 +1,32 @@
+{
+  "Comment": "杀红眼南绍兵",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 548,
+    "SpriteFrames": 3,
+    "Pos": {
+      "Pos": {
+        "X": 1728,
+        "Y": 1568
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": true,
+    "IsAutoTrigger": true,
+    "TriggerDistance": 1
+  },
+  "Script": {
+    "SrcTrigger": "Event_00279_00005_Trigger",
+    "ScrAuto": "Event_00040_00003_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

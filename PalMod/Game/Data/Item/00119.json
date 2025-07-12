@@ -1,0 +1,29 @@
+{
+  "Name": "苗刀",
+  "Description": [
+    "苗族战士所惯用的佩刀。",
+    "武术+70 身法+32"
+  ],
+  "Bitmap": 51,
+  "Price": 5000,
+  "Scope": {
+    "Usable": false,
+    "Throwable": true,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": false,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00119_Equip",
+    "Throw": "Item_00119_Throw"
+  }
+}

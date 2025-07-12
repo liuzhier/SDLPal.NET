@@ -1,0 +1,32 @@
+{
+  "Comment": "姥姥上坟",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 1,
+    "SpriteID": 367,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 1488,
+        "Y": 392
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 1
+  },
+  "Script": {
+    "SrcTrigger": "Event_00019_00010_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

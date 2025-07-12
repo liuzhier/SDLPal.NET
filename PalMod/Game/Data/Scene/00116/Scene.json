@@ -1,0 +1,8 @@
+{
+  "Name": "长安·尚书府·幽径",
+  "MapID": 107,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

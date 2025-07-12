@@ -98,6 +98,30 @@ public unsafe class PalGlobal
          entity.Magic.Add(PalUnpak.Json2Obj<Magic>(pathFull));
       }
 
+#if false
+      {
+         int            heroID, len;
+         Hero           hero;
+         List<int>      listMagicID;
+
+         for (i = 1; i < entity.Hero.Count; i++)
+         {
+            hero = S_GetHero(i);
+
+            listMagicID = hero._Magic.listLearned;
+
+            listMagicID.Clear();
+
+            len = S_GetEntity().Magic.Count;
+
+            for (j = 1; j < len; j++)
+            {
+               listMagicID.Add(j);
+            }
+         }
+      }
+#endif // false
+
       path = $@"{DATA_PATH}\Item";
       for (i = 1; ; i++)
       {
@@ -110,6 +134,25 @@ public unsafe class PalGlobal
 
          entity.Item.Add(PalUnpak.Json2Obj<Item>(pathFull));
       }
+
+#if false
+      {
+         List<Inventory>      listInventory;
+
+         listInventory = S_GetSave().listInventory;
+
+         listInventory.Clear();
+
+         for (i = 1; i < entity.Item.Count; i++)
+         {
+            listInventory.Add(new Inventory
+            {
+               ItemID = i,
+               Amount = 10000,
+            });
+         }
+      }
+#endif // false
 
       path = $@"{DATA_PATH}\Enemy";
       for (i = 1; ; i++)
@@ -232,18 +275,6 @@ public unsafe class PalGlobal
    }
 
    public static void
-   InitDefaultData()
-   {
-      Save.MusicID = 0;
-      Save.CollectValue = 0;
-      Save.Cash = 0;
-      Save.Cash = 0;
-
-      Save.SceneID = 0;
-      Save.CurrScene = Save.listScene[Save.SceneID];
-   }
-
-   public static void
    Init(
       int      iSaveSlot
    )
@@ -341,7 +372,7 @@ public unsafe class PalGlobal
 
    --*/
    {
-      int      i, j, w;
+      //int      i, j, w;
 
       //memset(&(gpGlobals->rgEquipmentEffect), 0, sizeof(gpGlobals->rgEquipmentEffect));
 

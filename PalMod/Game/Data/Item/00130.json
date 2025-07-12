@@ -1,0 +1,30 @@
+{
+  "Name": "太极剑",
+  "Description": [
+    "道祖张陵之随身配剑，天师仗以降",
+    "妖伏魔。武术+158 灵力+90",
+    "防御+35 身法+50 吉运+33"
+  ],
+  "Bitmap": 185,
+  "Price": 30000,
+  "Scope": {
+    "Usable": false,
+    "Throwable": true,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00130_Equip",
+    "Throw": "Item_00130_Throw"
+  }
+}

@@ -4,12 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using static PalCommon;
 using static PalFont;
 using static PalInput;
 using static PalLog;
 using static PalMap;
+using static PalSave;
+using static PalUi;
+using static PalUi.Menu;
 using static PalVideo;
+using static PalScene;
+using static PalScript;
 using static Resistance;
 using static SafeSys;
 
@@ -125,7 +131,7 @@ public unsafe class PalUiGame
 
       PalText.DrawText("仙剑奇侠传 之", new Pos(x, y), COLOR_PINK, PalAlign.Middle, TTF.Direction.TTB);
 
-      x -= (int)(FONT_OFFSET * 1.5);
+      x -= (int)(FONT_OFFSET * 2.5);
       y += FONT_OFFSET * 5;
       PalText.DrawText("﹁\"圣灵终殇\"﹂", new Pos(x, y), COLOR_PINK, PalAlign.Middle, TTF.Direction.TTB);
 
@@ -133,7 +139,7 @@ public unsafe class PalUiGame
       y = VIDEO_HEIGHT - FONT_OFFSET - 6;
       PalText.DrawText("大量代码借自\"SDLPAL\"", new Pos(x, y), COLOR_CYAN, PalAlign.Right);
       y -= FONT_OFFSET;
-      PalText.DrawText("引擎：@SDL3－CS@", new Pos(x, y), COLOR_CYAN, PalAlign.Right);
+      PalText.DrawText("引擎：@SDL3-CS@", new Pos(x, y), COLOR_CYAN, PalAlign.Right);
       y -= FONT_OFFSET;
       PalText.DrawText("免费游戏，严禁用于商业用途", new Pos(x, y), COLOR_GOLD, PalAlign.Right);
       y -= FONT_OFFSET;
@@ -558,6 +564,761 @@ public unsafe class PalUiGame
 
    --*/
    {
+      const int
+         POS_X = FONT_OFFSET_H_NUM,
+         POS_Y = FONT_OFFSET_H_NUM;
+      
+      int                           i, iItemSelected;
+      string[]                      arrText;
+      Pos                           posText, posNum, posText1, posNum1;
+      SDL.FRect                     frectCash, frectMenu;
+      PalUi.Menu                    menu;
+
+      iItemSelected = 0;
+
+      //S_GetSave().Cash = 0x7FFFFFFF;
+      //S_GetSave().CollectValue = 0x7FFFFFFF;
+      arrText = [
+         "状态",
+         "仙术",
+         "道具",
+         "系统",
+      ];
+      posText = new Pos
+      {
+         X = (int)(POS_X + FONT_OFFSET * 0.3f),
+         Y = (int)(POS_Y + FONT_OFFSET * 0.15f),
+      };
+      posNum = new Pos
+      {
+         X = posText.X + (int)(FONT_OFFSET * 2f),
+         Y = posText.Y + (FONT_OFFSET - FONT_OFFSET_H_NUM) / 2,
+      };
+      posText1 = new Pos
+      {
+         X = posText.X,
+         Y = posText.Y + FONT_OFFSET,
+      };
+      posNum1 = new Pos
+      {
+         X = posNum.X,
+         Y = posNum.Y + FONT_OFFSET,
+      };
+      frectCash = new SDL.FRect
+      {
+         X = POS_X,
+         Y = POS_Y,
+         W = FONT_OFFSET * 6,
+         H = FONT_OFFSET * 2.5f,
+      };
+      frectMenu = new SDL.FRect
+      {
+         X = frectCash.X,
+         Y = frectCash.Y + frectCash.H + FONT_OFFSET * 0.5f,
+         W = FONT_OFFSET * 3,
+         H = FONT_OFFSET * (arrText.Length + 1),
+      };
+
+      //
+      // Create menu items
+      //
+      menu = new PalUi.Menu
+      {
+         arrOption = new PalUi.Menu.Option[arrText.Length],
+      };
+
+      for (i = 0; i < menu.arrOption.Length; i++)
+      {
+         menu.arrOption[i] = new PalUi.Menu.Option
+         {
+            text = arrText[i],
+            pos = new Pos
+            {
+               X = (int)(frectMenu.X + FONT_OFFSET * 0.5),
+               Y = (int)(frectMenu.Y + FONT_OFFSET * 0.3 + i * FONT_OFFSET),
+            },
+            align = PalAlign.Left,
+            iLineHeight = FONT_OFFSET * 2,
+         };
+      }
+
+      //
+      // Draw a cash/collection value box
+      //
+      PalUi.DrawBox(frectCash, PalAlign.Left);
+      PalText.DrawText("金钱", posText, COLOR_GOLD);
+      PalText.DrawNum($"{S_GetSave().Cash,10}", posNum, COLOR_WHITE, align: PalAlign.Left);
+      PalText.DrawText("灵葫", posText1, COLOR_PINK);
+      PalText.DrawNum($"{S_GetSave().CollectValue,10}", posNum1);
+
+      //
+      // Draw the background of the menu
+      //
+      PalUi.DrawBox(frectMenu, PalAlign.Left);
+
+      while (true)
+      {
+         //
+         // Clean up the input status
+         //
+         PalTimer.Delay(1);
+         PalInput.ClearKeyState();
+
+         //
+         // Draw the contents in the menu
+         //
+         PalUi.ReadMenu(menu);
+
+         Screen.Update();
+
+         //
+         // Accept one frame of input
+         //
+         PalInput.ProcessEvent();
+
+         //
+         // Check the user input
+         //
+         if (PalInput.Pressed(PalKey.Menu))
+         {
+            //
+            // The user needs to exit the menu
+            //
+            break;
+         }
+         else if (PalInput.Pressed(PalKey.Up | PalKey.Left))
+         {
+            //
+            // The option cursor moves up
+            //
+            iItemSelected--;
+
+            if (iItemSelected < 0)
+            {
+               iItemSelected = menu.arrOption.Length - 1;
+            }
+         }
+         else if (PalInput.Pressed(PalKey.Down | PalKey.Right))
+         {
+            //
+            // Move the option cursor down
+            //
+            iItemSelected++;
+
+            if (iItemSelected > menu.arrOption.Length - 1)
+            {
+               iItemSelected = 0;
+            }
+         }
+         else if (PalInput.Pressed(PalKey.Search))
+         {
+            //
+            // The user confirmed the choice
+            //
+
+            //
+            // Draw a frame of the scene to overwrite the original menu
+            //
+            //PalScene.Draw();
+
+            //
+            // Back up this frame of the picture for easy restoration
+            //
+            Screen.Backup(g_pScreen);
+
+            //
+            // Check the choices made by the user
+            //
+            switch (iItemSelected)
+            {
+               case 0:
+                  //
+                  // Team member status
+                  //
+                  break;
+
+               case 1:
+                  //
+                  // The immortal arts of the team members
+                  //
+                  break;
+
+               case 2:
+                  //
+                  // Inventory items
+                  //
+                  if (InventoryTypeMenu()) return;
+                  break;
+
+               case 3:
+                  //
+                  // System Menu
+                  //
+                  break;
+            }
+
+            //
+            // Draw the backed-up image onto the screen
+            //
+            Screen.Restore(g_pScreen);
+         }
+
+         //
+         // Update the option cursor of the menu
+         //
+         menu.iDefaultID = iItemSelected;
+      }
+   }
+
+   public static bool
+   InventoryTypeMenu()
+   /*++
+     Purpose:
+
+       Display the main menu within the game scene.
+
+     Parameters:
+   
+       None.
+
+     Return value:
+
+       Exit all menus when returning true.
+
+   --*/
+   {
+      const int
+         POS_X = (int)(FONT_OFFSET_H_NUM + FONT_OFFSET * 3.5),
+         POS_Y = FONT_OFFSET_H_NUM + FONT_OFFSET * 5;
+
+      int                           i, iItemSelected;
+      string[]                      arrText;
+      SDL.FRect                     frect;
+      PalUi.Menu                    menu;
+
+      iItemSelected = 0;
+
+      arrText = [
+         "装备",
+         "使用",
+      ];
+      frect = new SDL.FRect
+      {
+         X = POS_X,
+         Y = POS_Y,
+         W = FONT_OFFSET * 3,
+         H = FONT_OFFSET * (arrText.Length + 1),
+      };
+
+      //
+      // Create menu items
+      //
+      menu = new PalUi.Menu
+      {
+         arrOption = new PalUi.Menu.Option[arrText.Length],
+      };
+
+      for (i = 0; i < menu.arrOption.Length; i++)
+      {
+         menu.arrOption[i] = new PalUi.Menu.Option
+         {
+            text = arrText[i],
+            pos = new Pos
+            {
+               X = (int)(frect.X + FONT_OFFSET * 0.5),
+               Y = (int)(frect.Y + FONT_OFFSET * 0.3 + i * FONT_OFFSET),
+            },
+            align = PalAlign.Left,
+            iLineHeight = FONT_OFFSET * 2,
+         };
+      }
+
+      //
+      // Draw the background of the menu
+      //
+      PalUi.DrawBox(frect, PalAlign.Left);
+
+      while (true)
+      {
+         //
+         // Clean up the input status
+         //
+         PalTimer.Delay(1);
+         PalInput.ClearKeyState();
+
+         //
+         // Draw the contents in the menu
+         //
+         PalUi.ReadMenu(menu);
+
+         Screen.Update();
+
+         //
+         // Accept one frame of input
+         //
+         PalInput.ProcessEvent();
+
+         //
+         // Check the user input
+         //
+         if (PalInput.Pressed(PalKey.Menu))
+         {
+            //
+            // The user needs to exit the menu
+            //
+            return false;
+         }
+         else if (PalInput.Pressed(PalKey.Up | PalKey.Left))
+         {
+            //
+            // The option cursor moves up
+            //
+            iItemSelected--;
+
+            if (iItemSelected < 0)
+            {
+               iItemSelected = menu.arrOption.Length - 1;
+            }
+         }
+         else if (PalInput.Pressed(PalKey.Down | PalKey.Right))
+         {
+            //
+            // Move the option cursor down
+            //
+            iItemSelected++;
+
+            if (iItemSelected > menu.arrOption.Length - 1)
+            {
+               iItemSelected = 0;
+            }
+         }
+         else if (PalInput.Pressed(PalKey.Search))
+         {
+            //
+            // The user confirmed the choice
+            //
+
+            //
+            // Draw a frame of the scene to overwrite the original menu
+            //
+            PalScene.Draw();
+
+            //
+            // Check the choices made by the user
+            //
+            switch (iItemSelected)
+            {
+               case 0:
+                  //
+                  // Equipment menu
+                  //
+                  break;
+
+               case 1:
+                  //
+                  // Use menu
+                  //
+                  InventoryUseItem();
+                  break;
+            }
+
+            return true;
+         }
+
+         //
+         // Update the option cursor of the menu
+         //
+         menu.iDefaultID = iItemSelected;
+      }
+   }
+
+   static   int
+      Inventory_Begin = 0,
+      Inventory_Selected = 0;
+
+   static   List<Inventory>         Inventory_List          = new List<Inventory>();
+   static   Menu                    Inventory_Menu          = new Menu();
+
+   public enum InventoryType
+   {
+      Use,        // Usable items
+      Equip,      // Equipment
+      Throw,      // Throwable items
+      Sell,       // Collectible items (e.g., herbs)
+   }
+
+   public static Inventory
+   InventoryMenu(
+      InventoryType     inventoryType
+   )
+   /*++
+     Purpose:
+
+       Display the available inventory items.
+
+     Parameters:
+   
+       None.
+
+     Return value:
+
+       None.
+
+   --*/
+   {
+      const int
+         POS_X    = FONT_OFFSET_H_NUM,
+         POS_Y    = FONT_OFFSET_H_NUM,
+         COL_NUM  = 3,
+         ROW_NUM  = 5,
+         PAGE_ITEM_NUM = COL_NUM * ROW_NUM;
+      
+      int                  i, len, colID, rowID, beginID, thisID, amount;
+      List<Inventory>      listInventory, listUsable;
+      Pos                  posImage, posText;
+      Inventory            inventory;
+      Item                 item;
+      SDL.FRect            frectMenu, frectImageBox; ;
+
+      listUsable = new List<Inventory>();
+      frectMenu = new SDL.FRect
+      {
+         X = POS_X,
+         Y = POS_Y,
+         W = VIDEO_WIDTH - FONT_OFFSET_H_NUM * 2,
+         H = VIDEO_HEIGHT - FONT_OFFSET_H_NUM * 2 - FONT_OFFSET * 5,
+      };
+      frectImageBox = new SDL.FRect
+      {
+         X = frectMenu.X,
+         H = VIDEO_HEIGHT - frectMenu.Y - frectMenu.H - FONT_OFFSET_H_NUM * 2,
+      };
+      frectImageBox.W = frectImageBox.H;
+      frectImageBox.Y = VIDEO_HEIGHT - frectImageBox.H - FONT_OFFSET_H_NUM;
+      posImage = new Pos
+      {
+         X = (int)frectImageBox.X + 2,
+         Y = (int)frectImageBox.Y + 2,
+      };
+      posText = new Pos
+      {
+         X = (int)(frectImageBox.X + frectImageBox.W) + FONT_OFFSET_H_NUM,
+      };
+
+      //
+      // Draw the background of the menu
+      //
+      PalUi.DrawBox(frectMenu, PalAlign.Left);
+
+      //
+      // Draw the background of the inventory item image
+      //
+      PalUi.DrawBox(frectImageBox, PalAlign.Left);
+
+      //
+      // Back up this frame of the picture for easy restoration
+      //
+      Screen.Backup(g_pScreen);
+
+      len = 0;
+      beginID = -1;
+      inventory = null;
+      listInventory = S_GetSave().listInventory;
+
+      while (true)
+      {
+         //
+         // Clean up the input status
+         //
+         PalTimer.Delay(1);
+         PalInput.ClearKeyState();
+
+         if (listInventory.Count > 0)
+         {
+            listUsable = listInventory.Where(
+               item => (item.Amount - item.AmountInUse > 0)
+            ).ToList();
+         }
+
+         if (listUsable.Count > 0)
+         {
+            beginID = Inventory_Begin * COL_NUM;
+            len = Math.Min(listUsable.Count - beginID, PAGE_ITEM_NUM);
+            Inventory_List = listUsable[beginID..(beginID + len)];
+
+            //
+            // Draw the backed-up image onto the screen
+            //
+            Screen.Restore(g_pScreen);
+
+            //
+            // Put inventory items on the menu
+            //
+            Inventory_Menu.arrOption = new PalUi.Menu.Option[len];
+            for (i = 0; i < len; i++)
+            {
+               colID = i % COL_NUM;
+               rowID = i / COL_NUM;
+
+               inventory = Inventory_List[i];
+               item = inventory.Item;
+
+               Inventory_Menu.arrOption[i] = new PalUi.Menu.Option
+               {
+                  text = item.Name,
+                  pos = new Pos
+                  {
+                     X = POS_X + FONT_OFFSET_HALF + colID * FONT_OFFSET * 7,
+                     Y = POS_Y + FONT_OFFSET_HALF + rowID * FONT_OFFSET * 2,
+                  },
+                  align = PalAlign.Left,
+                  iLineHeight = FONT_OFFSET * 2,
+                  fEnabled = inventoryType switch
+                  {
+                     InventoryType.Use => item._Scope.Usable,
+                     InventoryType.Equip => item._Scope.Equipable,
+                     InventoryType.Throw => item._Scope.Throwable,
+                     InventoryType.Sell => item._Scope.Sellable,
+                     _ => true,
+                  },
+               };
+
+               amount = inventory.Amount - inventory.AmountInUse;
+
+               //
+               // Display the count of inventory items
+               //
+               PalText.DrawNum($"x{amount}", new Pos
+               {
+                  X = Inventory_Menu.arrOption[i].pos.X + (int)(FONT_OFFSET * 5.5),
+                  Y = Inventory_Menu.arrOption[i].pos.Y + (FONT_OFFSET - FONT_OFFSET_H_NUM) / 2,
+               }, COLOR_GOLD);
+            }
+
+            //
+            // Prevent cursor from crossing boundaries
+            //
+            Inventory_Selected = Math.Min(Inventory_Selected, len - 1);
+            Inventory_Selected = Math.Max(Inventory_Selected, 0);
+            Inventory_Menu.iDefaultID = Inventory_Selected;
+
+            //
+            // Display images of inventory items
+            //
+            inventory = listUsable[beginID + Inventory_Selected];
+            item = inventory.Item;
+            PalUi.DrawItem(item.Bitmap, posImage,
+               width: (int)frectImageBox.W - 4,
+               height: (int)frectImageBox.H - 4
+            );
+
+            //
+            // Display the description of inventory items
+            //
+            posText.Y = (int)frectImageBox.Y - FONT_OFFSET_H_NUM;
+            for (i = 0; i < item.Description.Length; i++)
+            {
+               PalText.DrawText(item.Description[i], posText);
+               posText.Y += FONT_OFFSET;
+            }
+
+            //
+            // Display menu view
+            //
+            PalUi.ReadMenu(Inventory_Menu);
+         }
+
+         Screen.Update();
+
+         //
+         // Accept one frame of input
+         //
+         PalInput.ProcessEvent();
+
+         //
+         // Check the user input
+         //
+         if (PalInput.Pressed(PalKey.Menu))
+         {
+            //
+            // The user needs to exit the menu
+            //
+            inventory = null;
+            break;
+         }
+         else if (PalInput.Pressed(PalKey.Up))
+         {
+            //
+            // The option cursor moves up
+            //
+            thisID = Inventory_Selected - COL_NUM;
+
+            //
+            // Prevent cursor from crossing boundaries
+            //
+            if (thisID >= 0)
+            {
+               Inventory_Selected -= COL_NUM;
+            }
+            else
+            {
+               Inventory_Begin--;
+            }
+         }
+         else if (PalInput.Pressed(PalKey.Down))
+         {
+            //
+            // The option cursor moves down
+            //
+            thisID = Inventory_Selected + COL_NUM;
+
+            //
+            // Prevent cursor from crossing boundaries
+            //
+            if (thisID < len)
+            {
+               Inventory_Selected += COL_NUM;
+            }
+            else
+            {
+               Inventory_Begin++;
+            }
+         }
+         else if (PalInput.Pressed(PalKey.Left))
+         {
+            //
+            // The option cursor moves left
+            //
+            thisID = Inventory_Selected - 1;
+
+            //
+            // Prevent cursor from crossing boundaries
+            //
+            if (thisID >= 0)
+            {
+               Inventory_Selected--;
+            }
+            else
+            {
+               Inventory_Begin--;
+            }
+         }
+         else if (PalInput.Pressed(PalKey.Right))
+         {
+            //
+            // Move the option cursor right
+            //
+            thisID = Inventory_Selected + 1;
+
+            //
+            // Prevent cursor from crossing boundaries
+            //
+            if (thisID < len)
+            {
+               Inventory_Selected++;
+            }
+            else
+            {
+               Inventory_Begin++;
+            }
+         }
+         else if (PalInput.Pressed(PalKey.Search))
+         {
+            //
+            // The user confirmed the choice
+            //
+            if (Inventory_Menu.arrOption[Inventory_Selected].fEnabled)
+            {
+               break;
+            }
+         }
+
+         //
+         // Prevent cursor from crossing boundaries
+         //
+         Inventory_Begin = Math.Min(Inventory_Begin,
+            (int)Math.Ceiling((float)listUsable.Count / COL_NUM) - ROW_NUM
+         );
+         Inventory_Begin = Math.Max(Inventory_Begin, 0);
+      }
+
+      return inventory;
+   }
+
+   public static void
+   InventoryUseItem()
+   /*++
+     Purpose:
+   
+      Allow player use an item in the game.
+
+     Parameters:
+   
+       None.
+
+     Return value:
+
+       None.
+
+   --*/
+   {
+      int            scrAddr;
+      string         scr;
+      Inventory      inventory;
+      Item           item;
+
+      //
+      // Display the inventory item selection menu
+      //
+      inventory = InventoryMenu(InventoryType.Use);
+
+      if (inventory != null)
+      {
+         item = inventory.Item;
+
+         //
+         // Execute the script.
+         //
+         g_fShowSceneInfo = false;
+         scr = item._Script.Use;
+         scrAddr = PalScript.GetScrAddr(scr);
+         item._Script.Use = PalScript.MKScrTag(
+            PalScript.RunTrigger(scrAddr, -1, -1, $"UseItem<{item.Name}>")
+         );
+
+         if (item._Scope.Consuming && g_fScriptSuccess)
+         {
+            //
+            // The use was successful,
+            // reducing the number of inventory items
+            //
+            S_InventoryAddItem(inventory.ItemID, -1);
+            S_GetSave().listInventory.Remove(inventory);
+         }
+      }
+   }
+
+   /*++
+   public static void
+   SceneMainMenu1(
+      int      iSelected   = 0
+   )
+   /*++
+     Purpose:
+
+       Display the main menu within the game scene.
+
+     Parameters:
+
+       [IN]  iSelected - The selected option by default.
+
+     Return value:
+
+       None.
+
+   --*/
+   /*
+   {
       int                           i, curr, max, iItemSelected, boxActivity, boxSelected;
       float                         x, y, w, xBox, yBox;
       string[]                      arrText;
@@ -566,7 +1327,7 @@ public unsafe class PalUiGame
       PalUi.Menu                    menu;
       PalUi.Menu.Option.Status      status;
 
-      PalGlobal.Save.PartySize = MAX_HERO_NUM;
+      S_GetSave().PartySize = MAX_HERO_NUM;
 
       iItemSelected = iSelected;
       boxActivity = 0;
@@ -574,7 +1335,7 @@ public unsafe class PalUiGame
 
       pos = new Pos();
 
-      x = (int)(VIDEO_WIDTH - FONT_OFFSET * 4) / 2;
+      x = (int)(VIDEO_WIDTH - FONT_OFFSET * 1.6) / 2;
       y = VIDEO_HEIGHT / 2;
       w = FONT_OFFSET * 16;
       frect = new SDL.FRect
@@ -597,8 +1358,8 @@ public unsafe class PalUiGame
       };
       frectBox.Y -= frect.H / 2 + FONT_OFFSET * 5;
 
-      //x = frect.X - (int)(FONT_OFFSET * 1.6) / 2;
-      x = (int)(VIDEO_WIDTH - FONT_OFFSET * 6) / 2;
+      //x = VIDEO_WIDTH - FONT_OFFSET * 6 / 2;
+      x = (VIDEO_WIDTH - FONT_OFFSET * 6) / 2;
       w += FONT_OFFSET * 8;
       frectContent = new SDL.FRect
       {
@@ -678,7 +1439,7 @@ public unsafe class PalUiGame
          //
          xBox = frectBox.X;
          yBox = frectBox.Y;
-         for (i = 0; i < PalGlobal.Save.PartySize; i++)
+         for (i = 0; i < S_GetSave().PartySize; i++)
          {
             if (i == boxActivity)
             {
@@ -702,29 +1463,29 @@ public unsafe class PalUiGame
 
             curr = 1700;
             max = 2000;
-            pos.X = (int)(frectBox.X - frectBox.W);
+            pos.X = (int)(frectBox.X - frectBox.W + FONT_OFFSET_H_NUM * 3);
             pos.Y = (int)(frectBox.Y);
             PalText.DrawNum($"{curr,5}/{max,5}", pos, COLOR_WHITE);
 
-            pos.X += FONT_OFFSET_W_NUM * 3 / 2 - 2;
+            pos.X -= (int)(FONT_OFFSET_W_NUM * 4.2);
             pos.Y += FONT_OFFSET_H_NUM + 3;
             PalUi.DrawProgressLine(curr, max, pos, 0xFF0000);
 
             curr = 250;
             max = 1300;
-            pos.X -= FONT_OFFSET_W_NUM * 3 / 2 - 2;
+            pos.X += (int)(FONT_OFFSET_W_NUM * 4.2);
             PalText.DrawNum($"{curr,5}/{max,5}", pos, COLOR_CYAN);
 
-            pos.X += FONT_OFFSET_W_NUM * 3 / 2 - 2;
+            pos.X -= (int)(FONT_OFFSET_W_NUM * 4.2);
             pos.Y += FONT_OFFSET_H_NUM + 3;
             PalUi.DrawProgressLine(curr, max, pos, 0x0000FF);
 
             curr = 306;
             max = 500;
-            pos.X -= FONT_OFFSET_W_NUM * 3 / 2 - 2;
+            pos.X += (int)(FONT_OFFSET_W_NUM * 4.2);
             PalText.DrawNum($"{curr,5}/{max,5}", pos, COLOR_GOLD);
 
-            pos.X += FONT_OFFSET_W_NUM * 3 / 2 - 2;
+            pos.X -= (int)(FONT_OFFSET_W_NUM * 4.2);
             pos.Y += FONT_OFFSET_H_NUM + 3;
             PalUi.DrawProgressLine(curr, max, pos, 0x00FF00);
 
@@ -739,18 +1500,20 @@ public unsafe class PalUiGame
          //
          // Display submenu
          //
+         pos.X = (int)(frectContent.X - frectContent.W / 2);
+         pos.Y = (int)frectContent.Y;
          switch (iItemSelected)
          {
             case 0:
-               pos.X = (int)(frectContent.X - frectContent.W / 2);
-               pos.Y = (int)frectContent.Y;
                RoleStatus(pos, boxActivity);
                break;
 
             case 1:
+               RoleMagic(pos, boxActivity);
                break;
 
             case 2:
+               Inventory(pos);
                break;
          }
 
@@ -764,7 +1527,14 @@ public unsafe class PalUiGame
          //
          // Check the user input
          //
-         if (PalInput.Pressed(PalKey.Left))
+         if (PalInput.Pressed(PalKey.Menu))
+         {
+            //
+            // The user needs to exit the menu
+            //
+            break;
+         }
+         else if (PalInput.Pressed(PalKey.Auto))
          {
             //
             // The option cursor moves up
@@ -776,7 +1546,7 @@ public unsafe class PalUiGame
                iItemSelected = menu.arrOption.Length - 1;
             }
          }
-         else if (PalInput.Pressed(PalKey.Right))
+         else if (PalInput.Pressed(PalKey.Defend))
          {
             //
             // Move the option cursor down
@@ -788,20 +1558,21 @@ public unsafe class PalUiGame
                iItemSelected = 0;
             }
          }
-         else if (PalInput.Pressed(PalKey.Up))
+
+         if (PalInput.Pressed(PalKey.Repeat))
          {
             boxActivity--;
 
             if (boxActivity < 0)
             {
-               boxActivity = PalGlobal.Save.PartySize - 1;
+               boxActivity = S_GetSave().PartySize - 1;
             }
          }
-         else if (PalInput.Pressed(PalKey.Down))
+         else if (PalInput.Pressed(PalKey.Force))
          {
             boxActivity++;
 
-            if (boxActivity > PalGlobal.Save.PartySize - 1)
+            if (boxActivity > S_GetSave().PartySize - 1)
             {
                boxActivity = 0;
             }
@@ -813,13 +1584,6 @@ public unsafe class PalUiGame
             //
             break;
          }
-         else if (PalInput.Pressed(PalKey.Menu))
-         {
-            //
-            // The user needs to exit the menu
-            //
-            break;
-         }
 
          //
          // Update the option cursor of the menu
@@ -827,9 +1591,10 @@ public unsafe class PalUiGame
          menu.iDefaultID = iItemSelected;
       }
 
-      PalGlobal.Save.PartySize = 1;
+      S_GetSave().PartySize = 1;
    }
 
+   /*
    public static void
    RoleStatus(
       Pos      pos,
@@ -888,7 +1653,7 @@ public unsafe class PalUiGame
          {
             pos1.X = pos.X + arrPos[0].X;
             pos1.Y = pos.Y + arrPos[0].Y + (int)(FONT_OFFSET * 1.4) * (i + 1);
-            PalText.DrawText($@"{str[i]}", pos1, PalAlign.Left);
+            PalText.DrawText(str[i], pos1, PalAlign.Left);
 
             pos1.X += FONT_OFFSET * 2;
             pos1.Y += FONT_OFFSET_H_NUM / 5;
@@ -912,11 +1677,18 @@ public unsafe class PalUiGame
          {
             pos1.X = pos.X + arrPos[1].X;
             pos1.Y = pos.Y + arrPos[1].Y + (int)(FONT_OFFSET_H_NUM * 1.2) * i;
-            PalText.DrawNum($@"{str[i]}", pos1, COLOR_GOLD, true);
+            PalText.DrawNum(str[i], pos1, COLOR_GOLD, true);
 
             pos1.X += FONT_OFFSET_H_NUM * 2;
             PalText.DrawNum($@"{curr[i],5}", pos1);
          }
+
+         pos1.X = pos.X + arrPos[1].X;
+         pos1.Y = pos.Y + arrPos[1].Y + (int)(FONT_OFFSET_H_NUM * 1.2) * i;
+         PalText.DrawNum($"合体法术", pos1, COLOR_GOLD, true);
+
+         pos1.X += (int)(FONT_OFFSET_H_NUM * 4);
+         PalText.DrawNum($@"{S_GetMagic(hero._Magic.Cooperative).Name}", pos1, fIsText: true, align: PalAlign.Middle);
 
          resistance = hero.Resistance;
          elemental = resistance._Elemental;
@@ -944,7 +1716,7 @@ public unsafe class PalUiGame
          {
             pos1.X = pos.X + arrPos[2].X;
             pos1.Y = pos.Y + arrPos[2].Y + (int)(FONT_OFFSET_H_NUM * 1.2) * i;
-            PalText.DrawNum($@"{str[i]}", pos1, COLOR_GOLD, true);
+            PalText.DrawNum(str[i], pos1, COLOR_GOLD, true);
 
             pos1.X += FONT_OFFSET_H_NUM * 2;
             PalText.DrawNum($@"{(int)(fCurr[i] * 100),3}%", pos1);
@@ -963,8 +1735,8 @@ public unsafe class PalUiGame
          for (i = 0; i < str.Length; i++)
          {
             pos1.X = pos.X + arrPos[3].X + (int)(FONT_OFFSET * 2.3) * i;
-            pos1.Y = pos.Y + arrPos[3].Y;
-            PalText.DrawText($@"{str[i]}", pos1, PalAlign.Left);
+            pos1.Y = pos.Y + arrPos[3].Y + (S_B(i % 2) ? FONT_OFFSET_H_NUM : 0);
+            PalText.DrawText(str[i], pos1, PalAlign.Left);
 
             item = S_GetItem(curr[i]);
 
@@ -972,144 +1744,452 @@ public unsafe class PalUiGame
             pos1.Y += (int)(FONT_OFFSET * 1.4);
             PalUi.DrawItem(item.Bitmap, pos1);
 
-            pos1.X += FONT_OFFSET_W_NUM / 3 * 2;
-            pos1.Y += (int)(FONT_OFFSET * 2);
+            pos1.X += (int)(FONT_OFFSET_W_NUM * 2.5);
+            pos1.Y += (int)(FONT_OFFSET * 1.8);
             PalText.DrawNum(item.Name, pos1, fIsText: true, align: PalAlign.Middle);
          }
       }
    }
 
-   public static void
-   RoleMagic()
+   const int
+      COL_NUM = 2,
+      ROW_NUM = 4,
+      PAGE_ITEM_NUM = COL_NUM * ROW_NUM;
+
+   static   int[]
+      RoleMagic_BeginID          = new int[MAX_HERO_NUM],
+      RoleMagic_MagicSelected    = new int[MAX_HERO_NUM];
+
+   static   PalUi.Menu     menuList                = new Menu();
+   static   List<int>      RoleMagic_listMagicID   = new List<int>();
+
+   public static bool
+   RoleMagic(
+      Pos      pos,
+      int      roleID
+   )
    {
 
-   }
+      int            heroID, i, len, colID, rowID;
+      Hero           hero;
+      List<int>      listMagicID;
+      Magic          magic;
+      List<string>      listMagicGenus;
+      Pos            pos1;
 
-   public static void
-   Inventory()
-   {
-      int            i, iItemSelected;
-      PalUi.Menu     menu;
-      string[]       arrText;
+      //heroID = S_GetRole(roleID).HeroID;
+      heroID = roleID;
+      hero = S_GetHero(heroID + 1);
+      listMagicID = hero._Magic.listLearned;
 
-      iItemSelected = 0;
-
-      arrText = [
-         "状态",
-         "仙术",
-         "道具",
-         "系统",
-      ];
+      if (listMagicID.Count <= 0)
+      {
+         //
+         // The current team member has no magic at all
+         //
+         return false;
+      }
 
       //
-      // Create menu items
+      // Sort out the magic that should be displayed
       //
-      menu = new PalUi.Menu
+      RoleMagic_listMagicID.Clear();
+      len = Math.Min(listMagicID.Count - RoleMagic_BeginID[heroID], PAGE_ITEM_NUM);
+      for (i = RoleMagic_BeginID[heroID]; RoleMagic_listMagicID.Count < len; i++)
       {
-         arrOption = new PalUi.Menu.Option[arrText.Length],
-      };
+         RoleMagic_listMagicID.Add(listMagicID[i]);
+      }
 
-      for (i = 0; i < menu.arrOption.Length; i++)
+      //
+      // Put magic on the menu
+      //
+      menuList.arrOption = new PalUi.Menu.Option[len];
+      pos1 = pos.Clone();
+      for (i = 0; i < len; i++)
       {
-         menu.arrOption[i] = new PalUi.Menu.Option
+         magic = S_GetMagic(listMagicID[RoleMagic_BeginID[heroID] + i]);
+
+         colID = i % COL_NUM;
+         rowID = i / COL_NUM;
+
+         pos1.X = pos.X + colID * FONT_OFFSET * 8 + FONT_OFFSET_H_NUM;
+         pos1.Y = pos.Y + rowID * FONT_OFFSET * 2 + FONT_OFFSET_H_NUM;
+
+         menuList.arrOption[i] = new PalUi.Menu.Option
          {
-            text = arrText[i],
-            pos = new Pos
-            {
-               X = 0,
-               Y = 0,
-            },
-            align = PalAlign.Middle,
+            text = magic.Name,
+            pos = pos1.Clone(),
+            align = PalAlign.Left,
             iLineHeight = FONT_OFFSET * 2,
          };
       }
 
       //
-      // Back up this frame of the picture for easy restoration
+      // Prevent cursor from crossing boundaries
       //
-      Screen.Backup(g_pScreen);
+      RoleMagic_MagicSelected[heroID] = Math.Min(RoleMagic_MagicSelected[heroID], len - 1);
+      RoleMagic_MagicSelected[heroID] = Math.Max(RoleMagic_MagicSelected[heroID], 0);
+      menuList.iDefaultID = RoleMagic_MagicSelected[heroID];
 
-   begin_menu:
-      while (true)
+      //
+      // Show the type of magic
+      //
+      pos1.X = pos.X + FONT_OFFSET_H_NUM;
+      pos1.Y = pos.Y + (int)(FONT_OFFSET * 8.5) + FONT_OFFSET_H_NUM;
+      magic = S_GetMagic(RoleMagic_listMagicID[menuList.iDefaultID]);
+      listMagicGenus = magic.GetGenus();
+      foreach (var genus in listMagicGenus)
+      {
+         PalText.DrawNum(genus, pos1, COLOR_GOLD, fIsText: true);
+         pos1.X += FONT_OFFSET_H_NUM * 2 + (int)(FONT_OFFSET_W_NUM * 0.6);
+      }
+
+      //
+      // Show the description of magic
+      //
+      pos1.X = pos.X + FONT_OFFSET_W_NUM;
+      pos1.Y = pos.Y + (int)(FONT_OFFSET * 9) + FONT_OFFSET_H_NUM;
+      for (i = 0; i < magic.Description.Length; i++)
+      {
+         PalText.DrawText(magic.Description[i], pos1);
+         pos1.Y += (int)(FONT_OFFSET * 0.95);
+      }
+
+      //
+      // Display menu view
+      //
+      PalUi.ReadMenu(menuList);
+      Screen.Update();
+
+      //
+      // Accept one frame of input
+      //
+      PalInput.ProcessEvent();
+
+      //
+      // Check the user input
+      //
+      if (PalInput.Pressed(PalKey.Up))
       {
          //
-         // Clean up the input status
+         // The option cursor moves up
          //
-         PalTimer.Delay(1);
-         PalInput.ClearKeyState();
+         RoleMagic_MagicSelected[heroID] -= COL_NUM;
 
          //
-         // Draw the backed-up image onto the screen
+         // Prevent cursor from crossing boundaries
          //
-         Screen.Restore(g_pScreen);
-
-         //
-         // Display menu view
-         //
-         PalUi.ReadMenu(menu);
-         Screen.Update();
-
-         //
-         // Display submenu
-         //
-         switch (iItemSelected)
+         if (RoleMagic_MagicSelected[heroID] < 0)
          {
-            case 0:
-               break;
-
-            case 1:
-               break;
-
-            case 2:
-               break;
+            RoleMagic_MagicSelected[heroID] += COL_NUM;
+            RoleMagic_BeginID[heroID] -= COL_NUM;
          }
-
-         //
-         // Accept one frame of input
-         //
-         PalInput.ProcessEvent();
-
-         //
-         // Check the user input
-         //
-         if (PalInput.Pressed(PalKey.Left))
-         {
-            //
-            // The option cursor moves up
-            //
-            iItemSelected--;
-
-            if (iItemSelected < 0)
-            {
-               iItemSelected = menu.arrOption.Length - 1;
-            }
-         }
-         else if (PalInput.Pressed(PalKey.Right))
-         {
-            //
-            // Move the option cursor down
-            //
-            iItemSelected++;
-
-            if (iItemSelected > menu.arrOption.Length - 1)
-            {
-               iItemSelected = 0;
-            }
-         }
-         else if (PalInput.Pressed(PalKey.Search))
-         {
-            //
-            // The user confirmed the choice
-            //
-            break;
-         }
-
-         //
-         // Update the option cursor of the menu
-         //
-         menu.iDefaultID = iItemSelected;
       }
+      else if (PalInput.Pressed(PalKey.Down))
+      {
+         //
+         // The option cursor moves down
+         //
+         RoleMagic_MagicSelected[heroID] += COL_NUM;
+
+         //
+         // Prevent cursor from crossing boundaries
+         //
+         if (RoleMagic_MagicSelected[heroID] > len - 1)
+         {
+            if (len < COL_NUM * ROW_NUM)
+            {
+               RoleMagic_MagicSelected[heroID] = len - 1;
+            }
+            else
+            {
+               RoleMagic_MagicSelected[heroID] -= COL_NUM;
+            }
+            RoleMagic_BeginID[heroID] += COL_NUM;
+         }
+      }
+      else if(PalInput.Pressed(PalKey.Left))
+      {
+         //
+         // The option cursor moves left
+         //
+         RoleMagic_MagicSelected[heroID]--;
+
+         //
+         // Prevent cursor from crossing boundaries
+         //
+         if (RoleMagic_MagicSelected[heroID] < 0)
+         {
+            if (RoleMagic_BeginID[heroID] > 0)
+            {
+               RoleMagic_MagicSelected[heroID] += COL_NUM;
+            }
+            RoleMagic_BeginID[heroID] -= COL_NUM;
+         }
+      }
+      else if (PalInput.Pressed(PalKey.Right))
+      {
+         //
+         // Move the option cursor right
+         //
+         RoleMagic_MagicSelected[heroID]++;
+
+         //
+         // Prevent cursor from crossing boundaries
+         //
+         if (RoleMagic_MagicSelected[heroID] > len - 1)
+         {
+            RoleMagic_MagicSelected[heroID] -= COL_NUM;
+            RoleMagic_BeginID[heroID] += COL_NUM;
+         }
+      }
+      else if (PalInput.Pressed(PalKey.Search))
+      {
+         //
+         // The user confirmed the choice
+         //
+         return true;
+      }
+
+      //
+      // Prevent cursor from crossing boundaries
+      //
+      RoleMagic_BeginID[heroID] = Math.Min(
+         RoleMagic_BeginID[heroID],
+         (int)Math.Ceiling((listMagicID.Count - len) * 1.0 / COL_NUM) * COL_NUM
+      );
+      RoleMagic_BeginID[heroID] = Math.Max(RoleMagic_BeginID[heroID], 0);
+
+      return false;
    }
+
+   /*
+   static int
+      Inventory_Begin = 0,
+      Inventory_Selected = 0;
+
+   static List<Inventory> Inventory_List = new List<Inventory>();
+   static Inventory_MenuType Inventory_TypeSelected = Inventory_MenuType.Use;
+
+   enum Inventory_MenuType
+   {
+      Use,
+      Equip,
+      Throw,
+   }
+
+   public static bool
+   Inventory(
+      Pos      pos
+   )
+   {
+      int                  i, len, colID, rowID, amount;
+      List<Inventory>      listInventory;
+      Pos                  pos1;
+      Inventory            inventory;
+
+      listInventory = S_GetSave().listInventory;
+
+      if (listInventory.Count <= 0)
+      {
+         //
+         // The inventory is empty
+         //
+         return false;
+      }
+
+      //
+      // Sort out the inventory items that should be displayed
+      //
+      Inventory_List.Clear();
+      len = Math.Min(listInventory.Count - Inventory_Begin, PAGE_ITEM_NUM);
+      for (i = Inventory_Begin; Inventory_List.Count < len; i++)
+      {
+         inventory = listInventory[i];
+         amount = inventory.Amount - inventory.AmountInUse;
+
+         if (amount < 1)
+         {
+            //
+            // The quantity of this item is less than 1
+            //
+            continue;
+         }
+
+         Inventory_List.Add(listInventory[i]);
+      }
+
+      //
+      // Put inventory items on the menu
+      //
+      menuList.arrOption = new PalUi.Menu.Option[len];
+      pos1 = pos.Clone();
+      for (i = 0; i < len; i++)
+      {
+         colID = i % COL_NUM;
+         rowID = i / COL_NUM;
+
+         pos1.X = pos.X + colID * FONT_OFFSET * 8 + FONT_OFFSET_H_NUM;
+         pos1.Y = pos.Y + rowID * FONT_OFFSET * 2 + FONT_OFFSET_H_NUM;
+
+         inventory = Inventory_List[i];
+
+         menuList.arrOption[i] = new PalUi.Menu.Option
+         {
+            text = inventory.Item.Name,
+            pos = pos1.Clone(),
+            align = PalAlign.Left,
+            iLineHeight = FONT_OFFSET * 2,
+         };
+
+         amount = inventory.Amount - inventory.AmountInUse;
+
+         //
+         // Display the count of inventory items
+         //
+         pos1.X += FONT_OFFSET;
+         pos1.Y += (int)(FONT_OFFSET * 1.2);
+         PalText.DrawNum($"x{amount}", pos1, COLOR_GOLD);
+      }
+
+      //
+      // Prevent cursor from crossing boundaries
+      //
+      Inventory_Selected = Math.Min(Inventory_Selected, len - 1);
+      Inventory_Selected = Math.Max(Inventory_Selected, 0);
+      menuList.iDefaultID = Inventory_Selected;
+
+      //
+      // Display images of inventory items
+      //
+      inventory = Inventory_List[Inventory_Selected];
+      pos1.X = pos.X + (int)(FONT_OFFSET_H_NUM * 0.1);
+      pos1.Y = pos.Y + (int)(FONT_OFFSET * 10.4) + FONT_OFFSET_H_NUM;
+      PalUi.DrawItem(inventory.Item.Bitmap, pos1);
+
+      pos1.X -= (int)(FONT_OFFSET_W_NUM * 0.8);
+      pos1.Y += (int)(FONT_OFFSET * 1.8);
+      PalText.DrawNum(inventory.Item.Name, pos1, fIsText: true);
+
+      //
+      // Display the description of inventory items
+      //
+      pos1.X = pos.X + (int)(FONT_OFFSET * 1.6) + FONT_OFFSET_W_NUM;
+      pos1.Y = pos.Y + (int)(FONT_OFFSET * 8.4) + FONT_OFFSET_H_NUM;
+      for (i = 0; i < inventory.Item.Description.Length; i++)
+      {
+         PalText.DrawText(inventory.Item.Description[i], pos1);
+         pos1.Y += (int)(FONT_OFFSET * 0.95);
+      }
+
+      //
+      // Display menu view
+      //
+      PalUi.ReadMenu(menuList);
+      Screen.Update();
+
+      //
+      // Accept one frame of input
+      //
+      PalInput.ProcessEvent();
+
+      //
+      // Check the user input
+      //
+      if (PalInput.Pressed(PalKey.Up))
+      {
+         //
+         // The option cursor moves up
+         //
+         Inventory_Selected -= COL_NUM;
+
+         //
+         // Prevent cursor from crossing boundaries
+         //
+         if (Inventory_Selected < 0)
+         {
+            Inventory_Selected += COL_NUM;
+            Inventory_Begin -= COL_NUM;
+         }
+      }
+      else if (PalInput.Pressed(PalKey.Down))
+      {
+         //
+         // The option cursor moves down
+         //
+         Inventory_Selected += COL_NUM;
+
+         //
+         // Prevent cursor from crossing boundaries
+         //
+         if (Inventory_Selected > len - 1)
+         {
+            if (len < COL_NUM * ROW_NUM)
+            {
+               Inventory_Selected = len - 1;
+            }
+            else
+            {
+               Inventory_Selected -= COL_NUM;
+            }
+            Inventory_Begin += COL_NUM;
+         }
+      }
+      else if (PalInput.Pressed(PalKey.Left))
+      {
+         //
+         // The option cursor moves left
+         //
+         Inventory_Selected--;
+
+         //
+         // Prevent cursor from crossing boundaries
+         //
+         if (Inventory_Selected < 0)
+         {
+            if (Inventory_Begin > 0)
+            {
+               Inventory_Selected += COL_NUM;
+            }
+            Inventory_Begin -= COL_NUM;
+         }
+      }
+      else if (PalInput.Pressed(PalKey.Right))
+      {
+         //
+         // Move the option cursor right
+         //
+         Inventory_Selected++;
+
+         //
+         // Prevent cursor from crossing boundaries
+         //
+         if (Inventory_Selected > len - 1)
+         {
+            Inventory_Selected -= COL_NUM;
+            Inventory_Begin += COL_NUM;
+         }
+      }
+      else if (PalInput.Pressed(PalKey.Search))
+      {
+         //
+         // The user confirmed the choice
+         //
+         return true;
+      }
+
+      //
+      // Prevent cursor from crossing boundaries
+      //
+      Inventory_Begin = Math.Min(
+         Inventory_Begin,
+         (int)Math.Ceiling((listInventory.Count - len) * 1.0 / COL_NUM) * COL_NUM
+      );
+      Inventory_Begin = Math.Max(Inventory_Begin, 0);
+
+      return false;
+   }
+   */
 
    public static void
    System()

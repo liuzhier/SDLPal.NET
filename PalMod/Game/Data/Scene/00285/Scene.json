@@ -1,0 +1,8 @@
+{
+  "Name": "南绍王宫·秘道·1·怪",
+  "MapID": 203,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

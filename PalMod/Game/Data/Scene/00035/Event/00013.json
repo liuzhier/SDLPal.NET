@@ -1,0 +1,32 @@
+{
+  "Comment": "女居民2",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 141,
+    "SpriteFrames": 3,
+    "Pos": {
+      "Pos": {
+        "X": 1488,
+        "Y": 776
+      },
+      "Direction": 2,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": true,
+    "TriggerDistance": 2
+  },
+  "Script": {
+    "SrcTrigger": "Event_00035_00013_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "Name": "拜月教主",
+  "Frame": {
+    "BitmapID": 149,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 10
+    },
+    "Idle": 1,
+    "Magic": 5,
+    "Attack": 1,
+    "IdleWaitFrames": 99,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 265,
+    "ActionID": 0,
+    "MagicID": 265,
+    "DeathID": 190,
+    "BeginBattleID": 91
+  },
+  "Attribute": {
+    "Level": 56,
+    "HP": 32760,
+    "MaxHP": 32760,
+    "AttackStrength": 35,
+    "MagicStrength": 0,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 6.0,
+      "Thunder": 6.0,
+      "Water": 6.0,
+      "Fire": 6.0,
+      "Earth": 6.0
+    },
+    "Physics": 4.0,
+    "Poison": 5.0,
+    "Sorcery": 10.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 88,
+    "MagicRate": 5,
+    "AttackEquivItemID": 25,
+    "AttackEquivItemRate": 3,
+    "ActionCount": 2
+  },
+  "BattleReward": {
+    "StealItem": 63,
+    "StealItemCount": 30,
+    "Exp": 30000,
+    "Level": 0,
+    "Cash": 10800,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 0
+  },
+  "Script": {
+    "TurnStart": "Enemy_00149_TurnStart",
+    "BattleWon": "Null",
+    "ReadyToAction": "Enemy_00149_ReadyToAction"
+  }
+}

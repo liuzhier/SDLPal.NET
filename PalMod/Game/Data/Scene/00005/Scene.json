@@ -1,0 +1,8 @@
+{
+  "Name": "余杭·集市",
+  "MapID": 2,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

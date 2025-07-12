@@ -1,0 +1,29 @@
+{
+  "Name": "引路蜂",
+  "Description": [
+    "跟随引路蜂而行，",
+    "可回到迷宫起点。"
+  ],
+  "Bitmap": 114,
+  "Price": 200,
+  "Scope": {
+    "Usable": true,
+    "Throwable": false,
+    "Equipable": false,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": true,
+    "ApplyToAllEnemy": true,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00091_Use",
+    "Equip": "Null",
+    "Throw": "Null"
+  }
+}

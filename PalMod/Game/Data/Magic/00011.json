@@ -1,0 +1,52 @@
+{
+  "Name": "鬼降",
+  "Description": [
+    "敌方单人疯魔四回合。"
+  ],
+  "BaseDamage": 64537,
+  "CostMP": 25,
+  "SoundID": 271,
+  "SummonID": -1,
+  "Genus": {
+    "Sword": false,
+    "Wind": false,
+    "Thunder": false,
+    "Water": false,
+    "Fire": false,
+    "Earth": false,
+    "Poison": false,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": true,
+    "Buff": false
+  },
+  "AttackMode": 0,
+  "Frame": {
+    "BitmapID": 41,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "LayerOffset": 99,
+    "Preview": 0,
+    "Speed": 2,
+    "KeepEffect": false,
+    "TotalTimes": 0,
+    "Shake": 0,
+    "Wave": 8
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": true,
+    "UsableToEnemy": false,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false
+  },
+  "Script": {
+    "Success": "Magic_00011_Success",
+    "Use": "Null"
+  }
+}

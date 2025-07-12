@@ -238,7 +238,9 @@ public unsafe class PalUi
    DrawItem(
       int         itemID,
       Pos         pos,
-      PalAlign    align = PalAlign.Left
+      PalAlign    align    = PalAlign.Left,
+      int         width    = 48,
+      int         height   = 47
    )
    {
       nint        pTex;
@@ -260,8 +262,8 @@ public unsafe class PalUi
 
       frectItem.X = pos.X;
       frectItem.Y = pos.Y;
-      frectItem.W = fw * 2;
-      frectItem.H = fh * 2;
+      frectItem.W = width;
+      frectItem.H = height;
 
       switch (align)
       {

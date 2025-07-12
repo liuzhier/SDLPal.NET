@@ -28,7 +28,7 @@ public class Script
 
       if (int.TryParse(STR(index), out val))
       {
-         return S_B(INT(index));
+         return S_B(val);
       }
       else
       {

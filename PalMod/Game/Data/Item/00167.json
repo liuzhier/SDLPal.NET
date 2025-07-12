@@ -1,0 +1,29 @@
+{
+  "Name": "武士披风",
+  "Description": [
+    "将帅所穿有护肩软甲的战帔。",
+    "防御+12"
+  ],
+  "Bitmap": 91,
+  "Price": 900,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00167_Equip",
+    "Throw": "Null"
+  }
+}

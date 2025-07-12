@@ -1,0 +1,8 @@
+{
+  "Name": "废大理·空·不整",
+  "MapID": 163,
+  "Script": {
+    "ScrEnter": "Scene_00274_Enter",
+    "ScrTeleport": "Null"
+  }
+}

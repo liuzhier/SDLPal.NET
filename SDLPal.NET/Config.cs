@@ -24,7 +24,7 @@ public class PalConfig
          public   int               iWindowHeight     = VIDEO_HEIGHT;
          public   bool              fFullScreen       = false;
          public   bool              fKeepAspectRatio  = true;
-         public   SDL.ScaleMode     _ScaleMode        = SDL.ScaleMode.PixelArt;
+         public   SDL.ScaleMode     _ScaleMode        = SDL.ScaleMode.Nearest;
       }
 
       public class Audio
@@ -37,7 +37,7 @@ public class PalConfig
 
       public class Input
       {
-         public   bool     fEnableKeyRepeat  = false;    // The operation key keeps triggering
+         public   bool     fEnableKeyRepeat  = true;    // The operation key keeps triggering
       }
 
       public class Other

@@ -1,0 +1,32 @@
+{
+  "Comment": "乘云仙兵",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 10,
+    "SpriteID": 623,
+    "SpriteFrames": 1,
+    "Pos": {
+      "Pos": {
+        "X": 1264,
+        "Y": 1416
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": true,
+    "IsAutoTrigger": true,
+    "TriggerDistance": 1
+  },
+  "Script": {
+    "SrcTrigger": "Event_00161_00006_Trigger",
+    "ScrAuto": "Event_00006_00003_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

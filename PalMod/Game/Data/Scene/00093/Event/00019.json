@@ -1,0 +1,32 @@
+{
+  "Comment": "原地皮毛商人",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 117,
+    "SpriteFrames": 1,
+    "Pos": {
+      "Pos": {
+        "X": 688,
+        "Y": 584
+      },
+      "Direction": 2,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 2
+  },
+  "Script": {
+    "SrcTrigger": "Event_00093_00019_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

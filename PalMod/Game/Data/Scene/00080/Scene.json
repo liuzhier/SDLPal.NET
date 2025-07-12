@@ -1,0 +1,8 @@
+{
+  "Name": "山道·鬼阴山后",
+  "MapID": 77,
+  "Script": {
+    "ScrEnter": "Scene_00080_Enter",
+    "ScrTeleport": "Null"
+  }
+}

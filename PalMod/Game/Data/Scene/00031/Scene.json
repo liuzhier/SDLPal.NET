@@ -1,0 +1,8 @@
+{
+  "Name": "苏州·兵器铺",
+  "MapID": 30,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

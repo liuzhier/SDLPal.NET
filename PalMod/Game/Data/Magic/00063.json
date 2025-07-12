@@ -1,0 +1,50 @@
+{
+  "Name": "炼狱爪",
+  "Description": [],
+  "BaseDamage": 130,
+  "CostMP": 0,
+  "SoundID": 152,
+  "SummonID": -1,
+  "Genus": {
+    "Sword": false,
+    "Wind": false,
+    "Thunder": false,
+    "Water": false,
+    "Fire": false,
+    "Earth": true,
+    "Poison": false,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": false,
+    "Buff": false
+  },
+  "AttackMode": 2,
+  "Frame": {
+    "BitmapID": 22,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 30
+    },
+    "LayerOffset": 50,
+    "Preview": 0,
+    "Speed": 2,
+    "KeepEffect": false,
+    "TotalTimes": 0,
+    "Shake": 0,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": true,
+    "UsableToEnemy": false,
+    "ApplyToAllHero": true,
+    "ApplyToAllEnemy": true
+  },
+  "Script": {
+    "Success": "Null",
+    "Use": "Magic_00063_Use"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "Name": "大理·各白苗住房",
+  "MapID": 161,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

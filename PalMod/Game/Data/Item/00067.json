@@ -1,0 +1,30 @@
+{
+  "Name": "忘魂花",
+  "Description": [
+    "青蓝色小花，散发淡淡香气，",
+    "闻到香气，便会浑然忘我、",
+    "昏睡三回合。"
+  ],
+  "Bitmap": 171,
+  "Price": 0,
+  "Scope": {
+    "Usable": true,
+    "Throwable": true,
+    "Equipable": false,
+    "Sellable": false,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00067_Use",
+    "Equip": "Null",
+    "Throw": "Item_00067_Throw"
+  }
+}

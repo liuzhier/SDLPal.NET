@@ -1,0 +1,8 @@
+{
+  "Name": "扬州·2",
+  "MapID": 80,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

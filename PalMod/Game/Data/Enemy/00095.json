@@ -1,0 +1,70 @@
+{
+  "Name": "五毒蜈蚣",
+  "Frame": {
+    "BitmapID": 94,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "Idle": 2,
+    "Magic": 1,
+    "Attack": 1,
+    "IdleWaitFrames": 4,
+    "ActWaitFrames": 1
+  },
+  "Sound": {
+    "AttackID": 246,
+    "ActionID": 0,
+    "MagicID": 246,
+    "DeathID": 183,
+    "BeginBattleID": 92
+  },
+  "Attribute": {
+    "Level": 45,
+    "HP": 3450,
+    "MaxHP": 3450,
+    "AttackStrength": 0,
+    "MagicStrength": 0,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 7.0,
+      "Thunder": 7.0,
+      "Water": 7.0,
+      "Fire": 2.0,
+      "Earth": 7.0
+    },
+    "Physics": 2.0,
+    "Poison": 10.0,
+    "Sorcery": 2.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 77,
+    "MagicRate": 5,
+    "AttackEquivItemID": 99,
+    "AttackEquivItemRate": 5,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 97,
+    "StealItemCount": 1,
+    "Exp": 520,
+    "Level": 0,
+    "Cash": 0,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 3
+  },
+  "Script": {
+    "TurnStart": "Null",
+    "BattleWon": "Enemy_00068_BattleWon",
+    "ReadyToAction": "Null"
+  }
+}

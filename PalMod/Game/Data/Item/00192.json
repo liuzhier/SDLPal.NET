@@ -1,0 +1,30 @@
+{
+  "Name": "珍珠",
+  "Description": [
+    "蚌类所生的球状物，",
+    "是珍贵的装饰品。",
+    "吉运+20"
+  ],
+  "Bitmap": 140,
+  "Price": 400,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": false,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": false
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00192_Equip",
+    "Throw": "Null"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "Comment": "小灵儿",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 553,
+    "SpriteFrames": 3,
+    "Pos": {
+      "Pos": {
+        "X": 832,
+        "Y": 352
+      },
+      "Direction": 3,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": true,
+    "IsAutoTrigger": true,
+    "TriggerDistance": 2
+  },
+  "Script": {
+    "SrcTrigger": "Event_00249_00004_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

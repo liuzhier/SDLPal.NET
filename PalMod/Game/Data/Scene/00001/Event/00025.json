@@ -1,0 +1,32 @@
+{
+  "Comment": "黑苗头领",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 207,
+    "SpriteFrames": 3,
+    "Pos": {
+      "Pos": {
+        "X": 544,
+        "Y": 288
+      },
+      "Direction": 1,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 2
+  },
+  "Script": {
+    "SrcTrigger": "Event_00001_00025_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

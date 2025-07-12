@@ -1,0 +1,70 @@
+{
+  "Name": "木灵道士",
+  "Frame": {
+    "BitmapID": 77,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 16
+    },
+    "Idle": 1,
+    "Magic": 0,
+    "Attack": 2,
+    "IdleWaitFrames": 99,
+    "ActWaitFrames": 3
+  },
+  "Sound": {
+    "AttackID": 265,
+    "ActionID": 0,
+    "MagicID": 0,
+    "DeathID": 190,
+    "BeginBattleID": 18
+  },
+  "Attribute": {
+    "Level": 38,
+    "HP": 7200,
+    "MaxHP": 7200,
+    "AttackStrength": 0,
+    "MagicStrength": 0,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 10.0,
+      "Thunder": 5.0,
+      "Water": 10.0,
+      "Fire": 0.0,
+      "Earth": 6.0
+    },
+    "Physics": 4.0,
+    "Poison": 4.0,
+    "Sorcery": 5.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 81,
+    "MagicRate": 10,
+    "AttackEquivItemID": 25,
+    "AttackEquivItemRate": 3,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 2,
+    "StealItemCount": 3,
+    "Exp": 6400,
+    "Level": 0,
+    "Cash": 5210,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 99
+  },
+  "Script": {
+    "TurnStart": "Enemy_00077_TurnStart",
+    "BattleWon": "Null",
+    "ReadyToAction": "Enemy_00077_ReadyToAction"
+  }
+}

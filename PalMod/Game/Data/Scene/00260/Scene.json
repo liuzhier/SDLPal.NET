@@ -1,0 +1,8 @@
+{
+  "Name": "路·试炼窟外·战",
+  "MapID": 163,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

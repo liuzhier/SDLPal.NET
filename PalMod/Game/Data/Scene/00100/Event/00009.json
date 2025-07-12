@@ -1,0 +1,32 @@
+{
+  "Comment": "刘家侍女",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 401,
+    "SpriteFrames": 3,
+    "Pos": {
+      "Pos": {
+        "X": 736,
+        "Y": 608
+      },
+      "Direction": 3,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": true,
+    "TriggerDistance": 4
+  },
+  "Script": {
+    "SrcTrigger": "Event_00100_00009_Trigger",
+    "ScrAuto": "Event_00100_00009_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "Name": "金锤武士",
+  "Frame": {
+    "BitmapID": 50,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "Idle": 1,
+    "Magic": 1,
+    "Attack": 1,
+    "IdleWaitFrames": 99,
+    "ActWaitFrames": 3
+  },
+  "Sound": {
+    "AttackID": 265,
+    "ActionID": 4,
+    "MagicID": 0,
+    "DeathID": 266,
+    "BeginBattleID": 93
+  },
+  "Attribute": {
+    "Level": 25,
+    "HP": 900,
+    "MaxHP": 900,
+    "AttackStrength": 35,
+    "MagicStrength": 0,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 4.0,
+      "Thunder": 2.0,
+      "Water": 4.0,
+      "Fire": 4.0,
+      "Earth": 4.0
+    },
+    "Physics": 3.0,
+    "Poison": 4.0,
+    "Sorcery": 0.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 0,
+    "MagicRate": 0,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 3,
+    "StealItemCount": 1,
+    "Exp": 72,
+    "Level": 0,
+    "Cash": 135,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 0
+  },
+  "Script": {
+    "TurnStart": "Enemy_00050_TurnStart",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

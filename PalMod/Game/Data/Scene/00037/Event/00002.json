@@ -1,0 +1,32 @@
+{
+  "Comment": "无图像",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 0,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 960,
+        "Y": 736
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": false,
+    "IsAutoTrigger": true,
+    "TriggerDistance": 0
+  },
+  "Script": {
+    "SrcTrigger": "Event_00037_00002_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

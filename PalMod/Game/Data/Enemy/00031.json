@@ -1,0 +1,70 @@
+{
+  "Name": "公背婆",
+  "Frame": {
+    "BitmapID": 31,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "Idle": 2,
+    "Magic": 1,
+    "Attack": 1,
+    "IdleWaitFrames": 6,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 0,
+    "ActionID": 244,
+    "MagicID": 0,
+    "DeathID": 243,
+    "BeginBattleID": 18
+  },
+  "Attribute": {
+    "Level": 22,
+    "HP": 876,
+    "MaxHP": 876,
+    "AttackStrength": 0,
+    "MagicStrength": 0,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 4.0,
+      "Thunder": 4.0,
+      "Water": 4.0,
+      "Fire": 4.0,
+      "Earth": 4.0
+    },
+    "Physics": 1.0,
+    "Poison": 3.0,
+    "Sorcery": 0.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 0,
+    "MagicRate": 0,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 1
+  },
+  "BattleReward": {
+    "StealItem": 20,
+    "StealItemCount": 3,
+    "Exp": 64,
+    "Level": 0,
+    "Cash": 66,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 1
+  },
+  "Script": {
+    "TurnStart": "Null",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "Name": "苏州·客栈·大通铺",
+  "MapID": 37,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

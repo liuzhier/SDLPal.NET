@@ -1,0 +1,70 @@
+{
+  "Name": "蓝食火蟾",
+  "Frame": {
+    "BitmapID": 140,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "Idle": 5,
+    "Magic": 3,
+    "Attack": 1,
+    "IdleWaitFrames": 4,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 75,
+    "ActionID": 0,
+    "MagicID": 75,
+    "DeathID": 186,
+    "BeginBattleID": 90
+  },
+  "Attribute": {
+    "Level": 14,
+    "HP": 320,
+    "MaxHP": 320,
+    "AttackStrength": 0,
+    "MagicStrength": -20,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 1
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 6.0,
+      "Thunder": 6.0,
+      "Water": 9.0,
+      "Fire": 2.0,
+      "Earth": 4.0
+    },
+    "Physics": 3.0,
+    "Poison": 0.0,
+    "Sorcery": 0.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 28,
+    "MagicRate": 10,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 82,
+    "StealItemCount": 1,
+    "Exp": 50,
+    "Level": 0,
+    "Cash": 10,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 1
+  },
+  "Script": {
+    "TurnStart": "Null",
+    "BattleWon": "Null",
+    "ReadyToAction": "Enemy_00141_ReadyToAction"
+  }
+}

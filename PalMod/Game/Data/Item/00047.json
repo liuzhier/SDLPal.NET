@@ -1,0 +1,30 @@
+{
+  "Name": "灵山仙芝",
+  "Description": [
+    "寄生于枯木上的菌类，俗称瑞草，",
+    "具有养气培元之神效。",
+    "MP+260"
+  ],
+  "Bitmap": 45,
+  "Price": 900,
+  "Scope": {
+    "Usable": true,
+    "Throwable": false,
+    "Equipable": false,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00047_Use",
+    "Equip": "Null",
+    "Throw": "Null"
+  }
+}

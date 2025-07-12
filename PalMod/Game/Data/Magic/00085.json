@@ -1,0 +1,50 @@
+{
+  "Name": "灭绝一击",
+  "Description": [],
+  "BaseDamage": 185,
+  "CostMP": 0,
+  "SoundID": 151,
+  "SummonID": -1,
+  "Genus": {
+    "Sword": false,
+    "Wind": false,
+    "Thunder": false,
+    "Water": false,
+    "Fire": false,
+    "Earth": true,
+    "Poison": false,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": false,
+    "Buff": false
+  },
+  "AttackMode": 0,
+  "Frame": {
+    "BitmapID": 47,
+    "OffsetPos": {
+      "X": -10,
+      "Y": 24
+    },
+    "LayerOffset": -23,
+    "Preview": 0,
+    "Speed": 1,
+    "KeepEffect": true,
+    "TotalTimes": 0,
+    "Shake": 0,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": true,
+    "UsableToEnemy": false,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false
+  },
+  "Script": {
+    "Success": "Null",
+    "Use": "Null"
+  }
+}

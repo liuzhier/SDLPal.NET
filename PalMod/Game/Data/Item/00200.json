@@ -1,0 +1,30 @@
+{
+  "Name": "圣灵珠",
+  "Description": [
+    "女娲末族祖传宝物，历代圣魂归依",
+    "之所。合体法术: 武神",
+    "灵力+128 防御+15 避毒率+35%"
+  ],
+  "Bitmap": 2,
+  "Price": 0,
+  "Scope": {
+    "Usable": true,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": false,
+    "Consuming": false,
+    "ApplyToAllHero": true,
+    "ApplyToAllEnemy": true,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00200_Use",
+    "Equip": "Item_00200_Equip",
+    "Throw": "Null"
+  }
+}

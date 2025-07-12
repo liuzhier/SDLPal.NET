@@ -1,0 +1,8 @@
+{
+  "Name": "长安·尚书府·膳厅·原始",
+  "MapID": 127,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

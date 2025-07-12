@@ -1,0 +1,53 @@
+{
+  "Name": "雪妖",
+  "Description": [
+    "召唤雪妖，",
+    "最强的冰系法术。"
+  ],
+  "BaseDamage": 288,
+  "CostMP": 44,
+  "SoundID": 111,
+  "SummonID": 3,
+  "Genus": {
+    "Sword": false,
+    "Wind": false,
+    "Thunder": false,
+    "Water": true,
+    "Fire": false,
+    "Earth": false,
+    "Poison": false,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": false,
+    "Buff": false
+  },
+  "AttackMode": 3,
+  "Frame": {
+    "BitmapID": 15,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "LayerOffset": 99,
+    "Preview": 8,
+    "Speed": -1,
+    "KeepEffect": false,
+    "TotalTimes": 4,
+    "Shake": 0,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": true,
+    "UsableToEnemy": false,
+    "ApplyToAllHero": true,
+    "ApplyToAllEnemy": true
+  },
+  "Script": {
+    "Success": "Null",
+    "Use": "Null"
+  }
+}

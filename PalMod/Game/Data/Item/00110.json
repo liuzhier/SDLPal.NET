@@ -1,0 +1,30 @@
+{
+  "Name": "仙女剑",
+  "Description": [
+    "一尺长的双手剑，适合女子",
+    "使用，可发出两次攻击。",
+    "武术+8 防御+5"
+  ],
+  "Bitmap": 63,
+  "Price": 2000,
+  "Scope": {
+    "Usable": false,
+    "Throwable": true,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": false,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00110_Equip",
+    "Throw": "Item_00110_Throw"
+  }
+}

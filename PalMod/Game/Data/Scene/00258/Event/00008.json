@@ -1,0 +1,32 @@
+{
+  "Comment": "灵珠坛",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 603,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 1136,
+        "Y": 1048
+      },
+      "Direction": 0,
+      "FrameID": 3
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": true,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 0
+  },
+  "Script": {
+    "SrcTrigger": "Null",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

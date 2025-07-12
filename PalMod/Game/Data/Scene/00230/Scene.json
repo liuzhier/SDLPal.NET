@@ -1,0 +1,8 @@
+{
+  "Name": "回魂仙梦·南绍王宫·秘道",
+  "MapID": 203,
+  "Script": {
+    "ScrEnter": "Scene_00230_Enter",
+    "ScrTeleport": "Scene_00230_Teleport"
+  }
+}

@@ -94,7 +94,7 @@ public unsafe class PalScene
 
    --*/
    {
-      int            sx, sy, sh, width, height, dx, dy, dh, x, y, i, l, iTileHeight, w, h, layer, zx, zy;
+      int            sx, sy, sh, width, height, dx, dy, dh, x, y, i, l, iTileHeight, layer, zx, zy;
       float          fw, fh;
       nint           pTile;
       SDL.FRect*     lpTileFRect;
@@ -277,7 +277,7 @@ public unsafe class PalScene
       PalUiGame.FreeMenuUi(ref listTileSprite);
       listSprite.Clear();
 
-      save = PalGlobal.Save;
+      save = S_GetSave();
       arrParty = save.arrParty;
 
       //
@@ -291,7 +291,7 @@ public unsafe class PalScene
       //len = arrParty.Length + save.listFollower.Count;
       for (i = 0; i < len; i++)
       {
-         trail = arrParty[i]._Trail;
+         trail = arrParty[i].Trail;
          idDirection = (int)trail.Direction;
          idFrame = save._Entity.Hero[arrParty[i].HeroID].WalkFrames;
          idFrame = idDirection * idFrame + trail.FrameID;
@@ -346,7 +346,7 @@ public unsafe class PalScene
 
          if (PalGlobal.DrawMoreData && evt._Frame.SpriteID == 0)
          {
-            trail = evt._Frame._Trail;
+            trail = evt._Frame.Trail;
             layer = evt._Frame.LayerOffset * 8 + 2;
             x = trail.Pos.X - Viewport.Pos.X;
             y = trail.Pos.Y - Viewport.Pos.Y + layer + 7;
@@ -365,11 +365,28 @@ public unsafe class PalScene
          //
          // Get the sprite
          //
-         trail = evt._Frame._Trail;
+         trail = evt._Frame.Trail;
          idDirection = (int)trail.Direction;
-         //idFrame = idDirection * trail.SpriteFramesAuto + trail.FrameID;
          idFrame = trail.FrameID;
-         pBitmap = PalResource.GetNpcSprite(false, i, idDirection * evt._Frame.SpriteFrames + idFrame);
+
+         if (evt._Frame.SpriteFrames == 3)
+         {
+            //
+            // walking character (old version)
+            //
+            if (idFrame == 2)
+            {
+               idFrame = 0;
+            }
+
+            if (idFrame == 3)
+            {
+               idFrame = 2;
+            }
+         }
+
+         idFrame = idDirection * evt._Frame.SpriteFrames + idFrame;
+         pBitmap = PalResource.GetNpcSprite(false, i, idFrame);
 
          if (pBitmap == 0)
          {
@@ -466,8 +483,8 @@ public unsafe class PalScene
          frect.W = texW;
          frect.H = texH;
 
-         //if (PalGlobal.DrawMoreData)
-         if (false)
+#if false
+         if (PalGlobal.DrawMoreData)
          {
             switch (sprite.NpcType)
             {
@@ -484,6 +501,7 @@ public unsafe class PalScene
                   break;
             }
          }
+#endif // false
 
          Screen.Copy(sprite.Sprite, g_pScreen, frect);
 
@@ -557,11 +575,11 @@ public unsafe class PalScene
                   continue;
             }
 
-            PalText.DrawText(evtComment, new Pos
+            PalText.DrawNum(evtComment, new Pos
             {
                X = S_Ratio(pos.X),
-               Y = S_Ratio(pos.Y - h - sprite.Layer - FONT_OFFSET - 2),
-            }, 0x00FFFFFF, PalAlign.Middle);
+               Y = S_Ratio(pos.Y - h - sprite.Layer - FONT_OFFSET_H_NUM - 2),
+            }, hexColor: 0x00FFFFFF, fIsText: true, align: PalAlign.Middle);
 
             switch (sprite.NpcType)
             {
@@ -573,11 +591,11 @@ public unsafe class PalScene
                   break;
             }
 
-            PalText.DrawText(evtComment, new Pos
+            PalText.DrawNum(evtComment, new Pos
             {
                X = S_Ratio(pos.X),
                Y = S_Ratio(pos.Y),
-            }, 0x2BF666FF, PalAlign.Middle);
+            }, hexColor: 0x2BF666FF, fIsText: true, align: PalAlign.Middle);
          }
       }
       PalGlobal.ShowMoreData = false;
@@ -585,47 +603,68 @@ public unsafe class PalScene
 
    private static Pos posDraw = new Pos
    {
-      X = VIDEO_WIDTH,
+      X = VIDEO_WIDTH - FONT_OFFSET_H_NUM,
    };
 
    public   static   bool           g_fShowSceneInfo = true;
    private  static   SDL.FRect      boxFRect = new SDL.FRect
    {
       X = VIDEO_WIDTH,
-      Y = 0,
+      Y = FONT_OFFSET_H_NUM * 0.5f,
    };
 
    public static void
    DrawInfo()
    {
-      string      strInfo;
-      nint        pTex;
+      string      strInfo, strPos, strBPos;
+      BlockPos    bpos;
 
-      strInfo = $"{PalGlobal.Save.SceneID}: {PalGlobal.Save.CurrScene.Name}";
+      strInfo = $"{S_GetSave().SceneID}: {S_GetSave().CurrScene.Name}";
+      strPos = $"{S_GetPartyPos().X}  {S_GetPartyPos().Y}";
+      bpos = S_GetPartyBPos();
+      strBPos = $"{bpos.X}  {bpos.Y}  {bpos.H}";
 
-      boxFRect.W = PalText.GetTextWidth(strInfo) + 4;
-      boxFRect.H = FONT_OFFSET * 2 + 4;
+      //
+      // Calculate the actual size of the scene information box
+      //
+      boxFRect.W = FONT_OFFSET_H_NUM + Math.Max(
+         PalText.GetNumWidth(strInfo, fIsText: true),
+         PalText.GetNumWidth(strPos, fIsText: true)
+      );
+      boxFRect.W = Math.Max(boxFRect.W,
+         PalText.GetNumWidth(strBPos, fIsText: true)
+      );
+      boxFRect.H = FONT_OFFSET_H_NUM * 4;
       
       PalGlobal.ShowMoreData = true;
       {
          PalUi.DrawBox(boxFRect, PalAlign.Right, PalText.GetScreen());
 
-         posDraw.Y = 0;
-         PalText.DrawText(
+         posDraw.Y = FONT_OFFSET_H_NUM;
+         PalText.DrawNum(
             strInfo,
             posDraw,
             COLOR_PINK,
-            PalAlign.Right,
-            TTF.Direction.LTR
+            fIsText: true,
+            align: PalAlign.Right
          );
 
-         posDraw.Y += FONT_OFFSET;
-         PalText.DrawText(
-            $"{S_GetPartyPos().X}  {S_GetPartyPos().Y}",
+         posDraw.Y += FONT_OFFSET_H_NUM;
+         PalText.DrawNum(
+            strPos,
             posDraw,
             COLOR_PINK,
-            PalAlign.Right,
-            TTF.Direction.LTR
+            fIsText: true,
+            align: PalAlign.Right
+         );
+
+         posDraw.Y += FONT_OFFSET_H_NUM;
+         PalText.DrawNum(
+            strBPos,
+            posDraw,
+            COLOR_PINK,
+            fIsText: true,
+            align: PalAlign.Right
          );
       }
       PalGlobal.ShowMoreData = false;
@@ -639,7 +678,7 @@ public unsafe class PalScene
       Pos               posParty;
       PalDirection      dir;
 
-      save = PalGlobal.Save;
+      save = S_GetSave();
       posParty = S_GetPartyPos();
       dir = S_GetPartyDirection();
 
@@ -670,8 +709,8 @@ public unsafe class PalScene
       Party[]           arrParty;
       List<Follower>    listFollower;
 
-      arrParty = PalGlobal.Save.arrParty;
-      listFollower = PalGlobal.Save.listFollower;
+      arrParty = S_GetSave().arrParty;
+      listFollower = S_GetSave().listFollower;
 
       //
       // Back up the coordinates and directions of the last team member
@@ -727,17 +766,15 @@ public unsafe class PalScene
 
    --*/
    {
-      int               i, j, frameID, frame2ID, count;
+      int               i, j, frameID, count;
       Party[]           arrParty;
       Party             party;
-      Hero              hero;
       List<Follower>    listFollower;
       Follower          follower;
       Trail             trail;
-      PalDirection      dir;
 
-      arrParty = PalGlobal.Save.arrParty;
-      listFollower = PalGlobal.Save.listFollower;
+      arrParty = S_GetSave().arrParty;
+      listFollower = S_GetSave().listFollower;
 
       trail = S_GetPartyTrail();
 
@@ -756,7 +793,7 @@ public unsafe class PalScene
             //dir = trail.Direction;
             //frameID = trail.FrameID + i % 8;
 
-            count = PalGlobal.Save._Entity.Hero[party.HeroID].WalkFrames;
+            count = S_GetSave()._Entity.Hero[party.HeroID].WalkFrames;
             //if (count > 0)
             //{
             //   trail.FrameID = S_B(i % 2) ? frameID : frameID + (int)Math.Ceiling(count / (float)2);
@@ -772,13 +809,13 @@ public unsafe class PalScene
                trail.FrameID = 1;
             }
 
-            party._Trail.FrameID = trail.FrameID;
+            party.Trail.FrameID = trail.FrameID;
          }
 
          for (j = 0; j < listFollower.Count; j++)
          {
             follower = listFollower[i];
-            trail = follower._Trail;
+            trail = follower.Trail;
             frameID = trail.FrameID;
 
             count = trail.SpriteFramesAuto / DIRECTION.Length;
@@ -804,12 +841,12 @@ public unsafe class PalScene
          //
          for (i = 0; i < arrParty.Length; i++)
          {
-            arrParty[i]._Trail.FrameID = trail.FrameID;
+            arrParty[i].Trail.FrameID = trail.FrameID;
          }
 
          for (i = 0; i < listFollower.Count; i++)
          {
-            listFollower[i]._Trail.FrameID = trail.FrameID;
+            listFollower[i].Trail.FrameID = trail.FrameID;
          }
       }
    }
@@ -831,9 +868,8 @@ public unsafe class PalScene
 
    --*/
    {
-      int               i;
-      PalDirection      dirCurr, dirLast, dirLast2;
-      Pos               posOffset, posSource, posTarget, posLast, posLast2;
+      PalDirection      dirCurr;
+      Pos               posOffset, posTarget;
       Party[]           arrParty;
       List<Follower>    listFollower;
 
@@ -855,8 +891,8 @@ public unsafe class PalScene
          posTarget.X += posOffset.X;
          posTarget.Y += posOffset.Y;
 
-         arrParty = PalGlobal.Save.arrParty;
-         listFollower = PalGlobal.Save.listFollower;
+         arrParty = S_GetSave().arrParty;
+         listFollower = S_GetSave().listFollower;
 
          S_SetPartyDirection(dirCurr);
 
@@ -873,7 +909,7 @@ public unsafe class PalScene
             //
             // Update the coordinates of all team members
             //
-            PalScene.UpdateTeamPos(posTarget);
+            UpdateTeamPos(posTarget);
 
             //
             // Update gestures
@@ -892,7 +928,7 @@ public unsafe class PalScene
       Pos      pos,
       bool     fCheckEvent,
       int      iSelfObject,
-      bool     fCheckRange
+      bool     fCheckRange = false
    )
    /*++
       Purpose:
@@ -922,7 +958,15 @@ public unsafe class PalScene
       Event          evt;
       Pos            posEvt;
 
-      //return false;
+#if false
+      if (fCheckRange)
+      {
+         //
+         // Debugging: Allow players to pass through walls
+         //
+         return false;
+      }
+#endif // false
 
       //
       // Check if the map tile at the specified position is blocking
@@ -973,7 +1017,7 @@ public unsafe class PalScene
 
       if (fCheckEvent)
       {
-         listEvent = PalGlobal.Save.CurrScene.listEvent;
+         listEvent = S_GetSave().CurrScene.listEvent;
 
          //
          // Loop through all event objects in the current scene
@@ -995,7 +1039,7 @@ public unsafe class PalScene
             //
             if (evt._Status.IsObstacle)
             {
-               posEvt = evt._Frame._Trail.Pos;
+               posEvt = evt._Frame.Trail.Pos;
 
                //
                // Check for collision
@@ -1011,6 +1055,7 @@ public unsafe class PalScene
       return false;
    }
 
+#if false
    public static int
    CheckObstacleParty(
       Pos      pos,
@@ -1023,7 +1068,7 @@ public unsafe class PalScene
       if (roleID == -1)
       {
          i = 0;
-         len = PalGlobal.Save.PartySize;
+         len = S_GetSave().PartySize;
       }
       else
       {
@@ -1049,6 +1094,7 @@ public unsafe class PalScene
 
       return -1;
    }
+#endif // false
 
    public static void
    PartyWalkTo(
@@ -1063,7 +1109,7 @@ public unsafe class PalScene
 
      Parameters:
 
-       [IN]  x - Tile block coordinates.
+       [IN]  bpos - Tile block coordinates.
 
        [IN]  iSpeed - the speed to move.
 
@@ -1073,7 +1119,7 @@ public unsafe class PalScene
 
    --*/
    {
-      int      xOffset, yOffset, i;
+      int      xOffset, yOffset;
       ulong    time;
       Pos      pos;
 
@@ -1097,7 +1143,7 @@ public unsafe class PalScene
          //
          // Update the coordinates of all team members
          //
-         PalScene.UpdateTeamPos(pos);
+         UpdateTeamPos(pos);
 
          if (yOffset < 0)
          {
@@ -1131,13 +1177,13 @@ public unsafe class PalScene
          //
          S_SetPartyPos(pos);
 
-         PalScene.UpdatePartyGestures(true);
+         UpdatePartyGestures(true);
          PalPlay.GameUpdate(false);
-         PalScene.Draw();
+         Draw();
          Screen.Update();
       }
 
-      PalScene.UpdatePartyGestures(false);
+      UpdatePartyGestures(false);
    }
 
    public static void
@@ -1173,13 +1219,14 @@ public unsafe class PalScene
       //
       // Check for invalid parameters
       //
-      if (iSceneID == 0 || iSceneID > PalGlobal.Save.listScene.Count - 1)
+      if (iSceneID == 0 || iSceneID > S_GetSave().listScene.Count - 1)
       {
          return;
       }
 
       evt = S_GetEvent(iSceneID, iEvtID);
-      trail = evt._Frame._Trail;
+      trail = evt._Frame.Trail;
+
       posEvt = trail.Pos;
       pos = posEvt.Clone();
 
@@ -1189,11 +1236,12 @@ public unsafe class PalScene
       pos.X += ((trail.Direction == PalDirection.West || trail.Direction == PalDirection.South) ? -2 : 2) * iSpeed;
       pos.Y += ((trail.Direction == PalDirection.West || trail.Direction == PalDirection.North) ? -1 : 1) * iSpeed;
 
+#if false
       //
       // If any of our team members is blocking the way,
       // let him exchange positions with the npc
       //
-      for (i = 0; i < PalGlobal.Save.PartySize; i++)
+      for (i = 0; i < S_GetSave().PartySize; i++)
       {
          roleID = CheckObstacleParty(pos, i);
 
@@ -1212,10 +1260,12 @@ public unsafe class PalScene
          posRole.X = posEvt.X;
          posRole.Y = posEvt.Y;
       }
+#endif // false
 
       posEvt.X = pos.X;
       posEvt.Y = pos.Y;
 
+   NPCWalkOneStep_UpdateGesture:
       //
       // Update the gesture
       //
@@ -1223,13 +1273,31 @@ public unsafe class PalScene
       if (count > 0)
       {
          trail.FrameID++;
+         trail.FrameID %= (count == 3) ? 4 : count;
 
          //if (count == 3 || count == 9)
          //{
          //   count++;
          //}
 
-         trail.FrameID %= count;
+         //trail.FrameID %= count;
+
+         //if (count == 3)
+         //{
+         //   if (trail.FrameID == 0)
+         //   {
+         //      trail.FrameID = S_RandomLong(1, 2);
+         //   }
+         //   else
+         //   {
+         //      trail.FrameID = 0;
+         //   }
+         //}
+         //else
+         //{
+         //   trail.FrameID++;
+         //   trail.FrameID %= count;
+         //}
       }
       else if (trail.SpriteFramesAuto > 0)
       {
@@ -1257,12 +1325,7 @@ public unsafe class PalScene
 
        [IN]  iEvtID - The event object to move.
 
-       [IN]  x - Column number of the tile.
-
-       [IN]  y - Line number in the map.
-
-       [IN]  h - Each line in the map has two lines of tiles, 0 and 1.
-                 (See map.h for details.)
+       [IN]  bpos - Tile block coordinates.
 
        [IN]  iSpeed - the speed to move.
 
@@ -1278,7 +1341,7 @@ public unsafe class PalScene
       Trail    trail;
 
       evt = S_GetEvent(iSceneID, iEvtID);
-      trail = evt._Frame._Trail;
+      trail = evt._Frame.Trail;
 
       xOffset = (bpos.X * 32 + bpos.H * 16) - trail.Pos.X;
       yOffset = (bpos.Y * 16 + bpos.H * 8) - trail.Pos.Y;
@@ -1309,5 +1372,316 @@ public unsafe class PalScene
       }
 
       return false;
+   }
+
+   public static void
+   PartyRideEventObject(
+      int         iSceneID,
+      int         iEvtID,
+      BlockPos    bpos,
+      int         iSpeed
+   )
+   /*++
+     Purpose:
+
+       Move the party to the specified position, riding the specified event object.
+
+     Parameters:
+
+       [IN]  iSceneID - The scene number where this event is located.
+
+       [IN]  iEvtID - The event object to move.
+
+       [IN]  bpos - Tile block coordinates.
+
+       [IN]  iSpeed - the speed to move.
+
+     Return value:
+
+       TRUE if the party and event object has successfully moved to the specified
+       position, FALSE if still need more moving.
+
+   --*/
+   {
+      int      xOffset, yOffset, dx, dy, i;
+      uint     t;
+      Pos      pos, posEvt;
+      Event    evt;
+
+      pos = S_GetPartyPos().Clone();
+      posEvt = S_GetEventTrail(iSceneID, iEvtID).Pos;
+
+      xOffset = bpos.X * 32 + bpos.H * 16 - pos.X;
+      yOffset = bpos.Y * 16 + bpos.H * 8 - pos.Y;
+
+      t = 0;
+
+      while (xOffset != 0 || yOffset != 0)
+      {
+         PalTimer.DelayUntil(t);
+
+         t = (uint)(SDL.GetTicks() + FRAME_TIME);
+
+         if (yOffset < 0)
+         {
+            S_SetPartyDirection((xOffset < 0) ? PalDirection.West : PalDirection.North);
+         }
+         else
+         {
+            S_SetPartyDirection((xOffset < 0) ? PalDirection.South : PalDirection.East);
+         }
+
+         if (Math.Abs(xOffset) > iSpeed * 2)
+         {
+            dx = iSpeed * (xOffset < 0 ? -2 : 2);
+         }
+         else
+         {
+            dx = xOffset;
+         }
+
+         if (Math.Abs(yOffset) > iSpeed)
+         {
+            dy = iSpeed * (yOffset < 0 ? -1 : 1);
+         }
+         else
+         {
+            dy = yOffset;
+         }
+
+         //
+         // Calculate the coordinates for the next step of the team
+         //
+         pos.X += dx;
+         pos.Y += dy;
+
+         //
+         // Set the coordinates of the team
+         //
+         S_SetPartyPos(pos);
+
+         //
+         // Update team member coordinates
+         //
+         UpdateTeamPos(pos);
+
+         //
+         // Set the coordinates of the event
+         //
+         posEvt.X += dx;
+         posEvt.Y += dy;
+
+         //
+         // Draw a frame of the game scene
+         //
+         PalPlay.GameUpdate(false);
+         Draw();
+         Screen.Update();
+
+         xOffset = bpos.X * 32 + bpos.H * 16 - pos.X;
+         yOffset = bpos.Y * 16 + bpos.H * 8 - pos.Y;
+      }
+   }
+
+   public static void
+   MonsterChasePlayer(
+      int      iSceneID,
+      int      iEvtID,
+      int      iSpeed,
+      int      iChaseRange,
+      bool     fCanFly
+   )
+   /*++
+     Purpose:
+
+       Make the specified event object chase the players.
+
+     Parameters:
+
+       [IN]  iSceneID - The scene number where this event is located.
+
+       [IN]  iEvtID - the event object ID of the monster.
+
+       [IN]  iSpeed - the speed of chasing.
+
+       [IN]  iChaseRange - sensitive range of the monster.
+
+       [IN]  fCanFly - TRUE if monster is floating (i.e., ignore the obstacles)
+
+     Return value:
+
+       None.
+
+   --*/
+   {
+      int      iMonsterSpeed, x, y, xPrev, yPrev, i, j, l;
+      Trail    trail;
+      Pos      pos, posTarget;
+
+      iMonsterSpeed = 0;
+      trail = S_GetEventTrail(iSceneID, iEvtID);
+      pos = S_GetPartyPos();
+      posTarget = new Pos();
+
+      if (S_GetSave().ChaseRange != 0)
+      {
+         x = pos.X - trail.Pos.X;
+         y = pos.Y - trail.Pos.Y;
+
+         if (x == 0)
+         {
+            x = S_B(S_RandomLong(0, 1)) ? -1 : 1;
+         }
+
+         if (y == 0)
+         {
+            y = S_B(S_RandomLong(0, 1)) ? -1 : 1;
+         }
+
+         xPrev = trail.Pos.X;
+         yPrev = trail.Pos.Y;
+
+         i = xPrev % 32;
+         j = yPrev % 16;
+
+         xPrev /= 32;
+         yPrev /= 16;
+         l = 0;
+
+         if (i + j * 2 >= 16)
+         {
+            if (i + j * 2 >= 48)
+            {
+               xPrev++;
+               yPrev++;
+            }
+            else if (32 - i + j * 2 < 16)
+            {
+               xPrev++;
+            }
+            else if (32 - i + j * 2 < 48)
+            {
+               l = 1;
+            }
+            else
+            {
+               yPrev++;
+            }
+         }
+
+         xPrev = xPrev * 32 + l * 16;
+         yPrev = yPrev * 16 + l * 8;
+
+         //
+         // Is the party near to the event object?
+         //
+         if (Math.Abs(x) + Math.Abs(y) * 2 < iChaseRange * 32 * S_GetSave().ChaseRange)
+         {
+            if (x < 0)
+            {
+               if (y < 0)
+               {
+                  trail.Direction = PalDirection.West;
+               }
+               else
+               {
+                  trail.Direction = PalDirection.South;
+               }
+            }
+            else
+            {
+               if (y < 0)
+               {
+                  trail.Direction = PalDirection.North;
+               }
+               else
+               {
+                  trail.Direction = PalDirection.East;
+               }
+            }
+
+            if (x != 0)
+            {
+               x = trail.Pos.X + x / Math.Abs(x) * 16;
+            }
+            else
+            {
+               x = trail.Pos.X;
+            }
+
+            if (y != 0)
+            {
+               y = trail.Pos.X + y / Math.Abs(y) * 8;
+            }
+            else
+            {
+               y = trail.Pos.Y;
+            }
+
+            if (fCanFly)
+            {
+               iMonsterSpeed = iSpeed;
+            }
+            else
+            {
+               if (!CheckObstacle(new Pos(x, y), true, iEvtID))
+               {
+                  iMonsterSpeed = iSpeed;
+               }
+               else
+               {
+                  trail.Pos.X = xPrev;
+                  trail.Pos.Y = yPrev;
+               }
+
+               for (l = 0; l < 4; l++)
+               {
+                  switch (l)
+                  {
+                     case 0:
+                        trail.Pos.X -= 4;
+                        trail.Pos.Y += 2;
+                        break;
+
+                     case 1:
+                        trail.Pos.X -= 4;
+                        trail.Pos.Y -= 2;
+                        break;
+
+                     case 2:
+                        trail.Pos.X += 4;
+                        trail.Pos.Y -= 2;
+                        break;
+
+                     case 3:
+                        trail.Pos.X += 4;
+                        trail.Pos.Y += 2;
+                        break;
+                  }
+
+                  if (CheckObstacle(trail.Pos, false, 0))
+                  {
+                     trail.Pos.X = xPrev;
+                     trail.Pos.Y = yPrev;
+                  }
+               }
+            }
+         }
+      }
+      else
+      {
+         //
+         // Exorcism-Fragrance will cause monsters to spin in place
+         // Switch direction every two frames
+         //
+         if (S_B(PalGlobal.FrameNum & 1))
+         {
+            trail.Direction++;
+
+            if (trail.Direction >= PalDirection.Unknown) trail.Direction = PalDirection.South;
+         }
+      }
+
+      NPCWalkOneStep(iSceneID, iEvtID, iMonsterSpeed);
    }
 }

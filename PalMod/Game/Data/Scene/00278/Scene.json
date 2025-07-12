@@ -1,0 +1,8 @@
+{
+  "Name": "南绍王宫·内殿·假巫王",
+  "MapID": 183,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

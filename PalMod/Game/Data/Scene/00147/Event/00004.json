@@ -1,0 +1,32 @@
+{
+  "Comment": "姜婉儿",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 25,
+    "SpriteFrames": 3,
+    "Pos": {
+      "Pos": {
+        "X": 1424,
+        "Y": 1160
+      },
+      "Direction": 3,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 0
+  },
+  "Script": {
+    "SrcTrigger": "Null",
+    "ScrAuto": "Event_00147_00004_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

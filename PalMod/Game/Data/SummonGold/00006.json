@@ -1,0 +1,21 @@
+{
+  "Comment": "酒神",
+  "BaseDamage": 3,
+  "CostMP": 1,
+  "SoundID": 176,
+  "Frame": {
+    "BitmapID": 15,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 18
+    },
+    "Idle": 1,
+    "Magic": 1,
+    "Attack": 2,
+    "Gamma": 0
+  },
+  "Script": {
+    "Success": "SummonGold_00006_Success",
+    "Use": "SummonGold_00006_Use"
+  }
+}

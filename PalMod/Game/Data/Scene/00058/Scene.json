@@ -1,0 +1,8 @@
+{
+  "Name": "玉佛寺·寺内",
+  "MapID": 71,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

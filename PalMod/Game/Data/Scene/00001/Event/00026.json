@@ -1,0 +1,32 @@
+{
+  "Comment": "黑苗喽罗",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 29,
+    "SpriteFrames": 3,
+    "Pos": {
+      "Pos": {
+        "X": 1360,
+        "Y": 1112
+      },
+      "Direction": 1,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 2
+  },
+  "Script": {
+    "SrcTrigger": "Event_00001_00026_Trigger",
+    "ScrAuto": "Event_00001_00026_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

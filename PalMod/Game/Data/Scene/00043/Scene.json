@@ -1,0 +1,8 @@
+{
+  "Name": "隐龙窟·柴翁居·1",
+  "MapID": 44,
+  "Script": {
+    "ScrEnter": "Scene_00036_Enter",
+    "ScrTeleport": "Null"
+  }
+}

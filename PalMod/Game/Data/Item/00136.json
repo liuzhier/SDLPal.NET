@@ -1,0 +1,29 @@
+{
+  "Name": "头巾",
+  "Description": [
+    "以剩余布料缝制的头巾。",
+    "防御+1"
+  ],
+  "Bitmap": 176,
+  "Price": 40,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00136_Equip",
+    "Throw": "Null"
+  }
+}

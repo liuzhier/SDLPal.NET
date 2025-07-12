@@ -1,0 +1,32 @@
+{
+  "Comment": "丐帮",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 2,
+    "SpriteID": 107,
+    "SpriteFrames": 3,
+    "Pos": {
+      "Pos": {
+        "X": 1072,
+        "Y": 1624
+      },
+      "Direction": 3,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 2
+  },
+  "Script": {
+    "SrcTrigger": "Event_00091_00023_Trigger",
+    "ScrAuto": "Event_00091_00023_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

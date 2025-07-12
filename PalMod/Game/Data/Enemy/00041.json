@@ -1,0 +1,70 @@
+{
+  "Name": "魔兽武士",
+  "Frame": {
+    "BitmapID": 41,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 14
+    },
+    "Idle": 1,
+    "Magic": 1,
+    "Attack": 2,
+    "IdleWaitFrames": 99,
+    "ActWaitFrames": 1
+  },
+  "Sound": {
+    "AttackID": 265,
+    "ActionID": 4,
+    "MagicID": 265,
+    "DeathID": 266,
+    "BeginBattleID": 94
+  },
+  "Attribute": {
+    "Level": 45,
+    "HP": 5520,
+    "MaxHP": 5520,
+    "AttackStrength": 20,
+    "MagicStrength": 0,
+    "Defense": 30,
+    "Dexterity": 0,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 6.0,
+      "Thunder": 4.0,
+      "Water": 6.0,
+      "Fire": 6.0,
+      "Earth": 6.0
+    },
+    "Physics": 3.0,
+    "Poison": 4.0,
+    "Sorcery": 0.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 86,
+    "MagicRate": 4,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 114,
+    "StealItemCount": 1,
+    "Exp": 1010,
+    "Level": 0,
+    "Cash": 660,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 3
+  },
+  "Script": {
+    "TurnStart": "Null",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

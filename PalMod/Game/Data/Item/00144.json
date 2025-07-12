@@ -1,0 +1,30 @@
+{
+  "Name": "紫金冠",
+  "Description": [
+    "紫金冠以薄铜片铸成，",
+    "外壳以紫饰金而成。",
+    "防御+18"
+  ],
+  "Bitmap": 181,
+  "Price": 5600,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00144_Equip",
+    "Throw": "Null"
+  }
+}

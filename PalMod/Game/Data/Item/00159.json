@@ -1,0 +1,29 @@
+{
+  "Name": "鬼针胄",
+  "Description": [
+    "长满倒刺的铜制盔甲。",
+    "防御+55 武术+9"
+  ],
+  "Bitmap": 93,
+  "Price": 14800,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00159_Equip",
+    "Throw": "Null"
+  }
+}

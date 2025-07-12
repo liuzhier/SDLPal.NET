@@ -1,0 +1,70 @@
+{
+  "Name": "林月如二",
+  "Frame": {
+    "BitmapID": 85,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "Idle": 4,
+    "Magic": 2,
+    "Attack": 4,
+    "IdleWaitFrames": 2,
+    "ActWaitFrames": 1
+  },
+  "Sound": {
+    "AttackID": 0,
+    "ActionID": 39,
+    "MagicID": 11,
+    "DeathID": 25,
+    "BeginBattleID": 2
+  },
+  "Attribute": {
+    "Level": 5,
+    "HP": 450,
+    "MaxHP": 450,
+    "AttackStrength": 2,
+    "MagicStrength": -9,
+    "Defense": -5,
+    "Dexterity": 20,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 5.0,
+      "Thunder": 5.0,
+      "Water": 5.0,
+      "Fire": 5.0,
+      "Earth": 5.0
+    },
+    "Physics": 2.0,
+    "Poison": 1.0,
+    "Sorcery": 0.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 62,
+    "MagicRate": 2,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 1
+  },
+  "BattleReward": {
+    "StealItem": 0,
+    "StealItemCount": 1000,
+    "Exp": 200,
+    "Level": 0,
+    "Cash": 0,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 0
+  },
+  "Script": {
+    "TurnStart": "Enemy_00086_TurnStart",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

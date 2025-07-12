@@ -1,0 +1,52 @@
+{
+  "Name": "元灵归心术",
+  "Description": [
+    "我方单人HP+500"
+  ],
+  "BaseDamage": 0,
+  "CostMP": 40,
+  "SoundID": 139,
+  "SummonID": -1,
+  "Genus": {
+    "Sword": false,
+    "Wind": false,
+    "Thunder": false,
+    "Water": false,
+    "Fire": false,
+    "Earth": false,
+    "Poison": false,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": true,
+    "Buff": false
+  },
+  "AttackMode": 4,
+  "Frame": {
+    "BitmapID": 29,
+    "OffsetPos": {
+      "X": -8,
+      "Y": 4
+    },
+    "LayerOffset": 1,
+    "Preview": 0,
+    "Speed": -1,
+    "KeepEffect": false,
+    "TotalTimes": 0,
+    "Shake": 0,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": true,
+    "UsableInBattle": true,
+    "UsableToHero": false,
+    "UsableToEnemy": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false
+  },
+  "Script": {
+    "Success": "Magic_00005_Success",
+    "Use": "Null"
+  }
+}

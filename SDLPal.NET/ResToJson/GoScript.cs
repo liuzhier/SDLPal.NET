@@ -533,7 +533,7 @@ end:
          case "EventSetPosRelToParty":             // 0x0012
             GetSEvent(sp[0]);
             SEvent();
-            Val(wp[1]);
+            Val(sp[1]);
             Val(wp[2]);
             break;
 
@@ -607,7 +607,7 @@ end:
 
          case "AddItem":                           // 0x001F
             SItem(wp[0]);
-            Val(sp[1]);
+            Val(Math.Max((decimal)wp[1], 1));
             break;
 
          case "RemoveItem":                        // 0x0020
@@ -810,6 +810,7 @@ end:
          case "NPCChase":                          // 0x004C
             Val(wp[1]);
             Val(wp[0]);
+            Bool(wp[2]);
             break;
 
          case "FadeOut":                           // 0x0050
@@ -1042,6 +1043,7 @@ end:
             GetSEvent(sp[0]);
             SEvent();
             Val(wp[1]);
+            Addr(wp[2]);
             break;
 
          case "JumpIfEventNotInZone":              // 0x0083

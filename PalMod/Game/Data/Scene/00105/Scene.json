@@ -1,0 +1,8 @@
+{
+  "Name": "山路·蛤蟆谷前",
+  "MapID": 95,
+  "Script": {
+    "ScrEnter": "Scene_00105_Enter",
+    "ScrTeleport": "Null"
+  }
+}

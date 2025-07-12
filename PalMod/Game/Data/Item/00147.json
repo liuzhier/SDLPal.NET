@@ -1,0 +1,30 @@
+{
+  "Name": "冲天冠",
+  "Description": [
+    "天兵神将遗留的护头金盔，",
+    "顶插双雉尾羽。",
+    "防御+28法+5 灵力+3 吉运+3"
+  ],
+  "Bitmap": 183,
+  "Price": 19800,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00147_Equip",
+    "Throw": "Null"
+  }
+}

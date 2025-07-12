@@ -1,0 +1,53 @@
+{
+  "Name": "雷神",
+  "Description": [
+    "召唤雷神，",
+    "最强的雷系法术。"
+  ],
+  "BaseDamage": 298,
+  "CostMP": 45,
+  "SoundID": 107,
+  "SummonID": 7,
+  "Genus": {
+    "Sword": false,
+    "Wind": false,
+    "Thunder": true,
+    "Water": false,
+    "Fire": false,
+    "Earth": false,
+    "Poison": false,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": false,
+    "Buff": false
+  },
+  "AttackMode": 2,
+  "Frame": {
+    "BitmapID": 46,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 40
+    },
+    "LayerOffset": 9,
+    "Preview": 0,
+    "Speed": 0,
+    "KeepEffect": false,
+    "TotalTimes": 0,
+    "Shake": 0,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": true,
+    "UsableToEnemy": false,
+    "ApplyToAllHero": true,
+    "ApplyToAllEnemy": true
+  },
+  "Script": {
+    "Success": "Null",
+    "Use": "Null"
+  }
+}

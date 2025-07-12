@@ -1,0 +1,30 @@
+{
+  "Name": "天仙玉露",
+  "Description": [
+    "观音菩萨净瓶甘露水，",
+    "人间难求的仙界圣药。",
+    "MP+700"
+  ],
+  "Bitmap": 163,
+  "Price": 4000,
+  "Scope": {
+    "Usable": true,
+    "Throwable": false,
+    "Equipable": false,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00049_Use",
+    "Equip": "Null",
+    "Throw": "Null"
+  }
+}

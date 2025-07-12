@@ -1,0 +1,30 @@
+{
+  "Name": "鬼牙刀",
+  "Description": [
+    "苗刀的一种，刀尖倒钩，",
+    "又称“勾魂刀”。",
+    "武术+90 身法+26 吉运-9"
+  ],
+  "Bitmap": 65,
+  "Price": 13000,
+  "Scope": {
+    "Usable": false,
+    "Throwable": true,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": false,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00125_Equip",
+    "Throw": "Item_00125_Throw"
+  }
+}

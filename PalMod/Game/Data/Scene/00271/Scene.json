@@ -1,0 +1,8 @@
+{
+  "Name": "大理·民居·未知·空",
+  "MapID": 172,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

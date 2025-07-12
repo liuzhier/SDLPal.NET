@@ -1,0 +1,8 @@
+{
+  "Name": "大理·祭坛·已摆满·动画前",
+  "MapID": 176,
+  "Script": {
+    "ScrEnter": "Scene_00258_Enter",
+    "ScrTeleport": "Null"
+  }
+}

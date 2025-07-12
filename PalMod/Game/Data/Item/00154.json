@@ -1,0 +1,29 @@
+{
+  "Name": "罗汉袍",
+  "Description": [
+    "修行得道的和尚所穿的衣袍。",
+    "防御+10 吉运+10 灵力+10"
+  ],
+  "Bitmap": 187,
+  "Price": 4000,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00154_Equip",
+    "Throw": "Null"
+  }
+}

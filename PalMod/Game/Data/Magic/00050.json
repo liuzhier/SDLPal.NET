@@ -1,0 +1,53 @@
+{
+  "Name": "铜钱镖",
+  "Description": [
+    "将金钱当做暗器，攻击敌方",
+    "单人，一次使用五百文钱。"
+  ],
+  "BaseDamage": 198,
+  "CostMP": 1,
+  "SoundID": 157,
+  "SummonID": -1,
+  "Genus": {
+    "Sword": true,
+    "Wind": false,
+    "Thunder": false,
+    "Water": false,
+    "Fire": false,
+    "Earth": false,
+    "Poison": false,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": false,
+    "Buff": false
+  },
+  "AttackMode": 0,
+  "Frame": {
+    "BitmapID": 31,
+    "OffsetPos": {
+      "X": 32,
+      "Y": 20
+    },
+    "LayerOffset": 0,
+    "Preview": 0,
+    "Speed": 0,
+    "KeepEffect": false,
+    "TotalTimes": 0,
+    "Shake": 0,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": true,
+    "UsableToEnemy": false,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false
+  },
+  "Script": {
+    "Success": "Null",
+    "Use": "Magic_00050_Use"
+  }
+}

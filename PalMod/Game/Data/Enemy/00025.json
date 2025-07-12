@@ -1,0 +1,70 @@
+{
+  "Name": "怪老子",
+  "Frame": {
+    "BitmapID": 25,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "Idle": 1,
+    "Magic": 0,
+    "Attack": 4,
+    "IdleWaitFrames": 99,
+    "ActWaitFrames": 3
+  },
+  "Sound": {
+    "AttackID": 0,
+    "ActionID": 0,
+    "MagicID": 219,
+    "DeathID": 186,
+    "BeginBattleID": 18
+  },
+  "Attribute": {
+    "Level": 20,
+    "HP": 470,
+    "MaxHP": 470,
+    "AttackStrength": -7,
+    "MagicStrength": 14,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 1
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 6.0,
+      "Thunder": 6.0,
+      "Water": 6.0,
+      "Fire": 6.0,
+      "Earth": 6.0
+    },
+    "Physics": 2.0,
+    "Poison": 2.0,
+    "Sorcery": 0.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 11,
+    "MagicRate": 10,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 66,
+    "StealItemCount": 1,
+    "Exp": 60,
+    "Level": 0,
+    "Cash": 92,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 2
+  },
+  "Script": {
+    "TurnStart": "Enemy_00023_TurnStart",
+    "BattleWon": "Null",
+    "ReadyToAction": "Enemy_00025_ReadyToAction"
+  }
+}

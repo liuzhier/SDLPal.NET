@@ -31,8 +31,9 @@ public unsafe class PalVideo
 
    public class Screen
    {
-      public   static   bool     Rotated  = false;
-      public   static   bool     IsFade   = false;
+      public   static   bool     Rotated           = false;
+      public   static   bool     IsFade            = false;
+      public   static   bool     IsFadeToScreen    = false;
 
       public class Wave
       {
@@ -230,6 +231,14 @@ public unsafe class PalVideo
             Copy(g_pScreenData, g_pScreenActual, true);
          }
 
+         if (IsFadeToScreen)
+         {
+            //
+            // Draw the screen backup layer to the screen
+            //
+            Copy(g_pScreenBak, g_pScreenActual, true);
+         }
+
          //
          // Synthesize the final screen video
          //
@@ -306,6 +315,37 @@ public unsafe class PalVideo
 
             IsFade = false;
          }
+      }
+
+      public static void
+      FadeToScreen(
+         int      iDelay,
+         byte     bStepCount  = 2
+      )
+      {
+         float    alpha, addNum;
+
+         addNum = bStepCount / 255.0f;
+
+         IsFadeToScreen = true;
+
+         for (alpha = 1; ; alpha -= addNum)
+         {
+            SDL.SetTextureAlphaModFloat(g_pScreenBak, alpha);
+
+            Update();
+
+            PalTimer.Delay(iDelay);
+
+            if (alpha <= 0)
+            {
+               break;
+            }
+         }
+
+         IsFadeToScreen = false;
+
+         SDL.SetTextureAlphaModFloat(g_pScreenBak, 1.0f);
       }
 
       public static void
@@ -478,7 +518,7 @@ public unsafe class PalVideo
          Wave        wave;
          SDL.Surface*      lpSurface;
 
-         wave = PalGlobal.Save.SceneWave;
+         wave = S_GetSave().SceneWave;
 
          //
          // The degree of screen fluctuation has to increase by itself each time
@@ -620,8 +660,6 @@ public unsafe class PalVideo
          SDL.SetRenderVSync(g_pRenderer, 1);
       }
 
-      S_SetNearestScale(false);
-
       //
       // Window size adjustment is allowed
       //
@@ -660,7 +698,6 @@ public unsafe class PalVideo
       //
       // Set the default scaling mode when creating a new texture
       //
-      //S_SetNearestScale(false);
       SDL.SetDefaultTextureScaleMode(g_pRenderer, g_Config.video._ScaleMode);
 
       //

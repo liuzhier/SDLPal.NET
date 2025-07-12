@@ -1,0 +1,53 @@
+{
+  "Name": "地裂天崩",
+  "Description": [
+    "土系中级法术，",
+    "攻击敌方全体。"
+  ],
+  "BaseDamage": 190,
+  "CostMP": 26,
+  "SoundID": 120,
+  "SummonID": -1,
+  "Genus": {
+    "Sword": false,
+    "Wind": false,
+    "Thunder": false,
+    "Water": false,
+    "Fire": false,
+    "Earth": true,
+    "Poison": false,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": false,
+    "Buff": false
+  },
+  "AttackMode": 2,
+  "Frame": {
+    "BitmapID": 20,
+    "OffsetPos": {
+      "X": -16,
+      "Y": 40
+    },
+    "LayerOffset": 99,
+    "Preview": 0,
+    "Speed": 6,
+    "KeepEffect": true,
+    "TotalTimes": 0,
+    "Shake": 0,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": true,
+    "UsableToEnemy": false,
+    "ApplyToAllHero": true,
+    "ApplyToAllEnemy": true
+  },
+  "Script": {
+    "Success": "Null",
+    "Use": "Magic_00036_Use"
+  }
+}

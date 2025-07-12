@@ -1,0 +1,32 @@
+{
+  "Comment": "金翅凤凰",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": -6,
+    "SpriteID": 570,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 1280,
+        "Y": 1664
+      },
+      "Direction": 0,
+      "FrameID": 3
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 0
+  },
+  "Script": {
+    "SrcTrigger": "Null",
+    "ScrAuto": "Event_00227_00001_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "Name": "三尸蛊毒",
+  "PoisonLevel": 3,
+  "ColorHex": "",
+  "Script": {
+    "Player": "Poison_00005_Player",
+    "Enemy": "Poison_00005_Enemy"
+  }
+}

@@ -1,17 +1,17 @@
 ﻿using SDL3;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
-
 using static PalCommon;
+using static PalGame;
 using static PalMap;
 using static PalSave;
 using static PalVideo;
 using static SafeSys;
-using static SDL3.SDL;
 
 public unsafe partial class PalScript
 {
@@ -119,6 +119,19 @@ public unsafe partial class PalScript
             addr++;
          }
       }
+
+      if (listScript.Last().FuncName != "End")
+      {
+         //
+         // If the last function is not End(),
+         // add it to prevent the last script block from failing to exit normally
+         //
+         listScript.Add(new Script
+         {
+            FuncName = "End",
+            Args = null,
+         });
+      }
    }
 
    public static void
@@ -216,20 +229,21 @@ public unsafe partial class PalScript
 
    --*/
    {
-      int         roleID, heroID, i, j, x, y, w, sceneCurrID, evtCurrID;
-      string      arg;
-      Scene       scene, sceneCurr;
-      Event       evt, evtCurr;
-      Script      scr;
-      PalSave     save;
-      Party       party;
-      Trail       trail;
-      BlockPos    bposTmp;
-      Pos         posTmp;
+      int               roleID, heroID, i, j, x, y, w, sceneCurrID, evtCurrID;
+      string            arg;
+      Scene             scene, sceneCurr;
+      Event             evt, evtCurr;
+      Script            scr;
+      PalSave           save;
+      Party             party;
+      Trail             trail;
+      BlockPos          bposTmp;
+      Pos               posTmp;
+      PalDirection      dirCurr;
 
       scr = listScript[iScrAddr];
 
-      save = PalGlobal.Save;
+      save = S_GetSave();
       bposTmp = new BlockPos();
 
       sceneCurrID = -1;
@@ -264,13 +278,22 @@ public unsafe partial class PalScript
                      break;
 
                   default:
-                     //evt = scene.listEvent[iEvtID - 1];
-                     evt = scene.listEvent[iEvtID];
+                     if (iEvtID < scene.listEvent.Count)
+                     {
+                        //evt = scene.listEvent[iEvtID - 1];
+                        evt = scene.listEvent[iEvtID];
+                     }
                      break;
 
                }
                break;
          }
+      }
+
+      void
+      GetEvtCurr()
+      {
+         GetEvt();
 
          try
          {
@@ -308,9 +331,12 @@ public unsafe partial class PalScript
                   break;
             }
 
-            trail = evtCurr._Frame._Trail;
+            //
+            // Generally speaking, automatic scripts cannot directly use this variable
+            //
+            trail = evtCurr._Frame.Trail;
          }
-         catch (Exception e)
+         catch (Exception)
          {
 
          }
@@ -329,6 +355,19 @@ public unsafe partial class PalScript
 
       switch (scr.FuncName)
       {
+         case "EventAnimate":
+            //
+            // 0x000B, 0x000C, 0x000D, 0x000E, 0x0087
+            // walk one step
+            //
+            GetEvt();
+            if (scr.INT(0) != -1)
+            {
+               evt._Frame.Trail.Direction = (PalDirection)scr.INT(0);
+            }
+            PalScene.NPCWalkOneStep(iSceneID, iEvtID, scr.INT(1));
+            break;
+
          case "NPCSetDirFrame":
             //
             // 0x000F
@@ -337,11 +376,11 @@ public unsafe partial class PalScript
             GetEvt();
             if (scr.INT(0) != -1)
             {
-               evt._Frame._Trail.Direction = (PalDirection)scr.INT(0);
+               evt._Frame.Trail.Direction = (PalDirection)scr.INT(0);
             }
             if (scr.INT(1) != -1)
             {
-               evt._Frame._Trail.FrameID = scr.INT(1);
+               evt._Frame.Trail.FrameID = scr.INT(1);
             }
             break;
 
@@ -351,7 +390,6 @@ public unsafe partial class PalScript
             // Walk straight to the specified position
             //
             GetBlockPos();
-            
             if (!scr.BOOL(4) || S_B((iEvtID & 1) ^ (PalGlobal.FrameNum & 1)))
             {
                if (!PalScene.NPCWalkTo(iSceneID, iEvtID, bposTmp, scr.INT(3)))
@@ -365,12 +403,23 @@ public unsafe partial class PalScript
             }
             break;
 
+         case "EventSetPosRelToParty":
+            //
+            // 0x0013
+            // Set the position of the event object, relative to the party
+            //
+            GetEvtCurr();
+            posTmp = S_GetPartyPos();
+            trail.Pos.X = posTmp.X + scr.INT(2);
+            trail.Pos.Y = posTmp.Y + scr.INT(3);
+            break;
+
          case "EventSetPos":
             //
             // 0x0013
             // Set the position of the event object
             //
-            GetEvt();
+            GetEvtCurr();
             trail.Pos.X = scr.INT(2);
             trail.Pos.Y = scr.INT(3);
             break;
@@ -381,8 +430,8 @@ public unsafe partial class PalScript
             // Set the gesture of the event object
             //
             GetEvt();
-            evt._Frame._Trail.FrameID = scr.INT(0);
-            evt._Frame._Trail.Direction = PalDirection.South;
+            evt._Frame.Trail.FrameID = scr.INT(0);
+            evt._Frame.Trail.Direction = PalDirection.South;
             break;
 
          case "RoleSetDirFrame":
@@ -401,8 +450,8 @@ public unsafe partial class PalScript
             // 0x0016
             // Set the direction and gesture for an event object
             //
-            GetEvt();
-            trail = evtCurr._Frame._Trail;
+            GetEvtCurr();
+            //trail = evtCurr._Frame._Trail;
             if (scr.BOOL(0) && scr.BOOL(1))
             {
                trail.Direction = (PalDirection)scr.INT(2);
@@ -437,12 +486,76 @@ public unsafe partial class PalScript
             S_InventoryAddItem(scr.INT(0), scr.INT(1));
             break;
 
+         case "RemoveItem":
+            //
+            // 0x0020
+            // Remove item from inventory
+            //
+            {
+               Hero     hero;
+               int*     ipEquip;
+
+               x = scr.INT(0);      // Item ID
+               y = scr.INT(1);      // Number of Item
+
+               if (y == 0)
+               {
+                  //
+                  // No operation is required
+                  //
+                  break;
+               }
+
+               //
+               // Count the actual quantity of this item that exists
+               //
+               w = S_InventoryCountItem(x);
+
+               var RemoveRet = S_InventoryAddItem(x, -y);
+
+               if (!RemoveRet.fIsSuccess)
+               {
+                  //
+                  // Try removing equipped item
+                  //
+                  for (i = 0; i <= S_GetSave().PartySize; i++)
+                  {
+                     hero = S_GetHero(S_GetRole(i).HeroID);
+
+                     fixed (HeroBase.Equip* lpEquip = &hero._HeroBase._Equip)
+                     {
+                        for (j = 0; j < MAX_PLAYER_EQUIPMENTS; j++)
+                        {
+                           ipEquip = (int*)lpEquip;
+
+                           if (ipEquip[j] == x)
+                           {
+                              //
+                              // Remove this equipment from the team member
+                              //
+                              ipEquip[j] = 0;
+
+                              S_RemoveEquipEffect(w, (EquipPart)j);
+
+                              if (--x == 0)
+                              {
+                                 goto case_RemoveItem_end;
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         case_RemoveItem_end:
+            break;
+
          case "EventSetAutoScript":
             //
             // 0x0024
             // Set the autoscript entry address for an event object
             //
-            GetEvt();
+            GetEvtCurr();
             if (scr.INT(0) != 0)
             {
                evtCurr._Script.ScrAuto = scr.STR(2);
@@ -454,11 +567,20 @@ public unsafe partial class PalScript
             // 0x0025
             // Set the trigger script entry address for an event object
             //
-            GetEvt();
+            GetEvtCurr();
             if (scr.INT(0) != 0)
             {
                evtCurr._Script.SrcTrigger = scr.STR(2);
             }
+            break;
+
+         case "RideNPCToPos":
+            //
+            // 0x003F
+            // Ride the event object to the specified position, at a low speed
+            //
+            GetBlockPos();
+            PalScene.PartyRideEventObject(iSceneID, iEvtID, bposTmp, scr.INT(3));
             break;
 
          case "EventSetTriggerMode":
@@ -466,7 +588,7 @@ public unsafe partial class PalScript
             // 0x0040
             // set the trigger method for a event object
             //
-            GetEvt();
+            GetEvtCurr();
             if (scr.INT(0) != 0)
             {
                evtCurr._Status.IsAutoTrigger = scr.BOOL(2);
@@ -515,12 +637,41 @@ public unsafe partial class PalScript
             // 0x0049
             // Set the state of event object
             //
-            GetEvt();
+            GetEvtCurr();
             if (scr.BOOL(0))
             {
                evtCurr._Status.Display = scr.BOOL(2);
                evtCurr._Status.IsObstacle = scr.BOOL(3);
             }
+            break;
+
+         case "SetBattlefield":
+            //
+            // 0x004A
+            // Set the current battlefield
+            //
+            save.BattleFieldID = scr.INT(0);
+            break;
+
+         case "NPCChase":
+            //
+            // 0x004C
+            // chase the player
+            //
+            i = scr.INT(0);   // speed
+            j = scr.INT(1);   // max. distance
+
+            if (i == 0)
+            {
+               i = 4;
+            }
+
+            if (j == 0)
+            {
+               j = 8;
+            }
+
+            PalScene.MonsterChasePlayer(iSceneID, iEvtID, i, j, scr.BOOL(2));
             break;
 
          case "FadeOut":
@@ -541,6 +692,16 @@ public unsafe partial class PalScript
             Screen.Update();
             Screen.Fade(scr.BOOL(0) ? scr.INT(0) : 1, false);
             PalGlobal.NeedToFadeIn = false;
+            break;
+
+         case "NPCSetVanishTime":
+            //
+            // 0x0052
+            // hide the event object for a while, default 800 frames
+            //
+            GetEvt();
+            evt._Status.Display = false;;
+            evt._Frame.VanishTime = (scr.INT(0) != 0) ? scr.INT(0) : 800;
             break;
 
          case "SceneEnter":
@@ -579,10 +740,31 @@ public unsafe partial class PalScript
             // 0x006C
             // Walk the NPC in one step
             //
-            GetEvt();
+            GetEvtCurr();
             trail.Pos.X += scr.SHORT(2);
             trail.Pos.Y += scr.SHORT(3);
             PalScene.NPCWalkOneStep(sceneCurrID, evtCurrID, 0);
+            break;
+
+         case "SceneSetScripts":
+            //
+            // 0x006D
+            // Set the enter script and teleport script for a scene
+            //
+            if (scr.INT(0) != 0)
+            {
+               scene = S_GetScene(scr.INT(0));
+
+               if (scr.ADDR(1) != 0)
+               {
+                  scene._Script.ScrEnter = scr.STR(1);
+               }
+
+               if (scr.ADDR(2) != 0)
+               {
+                  scene._Script.ScrEnter = scr.STR(2);
+               }
+            }
             break;
 
          case "RoleMoveOneStep":
@@ -608,7 +790,7 @@ public unsafe partial class PalScript
             // 0x006F
             // Sync the state of current event object with another event object
             //
-            GetEvt();
+            GetEvtCurr();
             if (evtCurr._Status.IsAutoTrigger == scr.BOOL(2)
                && evtCurr._Status.IsObstacle == scr.BOOL(3))
             {
@@ -626,6 +808,16 @@ public unsafe partial class PalScript
             PalScene.PartyWalkTo(bposTmp, scr.INT(3));
             break;
 
+         case "FadeToScene":
+            //
+            // 0x0073; 0x009B
+            // Fade the screen to scene
+            //
+            Screen.Backup(g_pScreen);
+            PalScene.Draw();
+            Screen.FadeToScreen(scr.INT(1));
+            break;
+
          case "PartySetRole":
             //
             // 0x0075
@@ -640,7 +832,7 @@ public unsafe partial class PalScript
 
                party.HeroID = S_INT(arg[i]);
 
-               party._Trail.Direction = S_GetPartyDirection();
+               party.Trail.Direction = S_GetPartyDirection();
                save.PartySize++;
             }
 
@@ -650,7 +842,135 @@ public unsafe partial class PalScript
             PalResource.SetLoadFlags(PalResource.LoadFlag.RoleSprite);
             PalResource.Load();
 
+            //
+            // Updating equipment provides attribute bonuses for team members
+            //
             PalGlobal.UpdateEquipEffect();
+            break;
+
+         case "MusicStop":
+            //
+            // 0x0077
+            // Stop current playing music
+            //
+            PalAudio.StopMusic();
+            S_GetSave().MusicID = 0;
+            break;
+
+         case "EventModifyPos":
+            //
+            // 0x007D
+            // Move the event object
+            //
+            GetEvtCurr();
+            trail.Pos.X += scr.INT(2);
+            trail.Pos.Y += scr.INT(3);
+            break;
+
+         case "ViewportMove":
+            //
+            // 0x007F
+            // Move the viewport
+            //
+            posTmp = S_GetRolePos(0);
+
+            x = scr.INT(0);
+            y = scr.INT(1);
+
+            if (x == 0 && y == 0)
+            {
+               //
+               // Move the viewport back to normal state
+               //
+               Viewport.Offset.X = x;
+               Viewport.Offset.Y = y;
+
+               if (scr.INT(2) != -1)
+               {
+                  PalScene.Draw();
+                  Screen.Update();
+               }
+            }
+            else
+            {
+               uint     time;
+
+               i = 0;
+               time = (uint)(SDL.GetTicks() + FRAME_TIME);
+
+               do
+               {
+                  if (scr.INT(2) == -1)
+                  {
+                     Viewport.Offset.X = x * 32;
+                     Viewport.Offset.Y = y * 16;
+                  }
+                  else
+                  {
+                     Viewport.Offset.X += x;
+                     Viewport.Offset.Y += y;
+                  }
+
+                  if (scr.INT(2) != -1)
+                  {
+                     PalPlay.GameUpdate(false);
+                  }
+
+                  PalScene.Draw();
+                  Screen.Update();
+
+                  //
+                  // Delay for one frame
+                  //
+                  PalTimer.DelayUntil(time);
+                  time = (uint)(SDL.GetTicks() + FRAME_TIME);
+               } while (++i < scr.INT(2) && scr.INT(2) != -1);
+            }
+            break;
+
+         case "JumpIfPartyNotFacingEvent":
+            //
+            // 0x0081
+            // Jump if the player is not facing the specified event object
+            //
+            {
+               if (scr.INT(0) != save.SceneID)
+               {
+                  //
+                  // The event object is not in the current scene
+                  //
+                  iScrAddr = scr.ADDR(3) - 1;
+                  g_fScriptSuccess = false;
+                  break;
+               }
+
+               GetEvtCurr();
+               posTmp = S_GetPartyPos();
+               x = trail.Pos.X - posTmp.X;
+               y = trail.Pos.Y - posTmp.Y;
+
+               dirCurr = S_GetPartyDirection();
+               x += (dirCurr == PalDirection.West || dirCurr == PalDirection.South) ? 16 : -16;
+               y += (dirCurr == PalDirection.West || dirCurr == PalDirection.North) ? 8 : -8;
+
+               if (Math.Abs(x) + Math.Abs(y * 2) < scr.INT(2) * 32 + 16
+                  && S_GetEvent(-1, scr.INT(1))._Status.Display)
+               {
+                  if (scr.INT(2) > 0)
+                  {
+                     //
+                     // Change the trigger mode so that the object can be triggered in next frame
+                     //
+                     evtCurr._Status.IsAutoTrigger = true;
+                     evtCurr._Status.TriggerDistance = scr.INT(2) + 1;
+                  }
+               }
+               else
+               {
+                  iScrAddr = scr.ADDR(3) - 1;
+                  g_fScriptSuccess = false;
+               }
+            }
             break;
 
          case "Delay":
@@ -659,6 +979,29 @@ public unsafe partial class PalScript
             // Delay for a period
             //
             PalTimer.Delay(scr.INT(0) * 80);
+            break;
+
+         case "VideoFadeAndUpdate":
+            //
+            // 0x0093
+            // Fade the screen. Update scene in the process.
+            //
+            //PAL_SceneFade(gpGlobals->wNumPalette, gpGlobals->fNightPalette,
+            //   (SHORT)(pScript->rgwOperand[0]));
+            PalGlobal.NeedToFadeIn = (scr.INT(0) < 0);
+            break;
+
+         case "JumpIfEventStateMatches":
+            //
+            // 0x0094
+            // Jump if the state of event object is the specified one
+            //
+            GetEvtCurr();
+            if (evtCurr._Status.Display == scr.BOOL(2) &&
+               evtCurr._Status.IsObstacle == scr.BOOL(3))
+            {
+               iScrAddr = scr.ADDR(4);
+            }
             break;
 
          default:

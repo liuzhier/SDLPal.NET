@@ -1,0 +1,8 @@
+{
+  "Name": "南绍王宫·秘道·内·石室·天蛇杖",
+  "MapID": 209,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Scene_00242_Teleport"
+  }
+}

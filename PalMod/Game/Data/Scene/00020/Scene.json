@@ -1,0 +1,8 @@
+{
+  "Name": "仙灵岛·水月宫·未赠药",
+  "MapID": 9,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

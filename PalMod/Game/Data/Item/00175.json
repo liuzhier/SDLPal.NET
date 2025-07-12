@@ -1,0 +1,30 @@
+{
+  "Name": "草鞋",
+  "Description": [
+    "以蔺草编织而成，十分便宜，",
+    "穿起来很轻便，适宜行走。",
+    "防御+1"
+  ],
+  "Bitmap": 97,
+  "Price": 30,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00175_Equip",
+    "Throw": "Null"
+  }
+}

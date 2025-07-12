@@ -1,0 +1,30 @@
+{
+  "Name": "玉佛珠",
+  "Description": [
+    "西方如来檀前的念珠，经佛法熏陶",
+    "变化通灵。合体法术: 佛法无边",
+    "灵力+88 防御+18 避毒率+30%"
+  ],
+  "Bitmap": 11,
+  "Price": 0,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": false,
+    "Consuming": false,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": false,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": false
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00214_Equip",
+    "Throw": "Null"
+  }
+}

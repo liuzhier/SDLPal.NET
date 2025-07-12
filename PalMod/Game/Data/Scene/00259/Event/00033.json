@@ -1,0 +1,32 @@
+{
+  "Comment": "死南绍兵",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 546,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 880,
+        "Y": 680
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 1
+  },
+  "Script": {
+    "SrcTrigger": "Event_00259_00003_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

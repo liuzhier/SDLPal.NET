@@ -36,16 +36,18 @@ public unsafe class PalCommon
    IMG_FIGHT_PATH       = $@"{IMG_PATH}\Fight";
 
    public   static   int
-      MAX_SAVE_NUM      = 99,
-      MAX_HERO_NUM      = 6,
-      //MAX_HERO_MAGICS   = 32,
-      //MAX_SCENE_NUM     = 300,
-      //MAX_OBJECT_NUM    = 500,
-      //MAX_INVENTORY_NUM = 150,
-      INIT_EXP_SEED     = 15;
+      MAX_SAVE_NUM            = 99,
+      MAX_HERO_NUM            = 6,
+      //MAX_HERO_MAGICS         = 32,
+      //MAX_SCENE_NUM           = 300,
+      //MAX_OBJECT_NUM          = 500,
+      //MAX_INVENTORY_NUM       = 150,
+      MAX_PLAYER_EQUIPMENTS   = sizeof(HeroBase.Equip) / sizeof(int),
+      INIT_EXP_SEED           = 15;
 
    public   static   string[]
-      DIRECTION   = ["South", "West", "North", "East"];
+      DIRECTION   = ["South", "West", "North", "East"],
+      MAGIC_GENUS = ["剑系", "风系", "雷系", "水系", "火系", "土系", "毒系", "巫系", "绝技", "光系", "暗系", "治愈", "增益"];
 
    public   static   SDL.Color
       COLOR_NONE     = SC_Color(0x2BF666FF),
@@ -76,5 +78,15 @@ public unsafe class PalCommon
       Left,
       Middle,
       Right,
+   }
+
+   public enum EquipPart
+   {
+      Head,
+      Body,
+      Armour,
+      Backside,
+      Hand,
+      Foot,
    }
 }

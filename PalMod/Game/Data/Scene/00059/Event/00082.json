@@ -1,0 +1,32 @@
+{
+  "Comment": "僵尸",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 6,
+    "SpriteID": 59,
+    "SpriteFrames": 3,
+    "Pos": {
+      "Pos": {
+        "X": 1200,
+        "Y": 1208
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": true,
+    "IsAutoTrigger": true,
+    "TriggerDistance": 1
+  },
+  "Script": {
+    "SrcTrigger": "Event_00059_00082_Trigger",
+    "ScrAuto": "Event_00059_00074_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

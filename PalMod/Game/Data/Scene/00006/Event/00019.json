@@ -1,0 +1,32 @@
+{
+  "Comment": "药草1",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 69,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 256,
+        "Y": 896
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": true,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 1
+  },
+  "Script": {
+    "SrcTrigger": "Event_00006_00019_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "Comment": "猎户",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 342,
+    "SpriteFrames": 1,
+    "Pos": {
+      "Pos": {
+        "X": 1184,
+        "Y": 1120
+      },
+      "Direction": 1,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": true,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 2
+  },
+  "Script": {
+    "SrcTrigger": "Event_00205_00015_Trigger",
+    "ScrAuto": "Event_00001_00026_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

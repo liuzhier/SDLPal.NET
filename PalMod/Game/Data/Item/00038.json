@@ -1,0 +1,30 @@
+{
+  "Name": "天香续命露",
+  "Description": [
+    "以大量珍贵秘药精炼而成，",
+    "具有肉白骨、药死人之奇效。",
+    "HP恢复100%"
+  ],
+  "Bitmap": 166,
+  "Price": 5000,
+  "Scope": {
+    "Usable": true,
+    "Throwable": false,
+    "Equipable": false,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00038_Use",
+    "Equip": "Null",
+    "Throw": "Null"
+  }
+}

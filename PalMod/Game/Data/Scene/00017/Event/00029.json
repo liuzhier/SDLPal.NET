@@ -1,0 +1,32 @@
+{
+  "Comment": "石板.发亮石板",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": -3,
+    "SpriteID": 233,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 1024,
+        "Y": 912
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": true,
+    "TriggerDistance": 0
+  },
+  "Script": {
+    "SrcTrigger": "Event_00017_00029_Trigger",
+    "ScrAuto": "Event_00017_00029_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "Name": "瘴气",
+  "Description": [],
+  "BaseDamage": 65,
+  "CostMP": 0,
+  "SoundID": 166,
+  "SummonID": -1,
+  "Genus": {
+    "Sword": false,
+    "Wind": false,
+    "Thunder": false,
+    "Water": false,
+    "Fire": false,
+    "Earth": false,
+    "Poison": true,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": false,
+    "Buff": false
+  },
+  "AttackMode": 0,
+  "Frame": {
+    "BitmapID": 25,
+    "OffsetPos": {
+      "X": -4,
+      "Y": -20
+    },
+    "LayerOffset": 99,
+    "Preview": 0,
+    "Speed": 1,
+    "KeepEffect": false,
+    "TotalTimes": 0,
+    "Shake": 0,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": true,
+    "UsableToEnemy": false,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false
+  },
+  "Script": {
+    "Success": "Null",
+    "Use": "Null"
+  }
+}

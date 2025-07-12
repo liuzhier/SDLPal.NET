@@ -1,0 +1,53 @@
+{
+  "Name": "爆炸蛊",
+  "Description": [
+    "预先将法力灌输在蛊虫体",
+    "内，投掷敌人生成强烈爆炸。"
+  ],
+  "BaseDamage": 392,
+  "CostMP": 49,
+  "SoundID": 168,
+  "SummonID": -1,
+  "Genus": {
+    "Sword": false,
+    "Wind": false,
+    "Thunder": false,
+    "Water": false,
+    "Fire": true,
+    "Earth": false,
+    "Poison": false,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": false,
+    "Buff": false
+  },
+  "AttackMode": 0,
+  "Frame": {
+    "BitmapID": 37,
+    "OffsetPos": {
+      "X": 0,
+      "Y": -4
+    },
+    "LayerOffset": 99,
+    "Preview": 0,
+    "Speed": 1,
+    "KeepEffect": false,
+    "TotalTimes": 0,
+    "Shake": 0,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": true,
+    "UsableToEnemy": false,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false
+  },
+  "Script": {
+    "Success": "Null",
+    "Use": "Null"
+  }
+}

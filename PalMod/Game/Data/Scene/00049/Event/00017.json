@@ -1,0 +1,32 @@
+{
+  "Comment": "骑木马小孩",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 79,
+    "SpriteFrames": 4,
+    "Pos": {
+      "Pos": {
+        "X": 1376,
+        "Y": 864
+      },
+      "Direction": 1,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": true,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 2
+  },
+  "Script": {
+    "SrcTrigger": "Event_00049_00017_Trigger",
+    "ScrAuto": "Event_00049_00017_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

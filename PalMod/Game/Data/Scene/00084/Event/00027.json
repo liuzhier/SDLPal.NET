@@ -1,0 +1,32 @@
+{
+  "Comment": "捕快",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 97,
+    "SpriteFrames": 3,
+    "Pos": {
+      "Pos": {
+        "X": 1296,
+        "Y": 648
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": true,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 2
+  },
+  "Script": {
+    "SrcTrigger": "Event_00084_00027_Trigger",
+    "ScrAuto": "Event_00021_00016_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

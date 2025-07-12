@@ -1,0 +1,50 @@
+{
+  "Name": "狂风术",
+  "Description": [],
+  "BaseDamage": 283,
+  "CostMP": 0,
+  "SoundID": 156,
+  "SummonID": -1,
+  "Genus": {
+    "Sword": false,
+    "Wind": true,
+    "Thunder": false,
+    "Water": false,
+    "Fire": false,
+    "Earth": false,
+    "Poison": false,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": false,
+    "Buff": false
+  },
+  "AttackMode": 3,
+  "Frame": {
+    "BitmapID": 26,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "LayerOffset": 99,
+    "Preview": 0,
+    "Speed": 0,
+    "KeepEffect": false,
+    "TotalTimes": 0,
+    "Shake": 0,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": true,
+    "UsableToEnemy": false,
+    "ApplyToAllHero": true,
+    "ApplyToAllEnemy": true
+  },
+  "Script": {
+    "Success": "Null",
+    "Use": "Null"
+  }
+}

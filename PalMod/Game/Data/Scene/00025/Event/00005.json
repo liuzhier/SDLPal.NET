@@ -1,0 +1,32 @@
+{
+  "Comment": "酒徒",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 4,
+    "SpriteID": 72,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 816,
+        "Y": 808
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": true,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 2
+  },
+  "Script": {
+    "SrcTrigger": "Event_00025_00005_Trigger",
+    "ScrAuto": "Event_00025_00005_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

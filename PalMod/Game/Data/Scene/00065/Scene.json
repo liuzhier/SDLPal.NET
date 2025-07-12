@@ -1,0 +1,8 @@
+{
+  "Name": "将军冢·下层·1",
+  "MapID": 57,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Scene_00060_Teleport"
+  }
+}

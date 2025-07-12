@@ -1,0 +1,32 @@
+{
+  "Comment": "苇漂",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 84,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 688,
+        "Y": 1528
+      },
+      "Direction": 0,
+      "FrameID": 4
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": false,
+    "IsAutoTrigger": true,
+    "TriggerDistance": 0
+  },
+  "Script": {
+    "SrcTrigger": "Event_00213_00024_Trigger",
+    "ScrAuto": "Event_00004_00002_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

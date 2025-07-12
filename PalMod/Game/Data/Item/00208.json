@@ -1,0 +1,29 @@
+{
+  "Name": "炼蛊皿",
+  "Description": [
+    "可将毒蛇卵、毒蠍卵、毒蟾卵、",
+    "蜘蛛卵、蜈蚣卵炼成蛊。"
+  ],
+  "Bitmap": 9,
+  "Price": 1000,
+  "Scope": {
+    "Usable": true,
+    "Throwable": false,
+    "Equipable": false,
+    "Sellable": true,
+    "Consuming": false,
+    "ApplyToAllHero": true,
+    "ApplyToAllEnemy": true,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00208_Use",
+    "Equip": "Null",
+    "Throw": "Null"
+  }
+}

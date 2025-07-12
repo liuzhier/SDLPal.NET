@@ -1,0 +1,30 @@
+{
+  "Name": "木鞋",
+  "Description": [
+    "以木材削制而成，鞋面刻有吉祥",
+    "图案。",
+    "防御+2"
+  ],
+  "Bitmap": 98,
+  "Price": 80,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00176_Equip",
+    "Throw": "Null"
+  }
+}

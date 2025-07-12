@@ -1,0 +1,32 @@
+{
+  "Comment": "伏案灵儿",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 5,
+    "SpriteID": 235,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 608,
+        "Y": 368
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 0
+  },
+  "Script": {
+    "SrcTrigger": "Null",
+    "ScrAuto": "Event_00026_00006_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

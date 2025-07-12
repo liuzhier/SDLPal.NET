@@ -1,0 +1,8 @@
+{
+  "Name": "扬州·废城",
+  "MapID": 79,
+  "Script": {
+    "ScrEnter": "Scene_00079_Enter",
+    "ScrTeleport": "Null"
+  }
+}

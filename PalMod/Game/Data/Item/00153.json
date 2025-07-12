@@ -1,0 +1,29 @@
+{
+  "Name": "青铜甲",
+  "Description": [
+    "青铜制的兽面纹胸护甲。",
+    "防御+22 身法-13"
+  ],
+  "Bitmap": 225,
+  "Price": 3200,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00153_Equip",
+    "Throw": "Null"
+  }
+}

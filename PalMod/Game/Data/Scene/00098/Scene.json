@@ -1,0 +1,8 @@
+{
+  "Name": "扬州·城墙·各岗哨",
+  "MapID": 91,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "Name": "苏州·当铺",
+  "MapID": 28,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

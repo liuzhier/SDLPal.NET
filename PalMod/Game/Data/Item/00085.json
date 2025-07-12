@@ -1,0 +1,29 @@
+{
+  "Name": "灵蛊",
+  "Description": [
+    "以稀有药物豢养的雌蛊。",
+    "全体MP+250"
+  ],
+  "Bitmap": 130,
+  "Price": 0,
+  "Scope": {
+    "Usable": true,
+    "Throwable": false,
+    "Equipable": false,
+    "Sellable": false,
+    "Consuming": true,
+    "ApplyToAllHero": true,
+    "ApplyToAllEnemy": true,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00085_Use",
+    "Equip": "Null",
+    "Throw": "Null"
+  }
+}

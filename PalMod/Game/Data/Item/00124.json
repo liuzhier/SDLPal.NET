@@ -1,0 +1,30 @@
+{
+  "Name": "龙泉剑",
+  "Description": [
+    "龙泉的水质非常适合造剑，",
+    "当地生产的剑叫龙泉剑。",
+    "武术+88 身法+20 吉运+22"
+  ],
+  "Bitmap": 50,
+  "Price": 9000,
+  "Scope": {
+    "Usable": false,
+    "Throwable": true,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00124_Equip",
+    "Throw": "Item_00124_Throw"
+  }
+}

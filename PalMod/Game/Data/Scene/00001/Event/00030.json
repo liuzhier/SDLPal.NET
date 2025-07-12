@@ -1,0 +1,32 @@
+{
+  "Comment": "布袋",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": -2,
+    "SpriteID": 211,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 1280,
+        "Y": 256
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 1
+  },
+  "Script": {
+    "SrcTrigger": "Event_00001_00030_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

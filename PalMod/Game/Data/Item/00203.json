@@ -1,0 +1,30 @@
+{
+  "Name": "风灵珠",
+  "Description": [
+    "女娲降伏风神后，禁制风神於内的",
+    "宝珠。合体法术: 风卷残云",
+    "避风率+50%"
+  ],
+  "Bitmap": 7,
+  "Price": 0,
+  "Scope": {
+    "Usable": true,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": false,
+    "Consuming": false,
+    "ApplyToAllHero": true,
+    "ApplyToAllEnemy": true,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00203_Use",
+    "Equip": "Item_00203_Equip",
+    "Throw": "Null"
+  }
+}

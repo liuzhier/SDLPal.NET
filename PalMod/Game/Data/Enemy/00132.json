@@ -1,0 +1,70 @@
+{
+  "Name": "天鬼皇",
+  "Frame": {
+    "BitmapID": 131,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 22
+    },
+    "Idle": 1,
+    "Magic": 2,
+    "Attack": 1,
+    "IdleWaitFrames": 99,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 265,
+    "ActionID": 0,
+    "MagicID": 265,
+    "DeathID": 266,
+    "BeginBattleID": 92
+  },
+  "Attribute": {
+    "Level": 19,
+    "HP": 10000,
+    "MaxHP": 10000,
+    "AttackStrength": 0,
+    "MagicStrength": 0,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 6.0,
+      "Thunder": 6.0,
+      "Water": 6.0,
+      "Fire": 6.0,
+      "Earth": 6.0
+    },
+    "Physics": 4.0,
+    "Poison": 5.0,
+    "Sorcery": 10.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 36,
+    "MagicRate": 5,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 38,
+    "StealItemCount": 1,
+    "Exp": 5050,
+    "Level": 0,
+    "Cash": 0,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 0
+  },
+  "Script": {
+    "TurnStart": "Enemy_00132_TurnStart",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

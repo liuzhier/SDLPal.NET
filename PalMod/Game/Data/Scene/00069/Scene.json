@@ -1,0 +1,8 @@
+{
+  "Name": "鬼阴山·绝顶",
+  "MapID": 62,
+  "Script": {
+    "ScrEnter": "Scene_00069_Enter",
+    "ScrTeleport": "Null"
+  }
+}

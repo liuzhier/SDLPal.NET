@@ -1,0 +1,29 @@
+{
+  "Name": "檀香",
+  "Description": [
+    "含有檀香料的一种香，点燃用以",
+    "薰衣、薰室内，驱逐恶气。"
+  ],
+  "Bitmap": 27,
+  "Price": 30,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": false,
+    "Sellable": false,
+    "Consuming": false,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": false,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": false,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": false
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Null",
+    "Throw": "Null"
+  }
+}

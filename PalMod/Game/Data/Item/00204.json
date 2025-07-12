@@ -1,0 +1,30 @@
+{
+  "Name": "雷灵珠",
+  "Description": [
+    "女娲降伏雷神后，禁制雷神於内的",
+    "宝珠。合体法术: 狂雷",
+    "避雷率+50%"
+  ],
+  "Bitmap": 5,
+  "Price": 0,
+  "Scope": {
+    "Usable": true,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": false,
+    "Consuming": false,
+    "ApplyToAllHero": true,
+    "ApplyToAllEnemy": true,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00204_Use",
+    "Equip": "Item_00204_Equip",
+    "Throw": "Null"
+  }
+}

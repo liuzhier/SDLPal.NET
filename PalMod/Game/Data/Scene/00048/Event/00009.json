@@ -1,0 +1,32 @@
+{
+  "Comment": "捕兽夹",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 268,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 784,
+        "Y": 1016
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 1
+  },
+  "Script": {
+    "SrcTrigger": "Event_00048_00009_Trigger",
+    "ScrAuto": "Event_00048_00009_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

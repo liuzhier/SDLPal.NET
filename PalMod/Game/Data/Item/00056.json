@@ -1,0 +1,29 @@
+{
+  "Name": "尸腐肉",
+  "Description": [
+    "沾染尸毒的腐败肉块。",
+    "毒性: 尸毒"
+  ],
+  "Bitmap": 115,
+  "Price": 0,
+  "Scope": {
+    "Usable": true,
+    "Throwable": true,
+    "Equipable": false,
+    "Sellable": false,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00056_Use",
+    "Equip": "Null",
+    "Throw": "Item_00056_Throw"
+  }
+}

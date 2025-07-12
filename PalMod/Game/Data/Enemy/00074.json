@@ -1,0 +1,70 @@
+{
+  "Name": "玩蛇女",
+  "Frame": {
+    "BitmapID": 74,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 20
+    },
+    "Idle": 1,
+    "Magic": 1,
+    "Attack": 1,
+    "IdleWaitFrames": 99,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 253,
+    "ActionID": 0,
+    "MagicID": 270,
+    "DeathID": 269,
+    "BeginBattleID": 92
+  },
+  "Attribute": {
+    "Level": 51,
+    "HP": 6900,
+    "MaxHP": 6900,
+    "AttackStrength": 0,
+    "MagicStrength": 0,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 5.0,
+      "Thunder": 2.0,
+      "Water": 9.0,
+      "Fire": 4.0,
+      "Earth": 5.0
+    },
+    "Physics": 3.0,
+    "Poison": 4.0,
+    "Sorcery": 4.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 30,
+    "MagicRate": 6,
+    "AttackEquivItemID": 99,
+    "AttackEquivItemRate": 5,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 64,
+    "StealItemCount": 2,
+    "Exp": 1160,
+    "Level": 0,
+    "Cash": 640,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 5
+  },
+  "Script": {
+    "TurnStart": "Null",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

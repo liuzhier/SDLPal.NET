@@ -1,0 +1,8 @@
+{
+  "Name": "火麒麟洞",
+  "MapID": 186,
+  "Script": {
+    "ScrEnter": "Scene_00200_Enter",
+    "ScrTeleport": "Scene_00200_Teleport"
+  }
+}

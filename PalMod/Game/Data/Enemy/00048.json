@@ -1,0 +1,70 @@
+{
+  "Name": "血云雾",
+  "Frame": {
+    "BitmapID": 48,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 4
+    },
+    "Idle": 2,
+    "Magic": 0,
+    "Attack": 1,
+    "IdleWaitFrames": 4,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 265,
+    "ActionID": 0,
+    "MagicID": 0,
+    "DeathID": 266,
+    "BeginBattleID": 90
+  },
+  "Attribute": {
+    "Level": 12,
+    "HP": 1400,
+    "MaxHP": 1400,
+    "AttackStrength": 9,
+    "MagicStrength": 100,
+    "Defense": -20,
+    "Dexterity": 0,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 10.0,
+      "Thunder": 10.0,
+      "Water": 10.0,
+      "Fire": 10.0,
+      "Earth": 10.0
+    },
+    "Physics": 1.0,
+    "Poison": 10.0,
+    "Sorcery": 0.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 0,
+    "MagicRate": 0,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 1
+  },
+  "BattleReward": {
+    "StealItem": 0,
+    "StealItemCount": 0,
+    "Exp": 33,
+    "Level": 0,
+    "Cash": 30,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 2
+  },
+  "Script": {
+    "TurnStart": "Enemy_00048_TurnStart",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

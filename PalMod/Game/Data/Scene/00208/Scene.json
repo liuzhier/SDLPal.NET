@@ -1,0 +1,8 @@
+{
+  "Name": "大理·汉人聚居地·正常",
+  "MapID": 167,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

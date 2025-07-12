@@ -1,0 +1,32 @@
+{
+  "Comment": "林月如刺李逍遥",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 1,
+    "SpriteID": 229,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 960,
+        "Y": 1008
+      },
+      "Direction": 0,
+      "FrameID": 4
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 2
+  },
+  "Script": {
+    "SrcTrigger": "Event_00022_00010_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

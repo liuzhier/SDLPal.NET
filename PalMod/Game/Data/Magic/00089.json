@@ -1,0 +1,50 @@
+{
+  "Name": "佛法无边",
+  "Description": [],
+  "BaseDamage": 165,
+  "CostMP": 15,
+  "SoundID": 121,
+  "SummonID": -1,
+  "Genus": {
+    "Sword": true,
+    "Wind": false,
+    "Thunder": false,
+    "Water": false,
+    "Fire": false,
+    "Earth": false,
+    "Poison": false,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": false,
+    "Buff": false
+  },
+  "AttackMode": 0,
+  "Frame": {
+    "BitmapID": 49,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "LayerOffset": 99,
+    "Preview": 0,
+    "Speed": 2,
+    "KeepEffect": false,
+    "TotalTimes": 0,
+    "Shake": 17,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": true,
+    "UsableToEnemy": false,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false
+  },
+  "Script": {
+    "Success": "Null",
+    "Use": "Null"
+  }
+}

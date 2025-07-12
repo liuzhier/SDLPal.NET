@@ -1,0 +1,70 @@
+{
+  "Name": "僵尸",
+  "Frame": {
+    "BitmapID": 22,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "Idle": 1,
+    "Magic": 1,
+    "Attack": 1,
+    "IdleWaitFrames": 99,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 247,
+    "ActionID": 0,
+    "MagicID": 247,
+    "DeathID": 190,
+    "BeginBattleID": 92
+  },
+  "Attribute": {
+    "Level": 8,
+    "HP": 350,
+    "MaxHP": 350,
+    "AttackStrength": 12,
+    "MagicStrength": 0,
+    "Defense": 0,
+    "Dexterity": -16,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 6.0,
+      "Thunder": 7.0,
+      "Water": 6.0,
+      "Fire": 2.0,
+      "Earth": 7.0
+    },
+    "Physics": 2.0,
+    "Poison": 10.0,
+    "Sorcery": 0.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 0,
+    "MagicRate": 0,
+    "AttackEquivItemID": 56,
+    "AttackEquivItemRate": 4,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 56,
+    "StealItemCount": 1,
+    "Exp": 9,
+    "Level": 0,
+    "Cash": 7,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 2
+  },
+  "Script": {
+    "TurnStart": "Null",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

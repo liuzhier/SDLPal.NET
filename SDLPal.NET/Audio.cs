@@ -12,6 +12,7 @@ using static PalCommon;
 
 public unsafe class PalAudio
 {
+   private  static   string[]          AUDIO_TYPE        = ["flac", "mod", "mp3", "ogg", "mid", "opus", "wav"];
    private  const Mixer.InitFlags      MIXER_INIT_FLAGS  = 0
       | Mixer.InitFlags.FLAC
       | Mixer.InitFlags.MOD
@@ -25,18 +26,6 @@ public unsafe class PalAudio
    private  static   Mixer.ChannelFinishedCallback    funcChannelFinished  = new Mixer.ChannelFinishedCallback(FreeChunk);
    private  static   SoundData                        musicData            = new SoundData();
    private  static   List<SoundData>                  listSoundData        = [];
-
-   private  static   PlayingPcm           bgm;     // 当前BGM
-   private  static   List<PlayingPcm>     sfxList = [];
-
-   private class PlayingPcm
-   {
-      public   byte[]      PcmData;       // PCM数据
-      public   int         Position;      // 当前播放到的位置
-      public   int         Length;        // 总长度
-      public   float       Volume;        // 音量(0~1)
-      public   bool        Loop;          // 是否循环
-   }
 
    public class SoundData
    {
@@ -93,64 +82,6 @@ public unsafe class PalAudio
       Mixer.Quit();
    }
 
-   public static void Callback(
-      nint     userdata,
-      nint     stream,
-      int      len
-   )
-   {
-      Span<byte>     output;
-      int            sampleCount;
-
-      output = new Span<byte>((void*)stream, len);
-      output.Clear();
-
-      sampleCount = len / 4; // 16位立体声
-
-      for (int i = 0; i < sampleCount; i++)
-      {
-         int mixedL = 0, mixedR = 0;
-
-         // 混合BGM
-         if (bgm != null && bgm.Position + 4 <= bgm.Length)
-         {
-            short left = BitConverter.ToInt16(bgm.PcmData, bgm.Position);
-            short right = BitConverter.ToInt16(bgm.PcmData, bgm.Position + 2);
-
-            mixedL += (int)(left * bgm.Volume);
-            mixedR += (int)(right * bgm.Volume);
-
-            bgm.Position += 4;
-            if (bgm.Position >= bgm.Length && bgm.Loop)
-               bgm.Position = 0;
-         }
-
-         // 混合所有SFX
-         foreach (var sfx in sfxList.ToList())
-         {
-            if (sfx.Position + 4 > sfx.Length) continue;
-
-            short left = BitConverter.ToInt16(sfx.PcmData, sfx.Position);
-            short right = BitConverter.ToInt16(sfx.PcmData, sfx.Position + 2);
-
-            mixedL += (int)(left * sfx.Volume);
-            mixedR += (int)(right * sfx.Volume);
-
-            sfx.Position += 4;
-         }
-
-         // 防止溢出
-         mixedL = Math.Clamp(mixedL, short.MinValue, short.MaxValue);
-         mixedR = Math.Clamp(mixedR, short.MinValue, short.MaxValue);
-
-         BitConverter.TryWriteBytes(output.Slice(i * 4, 2), (short)mixedL);
-         BitConverter.TryWriteBytes(output.Slice(i * 4 + 2, 2), (short)mixedR);
-      }
-
-      // 移除播放完的SFX
-      sfxList.RemoveAll(s => s.Position >= s.Length);
-   }
-
    public static void
    PlayMusic(
       int      iMusicID,
@@ -158,7 +89,8 @@ public unsafe class PalAudio
       bool     fLoop       = true
    )
    {
-      string      path;
+      int         i;
+      string      path, pathFull;
 
       StopMusic();
 
@@ -168,14 +100,21 @@ public unsafe class PalAudio
       }
 
       path = $@"{MUS_PATH}\{iMusicID:D3}";
+      pathFull = "";
 
-      path += File.Exists($@"{path}.wav") ? ".wav" : ".mp3";
+      for (i = 0; i < AUDIO_TYPE.Length; i++)
+      {
+         pathFull = $@"{path}.{AUDIO_TYPE[i]}";
 
-      S_FILE_EXISTS(path);
+         if (File.Exists(pathFull))
+         {
+            musicData.pAudio = Mixer.LoadMUS(pathFull);
+            Mixer.FadeInMusic(musicData.pAudio, (fLoop) ? 999 : 1, (int)(flFadeTime * 1000));
+            break;
+         }
+      }
 
-      musicData.pAudio = Mixer.LoadMUS(path);
-
-      Mixer.FadeInMusic(musicData.pAudio, (fLoop) ? 999 : 1, (int)(flFadeTime * 1000));
+      S_FILE_EXISTS(pathFull);
    }
 
    public static void

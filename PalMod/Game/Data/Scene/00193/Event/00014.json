@@ -1,0 +1,32 @@
+{
+  "Comment": "压倒逍遥",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 242,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 1184,
+        "Y": 768
+      },
+      "Direction": 0,
+      "FrameID": 2
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 0
+  },
+  "Script": {
+    "SrcTrigger": "Null",
+    "ScrAuto": "Event_00193_00014_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

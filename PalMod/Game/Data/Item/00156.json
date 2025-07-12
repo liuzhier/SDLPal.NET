@@ -1,0 +1,29 @@
+{
+  "Name": "天师道袍",
+  "Description": [
+    "天师道祖修行时所穿的法衣。",
+    "防御+33 灵力+28"
+  ],
+  "Bitmap": 75,
+  "Price": 8000,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00156_Equip",
+    "Throw": "Null"
+  }
+}

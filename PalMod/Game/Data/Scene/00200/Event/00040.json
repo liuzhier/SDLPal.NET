@@ -1,0 +1,32 @@
+{
+  "Comment": "孽龙",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 10,
+    "SpriteID": 460,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 576,
+        "Y": 1280
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": true,
+    "IsAutoTrigger": true,
+    "TriggerDistance": 1
+  },
+  "Script": {
+    "SrcTrigger": "Event_00200_00015_Trigger",
+    "ScrAuto": "Event_00006_00003_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

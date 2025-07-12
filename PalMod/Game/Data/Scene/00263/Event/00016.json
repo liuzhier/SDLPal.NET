@@ -1,0 +1,32 @@
+{
+  "Comment": "左面白苗女兵",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 593,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 1024,
+        "Y": 976
+      },
+      "Direction": 0,
+      "FrameID": 2
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": true,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 2
+  },
+  "Script": {
+    "SrcTrigger": "Event_00263_00003_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

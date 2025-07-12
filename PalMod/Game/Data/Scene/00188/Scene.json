@@ -1,0 +1,8 @@
+{
+  "Name": "废神木林",
+  "MapID": 153,
+  "Script": {
+    "ScrEnter": "Scene_00188_Enter",
+    "ScrTeleport": "Null"
+  }
+}

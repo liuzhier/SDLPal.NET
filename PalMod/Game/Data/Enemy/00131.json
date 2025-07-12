@@ -1,0 +1,70 @@
+{
+  "Name": "巫王侍卫",
+  "Frame": {
+    "BitmapID": 130,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 20
+    },
+    "Idle": 1,
+    "Magic": 6,
+    "Attack": 1,
+    "IdleWaitFrames": 99,
+    "ActWaitFrames": 1
+  },
+  "Sound": {
+    "AttackID": 239,
+    "ActionID": 0,
+    "MagicID": 265,
+    "DeathID": 266,
+    "BeginBattleID": 91
+  },
+  "Attribute": {
+    "Level": 50,
+    "HP": 5550,
+    "MaxHP": 5550,
+    "AttackStrength": 0,
+    "MagicStrength": 0,
+    "Defense": 20,
+    "Dexterity": 33,
+    "FleeRate": 1
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 6.0,
+      "Thunder": 6.0,
+      "Water": 6.0,
+      "Fire": 6.0,
+      "Earth": 6.0
+    },
+    "Physics": 2.0,
+    "Poison": 5.0,
+    "Sorcery": 2.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 84,
+    "MagicRate": 5,
+    "AttackEquivItemID": 25,
+    "AttackEquivItemRate": 3,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 86,
+    "StealItemCount": 1,
+    "Exp": 1210,
+    "Level": 0,
+    "Cash": 800,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 0
+  },
+  "Script": {
+    "TurnStart": "Null",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

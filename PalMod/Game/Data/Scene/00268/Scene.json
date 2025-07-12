@@ -1,0 +1,8 @@
+{
+  "Name": "大理·各分立屋宇·空·逃难·未知",
+  "MapID": 166,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

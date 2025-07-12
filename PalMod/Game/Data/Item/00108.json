@@ -1,0 +1,30 @@
+{
+  "Name": "铁剑",
+  "Description": [
+    "一般铁匠大量生产的剑，打造",
+    "得颇为粗劣。",
+    "武术+10 防御+3"
+  ],
+  "Bitmap": 49,
+  "Price": 850,
+  "Scope": {
+    "Usable": false,
+    "Throwable": true,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00108_Equip",
+    "Throw": "Item_00108_Throw"
+  }
+}

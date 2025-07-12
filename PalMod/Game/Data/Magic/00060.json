@@ -1,0 +1,53 @@
+{
+  "Name": "万蚁蚀象",
+  "Description": [
+    "操纵食人毒蚁，",
+    "攻击敌方单人。"
+  ],
+  "BaseDamage": 350,
+  "CostMP": 37,
+  "SoundID": 82,
+  "SummonID": -1,
+  "Genus": {
+    "Sword": false,
+    "Wind": false,
+    "Thunder": false,
+    "Water": false,
+    "Fire": false,
+    "Earth": false,
+    "Poison": true,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": false,
+    "Buff": false
+  },
+  "AttackMode": 0,
+  "Frame": {
+    "BitmapID": 43,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 32
+    },
+    "LayerOffset": 99,
+    "Preview": 0,
+    "Speed": 5,
+    "KeepEffect": false,
+    "TotalTimes": 0,
+    "Shake": 0,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": true,
+    "UsableToEnemy": false,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false
+  },
+  "Script": {
+    "Success": "Null",
+    "Use": "Null"
+  }
+}

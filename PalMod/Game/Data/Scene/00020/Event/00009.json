@@ -1,0 +1,32 @@
+{
+  "Comment": "弥留姥姥",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 212,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 1120,
+        "Y": 1232
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": true,
+    "TriggerDistance": 2
+  },
+  "Script": {
+    "SrcTrigger": "Event_00020_00009_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

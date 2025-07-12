@@ -1,0 +1,70 @@
+{
+  "Name": "牛鬼",
+  "Frame": {
+    "BitmapID": 69,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 24
+    },
+    "Idle": 1,
+    "Magic": 1,
+    "Attack": 1,
+    "IdleWaitFrames": 99,
+    "ActWaitFrames": 3
+  },
+  "Sound": {
+    "AttackID": 265,
+    "ActionID": 0,
+    "MagicID": 265,
+    "DeathID": 266,
+    "BeginBattleID": 27
+  },
+  "Attribute": {
+    "Level": 50,
+    "HP": 5570,
+    "MaxHP": 5570,
+    "AttackStrength": 30,
+    "MagicStrength": 30,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 8.0,
+      "Thunder": 8.0,
+      "Water": 8.0,
+      "Fire": 3.0,
+      "Earth": 10.0
+    },
+    "Physics": 4.0,
+    "Poison": 1.0,
+    "Sorcery": 0.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 85,
+    "MagicRate": 6,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 85,
+    "StealItemCount": 2,
+    "Exp": 920,
+    "Level": 0,
+    "Cash": 0,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 5
+  },
+  "Script": {
+    "TurnStart": "Null",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

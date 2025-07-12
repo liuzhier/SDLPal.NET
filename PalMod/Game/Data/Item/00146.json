@@ -1,0 +1,29 @@
+{
+  "Name": "凤凰羽毛",
+  "Description": [
+    "金翅凤凰腹部的银色羽毛。",
+    "防御+7 身法+24 吉运+9"
+  ],
+  "Bitmap": 206,
+  "Price": 5000,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": false,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": false
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00146_Equip",
+    "Throw": "Null"
+  }
+}

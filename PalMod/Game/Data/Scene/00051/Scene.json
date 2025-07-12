@@ -1,0 +1,8 @@
+{
+  "Name": "白河村·各分立屋宇",
+  "MapID": 48,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

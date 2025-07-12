@@ -1,0 +1,8 @@
+{
+  "Name": "桃花源·大雾",
+  "MapID": 16,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

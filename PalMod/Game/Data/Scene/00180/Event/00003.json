@@ -1,0 +1,32 @@
+{
+  "Comment": "树妖",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 60,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 1424,
+        "Y": 1416
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": true,
+    "IsAutoTrigger": true,
+    "TriggerDistance": 1
+  },
+  "Script": {
+    "SrcTrigger": "Event_00180_00003_Trigger",
+    "ScrAuto": "Event_00006_00005_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

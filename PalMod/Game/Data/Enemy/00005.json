@@ -1,0 +1,70 @@
+{
+  "Name": "凤梨小妖",
+  "Frame": {
+    "BitmapID": 5,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "Idle": 2,
+    "Magic": 0,
+    "Attack": 1,
+    "IdleWaitFrames": 6,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 50,
+    "ActionID": 0,
+    "MagicID": 219,
+    "DeathID": 186,
+    "BeginBattleID": 91
+  },
+  "Attribute": {
+    "Level": 30,
+    "HP": 1750,
+    "MaxHP": 1750,
+    "AttackStrength": 7,
+    "MagicStrength": 0,
+    "Defense": 7,
+    "Dexterity": 15,
+    "FleeRate": 1
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 6.0,
+      "Thunder": 6.0,
+      "Water": 6.0,
+      "Fire": 6.0,
+      "Earth": 6.0
+    },
+    "Physics": 3.0,
+    "Poison": 5.0,
+    "Sorcery": 0.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 0,
+    "MagicRate": 0,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 44,
+    "StealItemCount": 1,
+    "Exp": 150,
+    "Level": 0,
+    "Cash": 0,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 2
+  },
+  "Script": {
+    "TurnStart": "Null",
+    "BattleWon": "Enemy_00005_BattleWon",
+    "ReadyToAction": "Enemy_00005_ReadyToAction"
+  }
+}

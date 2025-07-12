@@ -1,0 +1,8 @@
+{
+  "Name": "飞贼之家·显",
+  "MapID": 120,
+  "Script": {
+    "ScrEnter": "Scene_00090_Enter",
+    "ScrTeleport": "Null"
+  }
+}

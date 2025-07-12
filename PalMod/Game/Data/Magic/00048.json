@@ -1,0 +1,53 @@
+{
+  "Name": "斩龙诀",
+  "Description": [
+    "以雄浑气劲横扫群魔，",
+    "攻击敌方全体。"
+  ],
+  "BaseDamage": 280,
+  "CostMP": 46,
+  "SoundID": 132,
+  "SummonID": -1,
+  "Genus": {
+    "Sword": true,
+    "Wind": false,
+    "Thunder": false,
+    "Water": false,
+    "Fire": false,
+    "Earth": false,
+    "Poison": false,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": false,
+    "Buff": false
+  },
+  "AttackMode": 2,
+  "Frame": {
+    "BitmapID": 11,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 44
+    },
+    "LayerOffset": 0,
+    "Preview": 0,
+    "Speed": 0,
+    "KeepEffect": true,
+    "TotalTimes": 0,
+    "Shake": 0,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": true,
+    "UsableToEnemy": false,
+    "ApplyToAllHero": true,
+    "ApplyToAllEnemy": true
+  },
+  "Script": {
+    "Success": "Null",
+    "Use": "Magic_00048_Use"
+  }
+}

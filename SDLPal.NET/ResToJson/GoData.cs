@@ -58,10 +58,8 @@ public unsafe class GoData
       C_Shop*              lpShop;
       C_EnemyTeam*         lpEnemyTeam;
       C_BattleField*       lpBattleField;
-      short*               lpLevelExp;
       T_EnemyTeam          _TEnemyTeam;
       BattleField          _BattleField;
-      List<T_LevelExp>     listLevelExp;
 
       path = $@"{GoMain.OUTPUT_PATH}\Shop";
       S_MKDIR(path);
@@ -252,11 +250,13 @@ public unsafe class GoData
          }
       }
 
+#if false
       //
       // The numerical calculation formula has been discovered
-      // and no unpacking is required
+      // and there is no need to continue unpacking
       //
-      return;
+      short*               lpLevelExp;
+      List<T_LevelExp>     listLevelExp;
 
       arrData = File.ReadAllBytes($@"{GoMain.BASE_PATH}\Data14.smkf");
       fixed (byte* lpTmp = arrData)
@@ -281,5 +281,6 @@ public unsafe class GoData
             JsonConvert.SerializeObject(listLevelExp, Formatting.Indented)
          );
       }
+#endif // false
    }
 }

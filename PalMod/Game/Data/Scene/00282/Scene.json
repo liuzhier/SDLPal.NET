@@ -1,0 +1,8 @@
+{
+  "Name": "南绍王宫·无用宫室",
+  "MapID": 180,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

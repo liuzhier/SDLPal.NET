@@ -1,0 +1,70 @@
+{
+  "Name": "鸟人",
+  "Frame": {
+    "BitmapID": 104,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 24
+    },
+    "Idle": 4,
+    "Magic": 0,
+    "Attack": 2,
+    "IdleWaitFrames": 3,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 71,
+    "ActionID": 4,
+    "MagicID": 71,
+    "DeathID": 191,
+    "BeginBattleID": 93
+  },
+  "Attribute": {
+    "Level": 31,
+    "HP": 620,
+    "MaxHP": 620,
+    "AttackStrength": 18,
+    "MagicStrength": 50,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 1
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 6.0,
+      "Thunder": 3.0,
+      "Water": 3.0,
+      "Fire": 3.0,
+      "Earth": 3.0
+    },
+    "Physics": 3.0,
+    "Poison": 3.0,
+    "Sorcery": 0.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 22,
+    "MagicRate": 6,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 91,
+    "StealItemCount": 1,
+    "Exp": 121,
+    "Level": 0,
+    "Cash": 97,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 2
+  },
+  "Script": {
+    "TurnStart": "Null",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

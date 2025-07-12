@@ -1,0 +1,29 @@
+{
+  "Name": "手卷",
+  "Description": [
+    "李逍遥的父母亲所留下的武功",
+    "秘笈。"
+  ],
+  "Bitmap": 0,
+  "Price": 0,
+  "Scope": {
+    "Usable": true,
+    "Throwable": false,
+    "Equipable": false,
+    "Sellable": false,
+    "Consuming": true,
+    "ApplyToAllHero": true,
+    "ApplyToAllEnemy": true,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00233_Use",
+    "Equip": "Null",
+    "Throw": "Null"
+  }
+}

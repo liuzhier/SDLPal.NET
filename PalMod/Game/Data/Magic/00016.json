@@ -1,0 +1,53 @@
+{
+  "Name": "真元护体",
+  "Description": [
+    "使用后如有铁铠金甲护体，",
+    "增加防御九回合。"
+  ],
+  "BaseDamage": 0,
+  "CostMP": 18,
+  "SoundID": 149,
+  "SummonID": -1,
+  "Genus": {
+    "Sword": false,
+    "Wind": false,
+    "Thunder": false,
+    "Water": false,
+    "Fire": false,
+    "Earth": false,
+    "Poison": false,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": true,
+    "Buff": false
+  },
+  "AttackMode": 4,
+  "Frame": {
+    "BitmapID": 29,
+    "OffsetPos": {
+      "X": -8,
+      "Y": 4
+    },
+    "LayerOffset": 1,
+    "Preview": 0,
+    "Speed": -1,
+    "KeepEffect": false,
+    "TotalTimes": 0,
+    "Shake": 0,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": false,
+    "UsableToEnemy": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false
+  },
+  "Script": {
+    "Success": "Magic_00016_Success",
+    "Use": "Null"
+  }
+}

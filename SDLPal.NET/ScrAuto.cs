@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,10 +39,11 @@ public unsafe partial class PalScript
 
       PalGlobal.DrawMoreData = false;
 
+   begin:
       scr = listScript[iScrAddr];
       evt = S_GetEvent(iSceneID, iEvtID);
 
-      PalLog.Go($@"RunAuto[{evt.Comment}]: {MakeFunc(scr)}");
+      PalLog.Go($@"RunAuto[({iEvtID}){evt.Comment}]: {MakeFunc(scr)}");
 
       //
       // For autoscript, we should interpret one instruction per frame (except jumping)
@@ -80,6 +82,26 @@ public unsafe partial class PalScript
             }
             break;
 
+         case "GotoWithNop":
+            //
+            // 0x0003
+            // unconditional jump
+            //
+            if (scr.INT(1) == 0 || ++(evt._ScriptFrame.AutoIdleFrame) < scr.INT(1))
+            {
+               iScrAddr = scr.ADDR(0);
+               goto begin;
+            }
+            else
+            {
+               //
+               // failed
+               //
+               evt._ScriptFrame.AutoIdleFrame = 0;
+               iScrAddr++;
+            }
+            break;
+
          case "Call":
             //
             // 0x0004
@@ -87,6 +109,25 @@ public unsafe partial class PalScript
             //
             RunTrigger(scr.ADDR(0), scr.BOOL(1) ? scr.INT(1) : iSceneID, scr.BOOL(2) ? scr.INT(2) : iEvtID);
             iScrAddr++;
+            break;
+
+         case "GotoWithProbability":
+            //
+            // 0x0006
+            // Jump to the specified address by the specified rate
+            //
+            if (S_RandomLong(1, 100) >= scr.INT(0))
+            {
+               if (scr.ADDR(1) != 0)
+               {
+                  iScrAddr = scr.ADDR(1);
+                  goto begin;
+               }
+            }
+            else
+            {
+               iScrAddr++;
+            }
             break;
 
          case "WaitEventAutoScriptRun":
@@ -102,6 +143,17 @@ public unsafe partial class PalScript
                evt._ScriptFrame.AutoIdleFrame = 0;
                iScrAddr++;
             }
+            break;
+
+         case "Dlg":
+            //
+            // 0xFFFF
+            // Print dialog text
+            //
+#if false
+            PalText.DrawTalkText(scr.Args[0]);
+            iScrAddr++;
+#endif // false
             break;
 
          default:

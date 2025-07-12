@@ -1,0 +1,70 @@
+{
+  "Name": "刑天",
+  "Frame": {
+    "BitmapID": 43,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "Idle": 2,
+    "Magic": 1,
+    "Attack": 2,
+    "IdleWaitFrames": 4,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 268,
+    "ActionID": 1,
+    "MagicID": 268,
+    "DeathID": 190,
+    "BeginBattleID": 94
+  },
+  "Attribute": {
+    "Level": 23,
+    "HP": 900,
+    "MaxHP": 900,
+    "AttackStrength": 0,
+    "MagicStrength": 0,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 4.0,
+      "Thunder": 2.0,
+      "Water": 4.0,
+      "Fire": 4.0,
+      "Earth": 4.0
+    },
+    "Physics": 3.0,
+    "Poison": 5.0,
+    "Sorcery": 0.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 85,
+    "MagicRate": 4,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 41,
+    "StealItemCount": 1,
+    "Exp": 88,
+    "Level": 0,
+    "Cash": 125,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 5
+  },
+  "Script": {
+    "TurnStart": "Null",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

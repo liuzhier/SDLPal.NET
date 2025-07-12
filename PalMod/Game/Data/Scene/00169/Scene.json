@@ -1,0 +1,8 @@
+{
+  "Name": "忆往昔·灵岛仙宫亲为辩",
+  "MapID": 9,
+  "Script": {
+    "ScrEnter": "Scene_00169_Enter",
+    "ScrTeleport": "Null"
+  }
+}

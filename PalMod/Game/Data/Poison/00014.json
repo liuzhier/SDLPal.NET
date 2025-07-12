@@ -1,0 +1,9 @@
+{
+  "Name": "MP回补",
+  "PoisonLevel": 99,
+  "ColorHex": "",
+  "Script": {
+    "Player": "Poison_00014_Player",
+    "Enemy": "Null"
+  }
+}

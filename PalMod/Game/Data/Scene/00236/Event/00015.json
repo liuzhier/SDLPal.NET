@@ -1,0 +1,32 @@
+{
+  "Comment": "汉人尸首1",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": -9,
+    "SpriteID": 580,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 880,
+        "Y": 1304
+      },
+      "Direction": 0,
+      "FrameID": 1
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 0
+  },
+  "Script": {
+    "SrcTrigger": "Null",
+    "ScrAuto": "Event_00236_00007_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

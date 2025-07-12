@@ -1,0 +1,8 @@
+{
+  "Name": "扬州·各独立商户及井后空屋",
+  "MapID": 89,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

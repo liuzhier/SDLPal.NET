@@ -1,0 +1,8 @@
+{
+  "Name": "余杭·客栈各分立房间·灵儿被劫",
+  "MapID": 12,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

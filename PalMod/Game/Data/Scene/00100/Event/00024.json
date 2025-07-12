@@ -1,0 +1,32 @@
+{
+  "Comment": "原地月如",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 400,
+    "SpriteFrames": 1,
+    "Pos": {
+      "Pos": {
+        "X": 944,
+        "Y": 1016
+      },
+      "Direction": 2,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": true,
+    "TriggerDistance": 2
+  },
+  "Script": {
+    "SrcTrigger": "Event_00100_00024_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

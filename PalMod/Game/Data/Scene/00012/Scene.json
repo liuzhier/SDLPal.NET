@@ -1,0 +1,8 @@
+{
+  "Name": "余杭·铁铺",
+  "MapID": 21,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

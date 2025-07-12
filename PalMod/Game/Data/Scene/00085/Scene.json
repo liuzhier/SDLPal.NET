@@ -1,0 +1,8 @@
+{
+  "Name": "扬州·3",
+  "MapID": 92,
+  "Script": {
+    "ScrEnter": "Scene_00085_Enter",
+    "ScrTeleport": "Null"
+  }
+}

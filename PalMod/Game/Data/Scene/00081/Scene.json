@@ -1,0 +1,8 @@
+{
+  "Name": "扬州·府衙·痛揍",
+  "MapID": 84,
+  "Script": {
+    "ScrEnter": "Scene_00081_Enter",
+    "ScrTeleport": "Null"
+  }
+}

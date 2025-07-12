@@ -1,0 +1,29 @@
+{
+  "Name": "莲花靴",
+  "Description": [
+    "饰以金莲的长统绣花鞋。",
+    "防御+18 身法+5"
+  ],
+  "Bitmap": 101,
+  "Price": 6000,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": false,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": false
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00183_Equip",
+    "Throw": "Null"
+  }
+}

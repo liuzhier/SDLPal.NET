@@ -1,0 +1,32 @@
+{
+  "Comment": "李赵奴乘升降梯",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": -9,
+    "SpriteID": 614,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 1040,
+        "Y": 712
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 0
+  },
+  "Script": {
+    "SrcTrigger": "Null",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

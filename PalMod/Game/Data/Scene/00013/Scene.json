@@ -1,0 +1,8 @@
+{
+  "Name": "余杭·林师傅木工铺",
+  "MapID": 22,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

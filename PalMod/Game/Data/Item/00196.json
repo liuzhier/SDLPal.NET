@@ -1,0 +1,29 @@
+{
+  "Name": "铜镜",
+  "Description": [
+    "青铜铸造的照容用具。",
+    "防御+6"
+  ],
+  "Bitmap": 24,
+  "Price": 800,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": false,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": false
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00196_Equip",
+    "Throw": "Null"
+  }
+}

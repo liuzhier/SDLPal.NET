@@ -1,0 +1,8 @@
+{
+  "Name": "隐龙窟·迷宫·2",
+  "MapID": 70,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Scene_00040_Teleport"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "Comment": "原地侍女",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 634,
+    "SpriteFrames": 1,
+    "Pos": {
+      "Pos": {
+        "X": 912,
+        "Y": 1128
+      },
+      "Direction": 1,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": true,
+    "TriggerDistance": 3
+  },
+  "Script": {
+    "SrcTrigger": "Event_00108_00007_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "Comment": "跌地刘晋元",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 451,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 880,
+        "Y": 568
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": true,
+    "IsAutoTrigger": true,
+    "TriggerDistance": 3
+  },
+  "Script": {
+    "SrcTrigger": "Event_00124_00004_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

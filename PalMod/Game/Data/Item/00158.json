@@ -1,0 +1,30 @@
+{
+  "Name": "金缕衣",
+  "Description": [
+    "以金线穿玉片编制而成",
+    "又称“金缕玉衣”。",
+    "防御+7 身法-10"
+  ],
+  "Bitmap": 208,
+  "Price": 12000,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00158_Equip",
+    "Throw": "Null"
+  }
+}

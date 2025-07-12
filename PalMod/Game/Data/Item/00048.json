@@ -1,0 +1,30 @@
+{
+  "Name": "雪莲子",
+  "Description": [
+    "白玉雪莲之莲子，其形珠圆玉润，",
+    "服食者真气充盈，经脉通畅。",
+    "MP+400"
+  ],
+  "Bitmap": 143,
+  "Price": 2000,
+  "Scope": {
+    "Usable": true,
+    "Throwable": false,
+    "Equipable": false,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00048_Use",
+    "Equip": "Null",
+    "Throw": "Null"
+  }
+}

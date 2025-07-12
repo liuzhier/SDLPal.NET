@@ -1,0 +1,8 @@
+{
+  "Name": "大理·族议厅·正常",
+  "MapID": 170,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

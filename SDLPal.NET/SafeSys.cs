@@ -9,6 +9,7 @@ using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using static HeroBase;
 using static PalCommon;
 using static PalConfig;
 using static PalMap;
@@ -393,6 +394,24 @@ public unsafe class SafeSys
    --*/
    {
       return memset(pSrc, value, len);
+   }
+
+   public static nint
+   S_MEMSET(
+      Array    arr,
+      int      value,
+      long     len   = -1
+   )
+   {
+      if (len == -1)
+      {
+         len = arr.LongLength;
+      }
+
+      fixed (byte* pTmp = (byte[])arr)
+      {
+         return S_MEMSET((nint)pTmp, value, len);
+      }
    }
 
    public static nint
@@ -794,13 +813,13 @@ public unsafe class SafeSys
    }
 
    public static void
-   S_SetNearestScale(
-      bool     fNearest = true
+   S_SetLinearScale(
+      bool     fLinear  = true
    )
    {
       SDL_FAILED(
          "SDL.SetDefaultTextureScaleMode",
-         SDL.SetDefaultTextureScaleMode(g_pRenderer, fNearest ? SDL.ScaleMode.Nearest : g_Config.video._ScaleMode)
+         SDL.SetDefaultTextureScaleMode(g_pRenderer, fLinear ? SDL.ScaleMode.Linear : g_Config.video._ScaleMode)
       );
    }
 
@@ -901,20 +920,44 @@ public unsafe class SafeSys
    )
    {
       int      val;
+      bool     parseRet;
 
-      val = 0;
-
-      try
+      if (strVal.StartsWith("0x"))
       {
-         val = Convert.ToInt32(strVal, S_IsHex(ref strVal) ? 16 : 10);
+         ReadOnlySpan<char> span = strVal.AsSpan().Trim();
+
+         if (span.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+         {
+            span = span.Slice(2);
+         }
+
+         parseRet = int.TryParse(span, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out val);
       }
-      catch
+      else
+      {
+         parseRet = int.TryParse(strVal, NumberStyles.Integer, CultureInfo.InvariantCulture, out val);
+      }
+
+      if (!parseRet)
       {
          S_FAILED(
             "S_INT",
             $@"The string '{strVal}' is not a number"
          );
       }
+
+      //val = 0;
+      //try
+      //{
+      //   val = Convert.ToInt32(strVal, S_IsHex(ref strVal) ? 16 : 10);
+      //}
+      //catch
+      //{
+      //   S_FAILED(
+      //      "S_INT",
+      //      $@"The string '{strVal}' is not a number"
+      //   );
+      //}
 
       return val;
    }
@@ -933,7 +976,6 @@ public unsafe class SafeSys
    )
    {
       uint     val;
-      bool     fIsHex;
 
       val = 0;
 
@@ -976,16 +1018,28 @@ public unsafe class SafeSys
       return val;
    }
 
+   public static PalSave
+   S_GetSave()
+   {
+      return PalGlobal.Save;
+   }
+
    public static Trail
    S_GetPartyTrail()
    {
-      return PalGlobal.Save.PartyTrail;
+      return S_GetSave().PartyTrail;
    }
 
    public static Pos
    S_GetPartyPos()
    {
       return S_GetPartyTrail().Pos;
+   }
+
+   public static BlockPos
+   S_GetPartyBPos()
+   {
+      return S_GetPartyTrail().BPos;
    }
 
    public static void
@@ -1034,7 +1088,7 @@ public unsafe class SafeSys
    {
       Party[]     arrParty;
 
-      arrParty = PalGlobal.Save.arrParty;
+      arrParty = S_GetSave().arrParty;
 
       if (roleID < 0)
       {
@@ -1049,7 +1103,7 @@ public unsafe class SafeSys
       int      roleID
    )
    {
-      return S_GetRole(roleID)._Trail;
+      return S_GetRole(roleID).Trail;
    }
 
    public static Pos
@@ -1113,7 +1167,7 @@ public unsafe class SafeSys
    {
       List<Follower>    listFollower;
 
-      listFollower = PalGlobal.Save.listFollower;
+      listFollower = S_GetSave().listFollower;
 
       if (followerID < 0)
       {
@@ -1128,7 +1182,7 @@ public unsafe class SafeSys
       int      followerID
    )
    {
-      return S_GetFollower(followerID)._Trail;
+      return S_GetFollower(followerID).Trail;
    }
 
    public static Pos
@@ -1180,29 +1234,31 @@ public unsafe class SafeSys
       S_GetFollowerTrail(followerID).Direction = dir;
    }
 
+   public static Scene
+   S_GetScene(
+      int      iSceneID
+   )
+   {
+      return (iSceneID == -1) ? S_GetSave().CurrScene : S_GetSave().listScene[iSceneID];
+   }
+
    public static Event
    S_GetEvent(
       int      iSceneID,
       int      iEvtID
    )
    {
-      Scene    scene;
+      Scene          scene;
+      List<Event>    listEvent;
 
-      if (iEvtID == -1)
+      listEvent = S_GetScene(iSceneID).listEvent;
+
+      if (iEvtID == -1 || iEvtID >= listEvent.Count)
       {
          return null;
       }
 
-      if (iSceneID == -1)
-      {
-         scene = PalGlobal.Save.CurrScene;
-      }
-      else
-      {
-         scene = PalGlobal.Save.listScene[iSceneID];
-      }
-
-      return scene.listEvent[iEvtID];
+      return listEvent[iEvtID];
    }
 
    public static Trail
@@ -1217,64 +1273,191 @@ public unsafe class SafeSys
          return null;
       }
 
-      return S_GetEvent(iSceneID, iEvtID)._Frame._Trail;
+      return S_GetEvent(iSceneID, iEvtID)._Frame.Trail;
    }
 
-   public static bool
+   /// 
+   /// <summary>
+   ///   Add or remove items from the inventory.
+   /// </summary>
+   /// 
+   /// <param name="iItemID">
+   ///   [IN] iItemID - object number of the item.
+   /// </param>
+   /// <param name="iNum">
+   ///   [IN] iNum - number to be added (positive value) or removed (negative value).
+   /// </param>
+   /// 
+   /// <returns>
+   ///   fIsSuccess: Indicates whether the operation was successful.
+   ///   <br/>
+   ///   iCount: When the inventory items are removed and the quantity is insufficient,
+   ///         count the missing quantity.
+   /// </returns>
+   /// 
+   public static (bool fIsSuccess, int iCount)
    S_InventoryAddItem(
-      int      itemID,
-      int      num
+      int      iItemID,
+      int      iNum
    )
    {
+      bool                 fIsSuccess;
+      int                  iCount;
       List<Inventory>      listInventory;
       Inventory            item;
 
-      if (itemID == 0)
+      fIsSuccess = true;
+      iCount = 0;
+
+      if (iItemID == 0 || iNum == 0)
       {
-         return false;
+         //
+         // No operation is required
+         //
+         goto InventoryAddItem_return;
       }
 
-      if (num == 0)
-      {
-         num = 1;
-      }
+      listInventory = S_GetSave().listInventory;
+      item = listInventory.Find(x => x.ItemID == iItemID);
 
-      listInventory = PalGlobal.Save.listInventory;
-      item = listInventory.Find(x => x.Item == PalGlobal.Save._Entity.Item[itemID]);
-
-      if (num > 0)
+      if (iNum > 0)
       {
          if (item == null)
          {
             listInventory.Add(new Inventory
             {
-               Item = PalGlobal.Save._Entity.Item[itemID],
-               Amount = num,
+               ItemID = iItemID,
+               Amount = iNum,
             });
          }
          else
          {
-            item.Amount += num;
+            item.Amount += iNum;
          }
+
+         fIsSuccess = true;
       }
       else
       {
-         if (item == null || item.Amount < num)
+         if (item != null)
          {
-            return false;
-         }
-         else
-         {
-            item.Amount -= num;
+            fIsSuccess = item.Amount >= iNum;
+            item.Amount += iNum;
 
-            if (item.Amount == 0)
+            if (item.Amount <= 0)
             {
+               //
+               // The quantity of inventory items may be insufficient,
+               // and the missing quantity needs to be recorded
+               //
+               iCount = Math.Abs(item.Amount);
+               fIsSuccess = (iCount == 0);
                listInventory.Remove(item);
             }
          }
       }
 
-      return true;
+   InventoryAddItem_return:
+      return (fIsSuccess, iCount);
+   }
+
+   /// 
+   /// <summary>
+   ///   Count the specified kind of item in the inventory AND in players' equipments.
+   /// </summary>
+   /// 
+   /// <param name="iObjectID">
+   ///   [IN]  iObjectID - object number of the item.
+   /// </param>
+   /// 
+   /// <returns>
+   ///   Counted value.
+   /// </returns>
+   /// 
+   public static int
+   S_InventoryCountItem(
+      int      iObjectID
+   )
+   {
+      int            i, j, iCount;
+      Hero           hero;
+      int*           ipEquip;
+      Inventory?     inventory;
+
+      iCount = 0;
+
+      //
+      // Search for the specified item in the inventory
+      //
+      inventory = S_GetSave().listInventory.Find(x => x.ItemID == iObjectID);
+      if (inventory != null)
+      {
+         //
+         // This item exists in the inventory
+         //
+         iCount += inventory.Amount;
+      }
+
+      //
+      // Search for the designated items among the equipment on the team members
+      //
+      for (i = 0; i <= S_GetSave().PartySize; i++)
+      {
+         hero = S_GetHero(S_GetRole(i).HeroID);
+
+         fixed (HeroBase.Equip* lpEquip = &hero._HeroBase._Equip)
+         {
+            for (j = 0; j < MAX_PLAYER_EQUIPMENTS; j++)
+            {
+               ipEquip = (int*)lpEquip;
+
+               if (ipEquip[j] == iObjectID)
+               {
+                  iCount++;
+               }
+            }
+         }
+      }
+
+      return iCount;
+   }
+
+   public static void
+   S_RemoveEquipEffect(
+      int            iPlayerRole,
+      EquipPart      iEquipPart
+   )
+   {
+      Hero.EquipEffect     equipEffect;
+
+      equipEffect = S_GetRole(iPlayerRole).Hero._EquipEffect;
+
+      switch (iEquipPart)
+      {
+         case EquipPart.Head:
+            equipEffect.Head = new HeroBase();
+            break;
+
+         case EquipPart.Body:
+            equipEffect.Body = new HeroBase();
+            break;
+
+         case EquipPart.Armour:
+            equipEffect.Armour = new HeroBase();
+            break;
+
+         case EquipPart.Backside:
+            equipEffect.Backside = new HeroBase();
+            break;
+
+         case EquipPart.Hand:
+            equipEffect.Hand = new HeroBase();
+            break;
+
+         case EquipPart.Foot:
+            equipEffect.Foot = new HeroBase();
+            break;
+      }
    }
 
    public static void
@@ -1303,8 +1486,8 @@ public unsafe class SafeSys
       string      strText
    )
    {
-      int i, nLineWord;
-      char charWord;
+      int      i, nLineWord;
+      char     charWord;
 
       nLineWord = strText.Length;
 
@@ -1330,12 +1513,18 @@ public unsafe class SafeSys
       return nLineWord;
    }
 
+   public static Entity
+   S_GetEntity()
+   {
+      return S_GetSave()._Entity;
+   }
+
    public static Hero
    S_GetHero(
       int      heroID
    )
    {
-      return PalGlobal.Save._Entity.Hero[heroID];
+      return S_GetEntity().Hero[heroID];
    }
 
    public static Item
@@ -1343,6 +1532,163 @@ public unsafe class SafeSys
       int      itemID
    )
    {
-      return PalGlobal.Save._Entity.Item[itemID];
+      return S_GetEntity().Item[itemID];
+   }
+
+   public static Magic
+   S_GetMagic(
+      int      magicID
+   )
+   {
+      List<Magic>    Magic;
+
+      Magic = S_GetEntity().Magic;
+
+      if (magicID < 0)
+      {
+         magicID = Magic.Count - magicID;
+      }
+
+      if (magicID >= Magic.Count)
+      {
+         magicID = magicID % Magic.Count;
+      }
+
+      return S_GetEntity().Magic[magicID];
+   }
+
+   static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+   static long
+   S_time()
+   {
+      //
+      // Get current UTC time
+      //
+      DateTime currentTime = DateTime.UtcNow;
+
+      //
+      // Calculate time difference from Unix epoch
+      //
+      TimeSpan elapsed = currentTime - UnixEpoch;
+
+      //
+      // Return total seconds as long
+      //
+      return (long)elapsed.TotalSeconds;
+   }
+
+   //
+   // Our random number generator's seed.
+   //
+   static int glSeed = 0;
+
+   static void
+   S_lsrand(
+      uint     iInitialSeed
+   )
+   /*++
+     Purpose:
+
+       This function initializes the random seed based on the initial seed value passed in the
+       iInitialSeed parameter.
+
+     Parameters:
+
+       [IN]  iInitialSeed - The initial random seed.
+
+     Return value:
+
+       None.
+
+   --*/
+   {
+      //
+      // fill in the initial seed of the random number generator
+      //
+      glSeed = (int)(1664525L * iInitialSeed + 1013904223L);
+   }
+
+   static int
+   S_lrand()
+   /*++
+     Purpose:
+
+       This function is the equivalent of the rand() standard C library function, except that
+       whereas rand() works only with short integers (i.e. not above 32767), this function is
+       able to generate 32-bit random numbers.
+
+     Parameters:
+
+       None.
+
+     Return value:
+
+       The generated random number.
+
+   --*/
+   {
+      if (glSeed == 0) // if the random seed isn't initialized...
+         S_lsrand((uint)S_time()); // initialize it first
+      glSeed = (int)(1664525L * glSeed + 1013904223L); // do some twisted math (infinite suite)
+      return (int)((glSeed >> 1) + 1073741824L); // and return the result.
+   }
+
+   public static int
+   S_RandomLong(
+      int      from,
+      int      to
+   )
+   /*++
+     Purpose:
+
+       This function returns a random integer number between (and including) the starting and
+       ending values passed by parameters from and to.
+
+     Parameters:
+
+       from - the starting value.
+
+       to - the ending value.
+
+     Return value:
+
+       The generated random number.
+
+   --*/
+   {
+      if (to <= from)
+         return from;
+
+      return from + S_lrand() / (int.MaxValue / (to - from + 1));
+   }
+
+   float
+   S_RandomFloat(
+      float from,
+      float to
+   )
+   /*++
+     Purpose:
+
+       This function returns a random floating-point number between (and including) the starting
+       and ending values passed by parameters from and to.
+
+     Parameters:
+
+       from - the starting value.
+
+       to - the ending value.
+
+     Return value:
+
+       The generated random number.
+
+   --*/
+   {
+      if (to <= from)
+         return from;
+
+      return from + (float)S_lrand() / (int.MaxValue / (to - from));
    }
 }

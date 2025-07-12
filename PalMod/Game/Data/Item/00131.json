@@ -1,0 +1,30 @@
+{
+  "Name": "无尘剑",
+  "Description": [
+    "上古神剑，指天天崩、划地地裂。",
+    "武术+200 防御+20 身法+77",
+    "吉运+33"
+  ],
+  "Bitmap": 186,
+  "Price": 32000,
+  "Scope": {
+    "Usable": false,
+    "Throwable": true,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00131_Equip",
+    "Throw": "Item_00131_Throw"
+  }
+}

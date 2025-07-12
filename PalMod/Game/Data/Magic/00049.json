@@ -1,0 +1,50 @@
+{
+  "Name": "暗器",
+  "Description": [],
+  "BaseDamage": 33,
+  "CostMP": 0,
+  "SoundID": 158,
+  "SummonID": -1,
+  "Genus": {
+    "Sword": true,
+    "Wind": false,
+    "Thunder": false,
+    "Water": false,
+    "Fire": false,
+    "Earth": false,
+    "Poison": false,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": false,
+    "Buff": false
+  },
+  "AttackMode": 0,
+  "Frame": {
+    "BitmapID": 24,
+    "OffsetPos": {
+      "X": -12,
+      "Y": 0
+    },
+    "LayerOffset": 1,
+    "Preview": 0,
+    "Speed": 0,
+    "KeepEffect": false,
+    "TotalTimes": 0,
+    "Shake": 0,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": true,
+    "UsableToEnemy": false,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false
+  },
+  "Script": {
+    "Success": "Null",
+    "Use": "Null"
+  }
+}

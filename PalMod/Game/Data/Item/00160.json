@@ -1,0 +1,30 @@
+{
+  "Name": "天蚕宝衣",
+  "Description": [
+    "以极珍贵的天蚕丝织成，",
+    "轻薄柔韧。",
+    "防御+66"
+  ],
+  "Bitmap": 230,
+  "Price": 18000,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00160_Equip",
+    "Throw": "Null"
+  }
+}

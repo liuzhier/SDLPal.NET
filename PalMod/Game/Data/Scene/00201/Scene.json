@@ -1,0 +1,8 @@
+{
+  "Name": "梦之床",
+  "MapID": 20,
+  "Script": {
+    "ScrEnter": "Scene_00201_Enter",
+    "ScrTeleport": "Null"
+  }
+}

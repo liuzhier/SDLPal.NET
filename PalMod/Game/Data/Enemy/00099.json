@@ -1,0 +1,70 @@
+{
+  "Name": "石长老",
+  "Frame": {
+    "BitmapID": 119,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 10
+    },
+    "Idle": 1,
+    "Magic": 6,
+    "Attack": 2,
+    "IdleWaitFrames": 99,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 265,
+    "ActionID": 0,
+    "MagicID": 265,
+    "DeathID": 190,
+    "BeginBattleID": 90
+  },
+  "Attribute": {
+    "Level": 36,
+    "HP": 32767,
+    "MaxHP": 32767,
+    "AttackStrength": 0,
+    "MagicStrength": 0,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 8.0,
+      "Thunder": 8.0,
+      "Water": 8.0,
+      "Fire": 8.0,
+      "Earth": 8.0
+    },
+    "Physics": 8.0,
+    "Poison": 8.0,
+    "Sorcery": 10.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 91,
+    "MagicRate": 10,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 63,
+    "StealItemCount": 3,
+    "Exp": 0,
+    "Level": 0,
+    "Cash": 0,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 0
+  },
+  "Script": {
+    "TurnStart": "Enemy_00099_TurnStart",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

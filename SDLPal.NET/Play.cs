@@ -1,6 +1,8 @@
-﻿using SDL3;
+﻿using Newtonsoft.Json;
+using SDL3;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -40,15 +42,15 @@ public unsafe class PalPlay
    {
       int               i, xOffset, yOffset, x, y, scrAddr;
       PalDirection      dir;
+      Scene             scene;
       Event             evt;
-      PalSave           save;
       string            scr;
       Trail             trail;
       bool              fContinue;
       Pos               pos;
 
       fContinue = false;
-      save = PalGlobal.Save;
+      scene = S_GetScene(-1);
 
       //
       // Check for trigger events
@@ -69,11 +71,16 @@ public unsafe class PalPlay
             // Execute the scene entry script
             //
             g_fShowSceneInfo = false;
-            scr = save.CurrScene._Script.ScrEnter;
+            scr = scene._Script.ScrEnter;
             scrAddr = PalScript.GetScrAddr(scr);
-            save.CurrScene._Script.ScrEnter = PalScript.MKScrTag(
-               PalScript.RunTrigger(scrAddr, -1, -1)
-            );
+            if (scrAddr != 0)
+            {
+               PalLog.Go($@"SceneEnter[Begin]: {scene.Name}");
+               scene._Script.ScrEnter = PalScript.MKScrTag(
+                  PalScript.RunTrigger(scrAddr, -1, -1, $"SceneEnter<{PalGlobal.Save.SceneID}>")
+               );
+               PalLog.Go($@"SceneEnter[End]: {scene.Name}");
+            }
 
             if (PalGlobal.EnterScene)
             {
@@ -90,48 +97,54 @@ public unsafe class PalPlay
          //
          // Loop through all event objects in the current scene
          //
-         for (i = 1; i < save.CurrScene.listEvent.Count; i++)
+         for (i = 1; i < scene.listEvent.Count; i++)
          {
-            evt = save.CurrScene.listEvent[i];
+            evt = scene.listEvent[i];
+            fContinue = false;
 
-            if (evt._Frame.VanishTime > 0)
+            if (evt._Frame.VanishTime > 1)
             {
+               fContinue = true;
+
                //
                // Update the vanish time for all event objects
                //
                evt._Frame.VanishTime -= 1;
-               fContinue = true;
             }
 
             if (evt._Frame.StillTime > 0)
             {
+               fContinue = true;
+
                //
                // Update the still time for all event objects
                //
                evt._Frame.StillTime -= 1;
-               fContinue = true;
             }
 
             if (fContinue)
             {
-               fContinue = false;
                continue;
             }
 
-            trail = evt._Frame._Trail;
+            trail = evt._Frame.Trail;
 
-            //if (p->sState < 0)
-            //{
-            //   if (p->x < PAL_X(gpGlobals->viewport) ||
-            //      p->x > PAL_X(gpGlobals->viewport) + 320 ||
-            //      p->y < PAL_Y(gpGlobals->viewport) ||
-            //      p->y > PAL_Y(gpGlobals->viewport) + 320)
-            //   {
-            //      p->sState = abs(p->sState);
-            //      trail.FrameID = 0;
-            //   }
-            //}
-            if (evt._Status.Display && evt._Status.IsAutoTrigger)
+            if (!evt._Status.Display && evt._Frame.VanishTime == 1)
+            {
+               //
+               // To be repaired! All hidden events will be redisplayed
+               //
+               if (trail.Pos.X < Viewport.Pos.X ||
+                  trail.Pos.X > Viewport.Pos.X + VIDEO_WIDTH ||
+                  trail.Pos.Y < Viewport.Pos.Y ||
+                  trail.Pos.Y > Viewport.Pos.Y + VIDEO_HEIGHT)
+               {
+                  evt._Status.Display = true;
+                  evt._Frame.VanishTime = 0;
+                  trail.FrameID = 0;
+               }
+            }
+            else if (evt._Status.Display && evt._Status.IsAutoTrigger)
             {
                //
                // This event object can be triggered without manually exploring
@@ -139,18 +152,13 @@ public unsafe class PalPlay
                xOffset = S_GetPartyPos().X - trail.Pos.X;
                yOffset = S_GetPartyPos().Y - trail.Pos.Y;
 
-               if (trail.Pos.X == 1152 && trail.Pos.Y == 384)
-               {
-                  i = i;
-               }
-
                if (Math.Abs(xOffset) + Math.Abs(yOffset) * 2
                   < evt._Status.TriggerDistance * 32 + 16)
                {
                   //
                   // Player is in the trigger zone.
                   //
-                  if (S_B(trail.FrameID))
+                  if (evt._Frame.SpriteFrames != 0)
                   {
                      //
                      // The sprite has multiple frames. Try to adjust the direction.
@@ -199,12 +207,14 @@ public unsafe class PalPlay
          }
       }
 
+      var sw = Stopwatch.StartNew();
+
       //
       // Run autoscript for each event objects
       //
-      for (i = 1; i < save.CurrScene.listEvent.Count; i++)
+      for (i = 1; i < scene.listEvent.Count; i++)
       {
-         evt = save.CurrScene.listEvent[i];
+         evt = scene.listEvent[i];
 
          if (evt._Status.Display && evt._Frame.VanishTime == 0)
          {
@@ -226,16 +236,15 @@ public unsafe class PalPlay
             }
          }
 
-         trail = evt._Frame._Trail;
+         trail = evt._Frame.Trail;
+         pos = S_GetPartyPos();
 
          //
          // Check if the player is in the way
          //
          if (fTrigger && evt._Status.IsObstacle &&
-            S_B(trail.FrameID) &&
-            Math.Abs(trail.Pos.X - Viewport.Pos.X) +
-            Math.Abs(trail.Pos.Y - Viewport.Pos.Y) * 2
-            <= 12)
+            evt._Frame.SpriteFrames != 0 &&
+            Math.Abs(trail.Pos.X - pos.X) + Math.Abs(trail.Pos.Y - pos.Y) * 2 <= 12)
          {
             //
             // Player is in the way, try to move a step
@@ -244,34 +253,30 @@ public unsafe class PalPlay
 
             for (i = 0; i < DIRECTION.Length; i++)
             {
-               pos = S_GetPartyPos();
+               pos = S_GetPartyPos().Clone();
 
-               x = (dir == PalDirection.West || dir == PalDirection.South) ? -16 : 16;
-               y = (dir == PalDirection.West || dir == PalDirection.North) ? -8 : 8;
-
-               pos = new Pos
-               {
-                  X = pos.X + x,
-                  Y = pos.Y + y,
-               };
+               pos.X += (dir == PalDirection.West || dir == PalDirection.South) ? -16 : 16;
+               pos.Y += (dir == PalDirection.West || dir == PalDirection.North) ? -8 : 8;
 
                if (!PalScene.CheckObstacle(pos, true, 0, true))
                {
                   //
                   // move here
                   //
-                  pos.X += x;
-                  pos.Y += y;
+                  S_SetPartyPos(pos);
                   break;
                }
             }
          }
-
       }
 
-      if (--PalGlobal.Save.ChaseCycles == 0)
+      sw.Stop();
+
+      var swe = sw.ElapsedMilliseconds;
+
+      if (--S_GetSave().ChaseCycles == 0)
       {
-         PalGlobal.Save.ChaseRange = 1;
+         S_GetSave().ChaseRange = 1;
       }
 
       PalGlobal.FrameNum++;
@@ -351,7 +356,7 @@ public unsafe class PalPlay
          dx = arrPos[i].X / 32;
          dy = arrPos[i].Y / 16;
 
-         listEvent = PalGlobal.Save.CurrScene.listEvent;
+         listEvent = S_GetSave().CurrScene.listEvent;
 
          //
          // Loop through all event objects
@@ -382,7 +387,7 @@ public unsafe class PalPlay
                trail.FrameID = 0; // use standing gesture
                trail.Direction = (PalDirection)((int)(dir + 2) % 4); // face the party
 
-               for (l = 0; l <= PalGlobal.Save.PartySize; l++)
+               for (l = 0; l <= S_GetSave().PartySize; l++)
                {
                   //
                   // All party members should face the event object
@@ -446,8 +451,8 @@ public unsafe class PalPlay
 
       //if (PalGlobal.FrameNum == 60)
       //{
-      //   PalGlobal.Save.SceneWave.Level = 255;
-      //   PalGlobal.Save.SceneWave.Step = -4;
+      //   S_GetSave().SceneWave.Level = 255;
+      //   S_GetSave().SceneWave.Step = -4;
       //}
 
       //
@@ -457,7 +462,7 @@ public unsafe class PalPlay
 
       PalGlobal.DrawMoreData = true;
 
-      if (PalInput.Pressed(PalKey.Menu))
+      if (PalInput.Pressed(PalKey.Menu | PalKey.UseItem))
       {
          PalGlobal.DrawMoreData = false;
       }
@@ -474,6 +479,13 @@ public unsafe class PalPlay
          // Show the main menu within the game scene
          //
          PalUiGame.SceneMainMenu();
+      }
+      else if (PalInput.Pressed(PalKey.UseItem))
+      {
+         //
+         // Display the menu for using inventory items
+         //
+         PalUiGame.InventoryUseItem();
       }
       else if (PalInput.Pressed(PalKey.Search))
       {

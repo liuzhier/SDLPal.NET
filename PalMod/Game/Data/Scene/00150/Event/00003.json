@@ -1,0 +1,32 @@
+{
+  "Comment": "剑圣御剑",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 444,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 1152,
+        "Y": 560
+      },
+      "Direction": 0,
+      "FrameID": 1
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 0
+  },
+  "Script": {
+    "SrcTrigger": "Null",
+    "ScrAuto": "Event_00150_00003_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

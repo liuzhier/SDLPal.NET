@@ -1,0 +1,53 @@
+{
+  "Name": "天剑",
+  "Description": [
+    "人剑合一，身化利剑，",
+    "攻击敌方全体。"
+  ],
+  "BaseDamage": 0,
+  "CostMP": 0,
+  "SoundID": 125,
+  "SummonID": 2,
+  "Genus": {
+    "Sword": true,
+    "Wind": false,
+    "Thunder": false,
+    "Water": false,
+    "Fire": false,
+    "Earth": false,
+    "Poison": false,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": false,
+    "Buff": false
+  },
+  "AttackMode": 2,
+  "Frame": {
+    "BitmapID": 14,
+    "OffsetPos": {
+      "X": 27,
+      "Y": 60
+    },
+    "LayerOffset": 99,
+    "Preview": 0,
+    "Speed": 0,
+    "KeepEffect": false,
+    "TotalTimes": 0,
+    "Shake": 0,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": true,
+    "UsableToEnemy": false,
+    "ApplyToAllHero": true,
+    "ApplyToAllEnemy": true
+  },
+  "Script": {
+    "Success": "Null",
+    "Use": "Null"
+  }
+}

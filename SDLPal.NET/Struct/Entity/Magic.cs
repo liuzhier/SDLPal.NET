@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using static PalMap;
+using static PalCommon;
 
 public class Magic
 {
@@ -76,6 +77,8 @@ public class Magic
       public   bool     Poison;
       public   bool     Sorcery;
       public   bool     Ultimate;      // Strongest skill
+      public   bool     Angel;         // Light
+      public   bool     Evil;          // Dark
       public   bool     Heal;          // Healing
       public   bool     Buff;          // Auxiliary/Gain
    }
@@ -94,5 +97,96 @@ public class Magic
    {
       public   string      Success;       // When magic succeed, execute script from here
       public   string      Use;           // When use this magic, execute script from here
+   }
+
+   [JsonIgnore]
+   private  List<string>      arrGenus = new List<string>();
+
+   public List<string>
+   GetGenus()
+   {
+      int      i;
+
+      arrGenus.Clear();
+
+      i = 0;
+      if (_Genus.Sword)
+      {
+         arrGenus.Add(MAGIC_GENUS[i]);
+      }
+
+      i++;
+      if (_Genus.Wind)
+      {
+         arrGenus.Add(MAGIC_GENUS[i]);
+      }
+
+      i++;
+      if (_Genus.Thunder)
+      {
+         arrGenus.Add(MAGIC_GENUS[i]);
+      }
+
+      i++;
+      if (_Genus.Water)
+      {
+         arrGenus.Add(MAGIC_GENUS[i]);
+      }
+
+      i++;
+      if (_Genus.Fire)
+      {
+         arrGenus.Add(MAGIC_GENUS[i]);
+      }
+
+      i++;
+      if (_Genus.Earth)
+      {
+         arrGenus.Add(MAGIC_GENUS[i]);
+      }
+
+      i++;
+      if (_Genus.Poison)
+      {
+         arrGenus.Add(MAGIC_GENUS[i]);
+      }
+
+      i++;
+      if (_Genus.Sorcery)
+      {
+         arrGenus.Add(MAGIC_GENUS[i]);
+      }
+
+      i++;
+      if (_Genus.Ultimate)
+      {
+         arrGenus.Add(MAGIC_GENUS[i]);
+      }
+
+      i++;
+      if (_Genus.Angel)
+      {
+         arrGenus.Add(MAGIC_GENUS[i]);
+      }
+
+      i++;
+      if (_Genus.Evil)
+      {
+         arrGenus.Add(MAGIC_GENUS[i]);
+      }
+
+      i++;
+      if (_Genus.Heal)
+      {
+         arrGenus.Add(MAGIC_GENUS[i]);
+      }
+
+      i++;
+      if (_Genus.Buff)
+      {
+         arrGenus.Add(MAGIC_GENUS[i]);
+      }
+
+      return arrGenus;
    }
 }

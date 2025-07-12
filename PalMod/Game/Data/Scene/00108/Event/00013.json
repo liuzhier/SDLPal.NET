@@ -1,0 +1,32 @@
+{
+  "Comment": "昏倒侍女2",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 457,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 704,
+        "Y": 1248
+      },
+      "Direction": 0,
+      "FrameID": 3
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 1
+  },
+  "Script": {
+    "SrcTrigger": "Event_00108_00013_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

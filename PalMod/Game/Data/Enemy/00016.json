@@ -1,0 +1,70 @@
+{
+  "Name": "石鬼头",
+  "Frame": {
+    "BitmapID": 16,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "Idle": 1,
+    "Magic": 0,
+    "Attack": 2,
+    "IdleWaitFrames": 99,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 50,
+    "ActionID": 0,
+    "MagicID": 0,
+    "DeathID": 184,
+    "BeginBattleID": 93
+  },
+  "Attribute": {
+    "Level": 36,
+    "HP": 1136,
+    "MaxHP": 1136,
+    "AttackStrength": -10,
+    "MagicStrength": 10,
+    "Defense": 20,
+    "Dexterity": -30,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 10.0,
+      "Thunder": 2.0,
+      "Water": 8.0,
+      "Fire": 9.0,
+      "Earth": 7.0
+    },
+    "Physics": 5.0,
+    "Poison": 10.0,
+    "Sorcery": 10.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 18,
+    "MagicRate": 5,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 53,
+    "StealItemCount": 1,
+    "Exp": 150,
+    "Level": 0,
+    "Cash": 65,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 2
+  },
+  "Script": {
+    "TurnStart": "Null",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

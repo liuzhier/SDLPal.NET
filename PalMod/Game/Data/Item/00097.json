@@ -1,0 +1,30 @@
+{
+  "Name": "毒龙砂",
+  "Description": [
+    "以腹蛇毒炼制成的细砂，",
+    "可使敌方全体中瘴毒。",
+    "HP-55"
+  ],
+  "Bitmap": 146,
+  "Price": 1200,
+  "Scope": {
+    "Usable": false,
+    "Throwable": true,
+    "Equipable": false,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": true,
+    "ApplyToAllEnemy": true,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": false,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": false,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Null",
+    "Throw": "Item_00097_Throw"
+  }
+}

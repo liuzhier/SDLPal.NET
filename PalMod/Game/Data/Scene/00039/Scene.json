@@ -1,0 +1,8 @@
+{
+  "Name": "隐龙窟·山道",
+  "MapID": 35,
+  "Script": {
+    "ScrEnter": "Scene_00039_Enter",
+    "ScrTeleport": "Null"
+  }
+}

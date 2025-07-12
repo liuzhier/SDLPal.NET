@@ -1,0 +1,8 @@
+{
+  "Name": "仙灵岛·草妖峡谷",
+  "MapID": 7,
+  "Script": {
+    "ScrEnter": "Scene_00016_Enter",
+    "ScrTeleport": "Scene_00016_Teleport"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "Name": "迷魂香",
+  "Description": [
+    "点燃蒙汗药散发迷香，",
+    "可使敌人昏睡五回合。"
+  ],
+  "Bitmap": 167,
+  "Price": 1300,
+  "Scope": {
+    "Usable": false,
+    "Throwable": true,
+    "Equipable": false,
+    "Sellable": false,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": false,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": false,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00075_Use",
+    "Equip": "Null",
+    "Throw": "Item_00075_Throw"
+  }
+}

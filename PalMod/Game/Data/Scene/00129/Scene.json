@@ -1,0 +1,8 @@
+{
+  "Name": "长安·百花浴",
+  "MapID": 116,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

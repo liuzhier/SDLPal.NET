@@ -137,8 +137,8 @@ public unsafe class GoHero
                },
                _Magic = new Hero.Magic
                {
-                  Cooperative = (ushort)Math.Max(lpBase->rgwCooperativeMagic[i] - OBJ_MAGIC_BEGIN + 1, 0),
-                  listLearned = new List<ushort>(),
+                  Cooperative = Math.Max(lpBase->rgwCooperativeMagic[i] - OBJ_MAGIC_BEGIN + 1, 0),
+                  listLearned = new List<int>(),
                   listLearnable = new List<Hero.Magic.Learnable>(),
                },
                _HeroBase = new HeroBase

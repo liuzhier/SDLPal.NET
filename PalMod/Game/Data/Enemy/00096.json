@@ -1,0 +1,70 @@
+{
+  "Name": "青兽人",
+  "Frame": {
+    "BitmapID": 95,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 2
+    },
+    "Idle": 2,
+    "Magic": 1,
+    "Attack": 1,
+    "IdleWaitFrames": 4,
+    "ActWaitFrames": 1
+  },
+  "Sound": {
+    "AttackID": 265,
+    "ActionID": 0,
+    "MagicID": 265,
+    "DeathID": 266,
+    "BeginBattleID": 91
+  },
+  "Attribute": {
+    "Level": 44,
+    "HP": 2400,
+    "MaxHP": 2400,
+    "AttackStrength": 10,
+    "MagicStrength": 0,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 1
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 4.0,
+      "Thunder": 4.0,
+      "Water": 4.0,
+      "Fire": 0.0,
+      "Earth": 4.0
+    },
+    "Physics": 2.0,
+    "Poison": 3.0,
+    "Sorcery": 0.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 84,
+    "MagicRate": 4,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 88,
+    "StealItemCount": 1,
+    "Exp": 480,
+    "Level": 0,
+    "Cash": 170,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 2
+  },
+  "Script": {
+    "TurnStart": "Null",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

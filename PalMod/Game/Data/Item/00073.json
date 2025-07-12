@@ -1,0 +1,29 @@
+{
+  "Name": "赤蝎粉",
+  "Description": [
+    "以整只赤尾蠍研磨成的粉末，",
+    "可使敌方全体中赤毒。"
+  ],
+  "Bitmap": 175,
+  "Price": 700,
+  "Scope": {
+    "Usable": false,
+    "Throwable": true,
+    "Equipable": false,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": true,
+    "ApplyToAllEnemy": true,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": false,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": false,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Null",
+    "Throw": "Item_00073_Throw"
+  }
+}

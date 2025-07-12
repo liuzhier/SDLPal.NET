@@ -1,0 +1,30 @@
+{
+  "Name": "糖葫芦",
+  "Description": [
+    "以竹签串李子，裹上麦芽糖，",
+    "形如葫芦，故称“糖葫芦”。",
+    "HPMP+22"
+  ],
+  "Bitmap": 17,
+  "Price": 20,
+  "Scope": {
+    "Usable": true,
+    "Throwable": false,
+    "Equipable": false,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00020_Use",
+    "Equip": "Null",
+    "Throw": "Null"
+  }
+}

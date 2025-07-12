@@ -1,0 +1,29 @@
+{
+  "Name": "长鞭",
+  "Description": [
+    "生牛皮制的七尺软鞭。",
+    "武术+20 身法+20"
+  ],
+  "Bitmap": 16,
+  "Price": 1700,
+  "Scope": {
+    "Usable": false,
+    "Throwable": true,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": false,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00103_Equip",
+    "Throw": "Item_00103_Throw"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "Name": "鬼阴山·鬼阴坛·密谋",
+  "MapID": 73,
+  "Script": {
+    "ScrEnter": "Scene_00067_Enter",
+    "ScrTeleport": "Scene_00067_Teleport"
+  }
+}

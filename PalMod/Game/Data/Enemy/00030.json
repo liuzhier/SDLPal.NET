@@ -1,0 +1,70 @@
+{
+  "Name": "红鬼",
+  "Frame": {
+    "BitmapID": 30,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 4
+    },
+    "Idle": 1,
+    "Magic": 1,
+    "Attack": 1,
+    "IdleWaitFrames": 99,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 265,
+    "ActionID": 0,
+    "MagicID": 0,
+    "DeathID": 254,
+    "BeginBattleID": 93
+  },
+  "Attribute": {
+    "Level": 12,
+    "HP": 450,
+    "MaxHP": 450,
+    "AttackStrength": 0,
+    "MagicStrength": 0,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 4.0,
+      "Thunder": 4.0,
+      "Water": 0.0,
+      "Fire": 8.0,
+      "Earth": 4.0
+    },
+    "Physics": 2.0,
+    "Poison": 6.0,
+    "Sorcery": 0.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 33,
+    "MagicRate": 4,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 0,
+    "StealItemCount": 0,
+    "Exp": 16,
+    "Level": 0,
+    "Cash": 30,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 2
+  },
+  "Script": {
+    "TurnStart": "Null",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

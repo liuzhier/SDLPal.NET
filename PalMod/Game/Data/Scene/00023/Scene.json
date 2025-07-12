@@ -1,0 +1,8 @@
+{
+  "Name": "苏州·内·次日",
+  "MapID": 23,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

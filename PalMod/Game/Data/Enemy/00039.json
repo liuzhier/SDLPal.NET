@@ -1,0 +1,70 @@
+{
+  "Name": "伏地罗汉",
+  "Frame": {
+    "BitmapID": 39,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "Idle": 1,
+    "Magic": 0,
+    "Attack": 1,
+    "IdleWaitFrames": 99,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 0,
+    "ActionID": 0,
+    "MagicID": 0,
+    "DeathID": 247,
+    "BeginBattleID": 92
+  },
+  "Attribute": {
+    "Level": 11,
+    "HP": 400,
+    "MaxHP": 400,
+    "AttackStrength": 0,
+    "MagicStrength": 0,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 4.0,
+      "Thunder": 5.0,
+      "Water": 2.0,
+      "Fire": 7.0,
+      "Earth": 4.0
+    },
+    "Physics": 2.0,
+    "Poison": 5.0,
+    "Sorcery": 0.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 18,
+    "MagicRate": 8,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 7,
+    "StealItemCount": 1,
+    "Exp": 10,
+    "Level": 0,
+    "Cash": 15,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 3
+  },
+  "Script": {
+    "TurnStart": "Enemy_00039_TurnStart",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

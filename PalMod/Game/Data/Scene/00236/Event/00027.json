@@ -1,0 +1,32 @@
+{
+  "Comment": "南绍被捕汉人",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 561,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 1104,
+        "Y": 1288
+      },
+      "Direction": 0,
+      "FrameID": 1
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": true,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 1
+  },
+  "Script": {
+    "SrcTrigger": "Event_00236_00026_Trigger",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

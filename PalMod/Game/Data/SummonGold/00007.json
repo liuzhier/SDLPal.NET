@@ -1,0 +1,21 @@
+{
+  "Comment": "雷神",
+  "BaseDamage": 460,
+  "CostMP": 68,
+  "SoundID": 107,
+  "Frame": {
+    "BitmapID": 16,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 10
+    },
+    "Idle": 1,
+    "Magic": 1,
+    "Attack": 1,
+    "Gamma": 0
+  },
+  "Script": {
+    "Success": "Null",
+    "Use": "Null"
+  }
+}

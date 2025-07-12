@@ -1,0 +1,8 @@
+{
+  "Name": "大理·废汉人聚居地",
+  "MapID": 163,
+  "Script": {
+    "ScrEnter": "Scene_00206_Enter",
+    "ScrTeleport": "Null"
+  }
+}

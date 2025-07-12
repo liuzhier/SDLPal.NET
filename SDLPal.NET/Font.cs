@@ -14,6 +14,7 @@ public class PalFont
       FONT_SIZE               = 50,
       FONT_SHADOW_OFFSET      = 2,
       FONT_OFFSET             = FONT_SIZE + FONT_SHADOW_OFFSET,
+      FONT_OFFSET_HALF        = FONT_SIZE / 2 + FONT_SHADOW_OFFSET,
       FONT_NAME_OFFSET        = FONT_SIZE * 2 + FONT_SHADOW_OFFSET,
       FONT_SIZE_NUM           = 26,
       FONT_OFFSET_W_NUM       = FONT_SIZE_NUM / 2 + FONT_SHADOW_OFFSET,

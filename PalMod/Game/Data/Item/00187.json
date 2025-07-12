@@ -1,0 +1,29 @@
+{
+  "Name": "魅影神靴",
+  "Description": [
+    "妖魔附体，身如鬼魅。",
+    "防御+32 身法+26"
+  ],
+  "Bitmap": 99,
+  "Price": 27000,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00187_Equip",
+    "Throw": "Null"
+  }
+}

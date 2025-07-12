@@ -1,0 +1,8 @@
+{
+  "Name": "回魂仙梦·余杭·客栈·房间",
+  "MapID": 198,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "Comment": "血池机关",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 298,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 1392,
+        "Y": 1688
+      },
+      "Direction": 0,
+      "FrameID": 4
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 0
+  },
+  "Script": {
+    "SrcTrigger": "Null",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

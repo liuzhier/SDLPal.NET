@@ -1,0 +1,32 @@
+{
+  "Comment": "白苗店员",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 0,
+    "SpriteID": 199,
+    "SpriteFrames": 3,
+    "Pos": {
+      "Pos": {
+        "X": 928,
+        "Y": 1616
+      },
+      "Direction": 3,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": true,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 2
+  },
+  "Script": {
+    "SrcTrigger": "Event_00206_00025_Trigger",
+    "ScrAuto": "Event_00005_00014_Auto"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

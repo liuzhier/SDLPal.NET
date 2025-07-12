@@ -18,9 +18,10 @@ public unsafe partial class PalScript
 
    public static int
    RunTrigger(
-      int      iScrAddr,
-      int      iSceneID,
-      int      iEvtID
+      int         iScrAddr,
+      int         iSceneID,
+      int         iEvtID,
+      string      comment = null
    )
    /*++
      Purpose:
@@ -34,6 +35,8 @@ public unsafe partial class PalScript
        [IN]  iSceneID - The ID of the scene where the event object of the calling script is located..
 
        [IN]  iEvtID - The event object ID which invoked the script.
+
+       [IN]  comment - The description of the trigger.
 
      Return value:
 
@@ -53,6 +56,7 @@ public unsafe partial class PalScript
       iScrAddrNext = iScrAddr;
       fEnded = false;
       g_fUpdatedInBattle = false;
+      evtComment = null;
 
       if (iEvtID == -1)
       {
@@ -65,7 +69,7 @@ public unsafe partial class PalScript
 
       if (iSceneID != 0 && iEvtID != 0 && iEvtID != -1)
       {
-         //evt = PalGlobal.Save.CurrScene.listEvent[iEvtID - 1];
+         //evt = S_GetSave().CurrScene.listEvent[iEvtID - 1];
          evt = S_GetEvent(iSceneID, iEvtID);
       }
       else
@@ -73,8 +77,14 @@ public unsafe partial class PalScript
          evt = null;
       }
 
-      evtComment = (evt != null) ? evt.Comment : ">场景脚本<";
-
+      if (comment != null)
+      {
+         evtComment = comment;
+      }
+      else
+      {
+         evtComment = (evt != null) ? $"({iEvtID}){evt.Comment}" : comment;
+      }
       g_fScriptSuccess = true;
 
       //
@@ -127,6 +137,25 @@ public unsafe partial class PalScript
                }
                break;
 
+            case "GotoWithNop":
+               //
+               // 0x0003
+               // unconditional jump
+               //
+               if (scr.INT(1) == 0 || ++(evt._ScriptFrame.TriggerIdleFrame) < scr.INT(1))
+               {
+                  iScrAddr = scr.ADDR(0);
+               }
+               else
+               {
+                  //
+                  // failed
+                  //
+                  evt._ScriptFrame.TriggerIdleFrame = 0;
+                  iScrAddr++;
+               }
+               break;
+
             case "Call":
                //
                // 0x0004
@@ -166,6 +195,39 @@ public unsafe partial class PalScript
                   PalTimer.Delay((scr.INT(0) == 0) ? 60 : (scr.INT(0) * 60));
                }
                iScrAddr++;
+               break;
+
+            case "GotoWithProbability":
+               //
+               // 0x0006
+               // Jump to the specified address by the specified rate
+               //
+               if (S_RandomLong(1, 100) >= scr.INT(0))
+               {
+                  iScrAddr = scr.ADDR(1);
+                  continue;
+               }
+               else
+               {
+                  iScrAddr++;
+               }
+               break;
+
+            case "BattleStart":
+               //
+               // 0x0007
+               // Start battle
+               //
+               iScrAddr++;
+               break;
+
+            case "Replace":
+               //
+               // 0x0008
+               // Replace the entry with the next instruction
+               //
+               iScrAddr++;
+               iScrAddrNext = iScrAddr;
                break;
 
             case "WaitEventAutoScriptRun":

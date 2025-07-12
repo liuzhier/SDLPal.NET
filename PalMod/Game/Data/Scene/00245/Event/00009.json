@@ -1,0 +1,32 @@
+{
+  "Comment": "蜘蛛毒娘子",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": -3,
+    "SpriteID": 480,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 896,
+        "Y": 1440
+      },
+      "Direction": 0,
+      "FrameID": 0
+    }
+  },
+  "Status": {
+    "Display": true,
+    "IsObstacle": true,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 0
+  },
+  "Script": {
+    "SrcTrigger": "Null",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

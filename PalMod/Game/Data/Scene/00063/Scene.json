@@ -1,0 +1,8 @@
+{
+  "Name": "乱葬岗·荒野",
+  "MapID": 53,
+  "Script": {
+    "ScrEnter": "Scene_00063_Enter",
+    "ScrTeleport": "Scene_00063_Teleport"
+  }
+}

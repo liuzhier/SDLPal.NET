@@ -1,0 +1,70 @@
+{
+  "Name": "白无常",
+  "Frame": {
+    "BitmapID": 55,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 4
+    },
+    "Idle": 1,
+    "Magic": 0,
+    "Attack": 1,
+    "IdleWaitFrames": 99,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 0,
+    "ActionID": 0,
+    "MagicID": 0,
+    "DeathID": 186,
+    "BeginBattleID": 90
+  },
+  "Attribute": {
+    "Level": 10,
+    "HP": 330,
+    "MaxHP": 330,
+    "AttackStrength": 0,
+    "MagicStrength": 0,
+    "Defense": 0,
+    "Dexterity": 0,
+    "FleeRate": 0
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 3.0,
+      "Thunder": 3.0,
+      "Water": 3.0,
+      "Fire": 3.0,
+      "Earth": 3.0
+    },
+    "Physics": 1.0,
+    "Poison": 10.0,
+    "Sorcery": 10.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 10,
+    "MagicRate": 4,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 98,
+    "StealItemCount": 1,
+    "Exp": 13,
+    "Level": 0,
+    "Cash": 0,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 2
+  },
+  "Script": {
+    "TurnStart": "Null",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

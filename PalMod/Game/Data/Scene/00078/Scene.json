@@ -1,0 +1,8 @@
+{
+  "Name": "鬼阴山·鬼阴坛后门",
+  "MapID": 75,
+  "Script": {
+    "ScrEnter": "Scene_00078_Enter",
+    "ScrTeleport": "Null"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "Name": "绿叶小妖",
+  "Frame": {
+    "BitmapID": 100,
+    "OffsetPos": {
+      "X": 0,
+      "Y": 0
+    },
+    "Idle": 2,
+    "Magic": 7,
+    "Attack": 2,
+    "IdleWaitFrames": 5,
+    "ActWaitFrames": 2
+  },
+  "Sound": {
+    "AttackID": 219,
+    "ActionID": 0,
+    "MagicID": 219,
+    "DeathID": 186,
+    "BeginBattleID": 91
+  },
+  "Attribute": {
+    "Level": 0,
+    "HP": 40,
+    "MaxHP": 40,
+    "AttackStrength": -2,
+    "MagicStrength": 0,
+    "Defense": -6,
+    "Dexterity": 0,
+    "FleeRate": 1
+  },
+  "Resistance": {
+    "Elemental": {
+      "Wind": 5.0,
+      "Thunder": 5.0,
+      "Water": 9.0,
+      "Fire": 0.0,
+      "Earth": 9.0
+    },
+    "Physics": 2.0,
+    "Poison": 0.0,
+    "Sorcery": 0.0,
+    "Ultimate": 0.0,
+    "Leechcraft": 0.0,
+    "Light": 0.0,
+    "Evil": 0.0
+  },
+  "Action": {
+    "MagicID": 0,
+    "MagicRate": 0,
+    "AttackEquivItemID": 0,
+    "AttackEquivItemRate": 0,
+    "ActionCount": 0
+  },
+  "BattleReward": {
+    "StealItem": 0,
+    "StealItemCount": 0,
+    "Exp": 1,
+    "Level": 0,
+    "Cash": 0,
+    "SpoilsID": 0,
+    "SpoilsCount": 0,
+    "CollectValue": 1
+  },
+  "Script": {
+    "TurnStart": "Enemy_00102_TurnStart",
+    "BattleWon": "Null",
+    "ReadyToAction": "Null"
+  }
+}

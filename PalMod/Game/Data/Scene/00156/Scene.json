@@ -1,0 +1,8 @@
+{
+  "Name": "锁妖塔·二层·化妖池",
+  "MapID": 156,
+  "Script": {
+    "ScrEnter": "Scene_00156_Enter",
+    "ScrTeleport": "Null"
+  }
+}

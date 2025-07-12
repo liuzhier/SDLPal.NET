@@ -1,0 +1,8 @@
+{
+  "Name": "长安·尚书府·刘晋元居所·刘晋元房间·原始·刘晋元趴倒",
+  "MapID": 114,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

@@ -39,26 +39,26 @@ public class Hero
 
    public class Magic
    {
-      public   ushort               Cooperative;      // Cooperative magic
-      public   List<ushort>         listLearned;      // A list of magic that has been learned
+      public   int                  Cooperative;      // Cooperative magic
+      public   List<int>            listLearned;      // A list of magic that has been learned
       public   List<Learnable>      listLearnable;    // A list of magic that can be learned
 
       public class Learnable
       {
-         public   ushort      Level;
-         public   ushort      MagicID;
+         public   int      Level;
+         public   int      MagicID;
       }
    }
 
    public class Sound
    {
-      public   ushort      Death;       // Sound played when player dies
-      public   ushort      Attack;      // Sound played when player attacks
-      public   ushort      Weapon;      // Sound weapon (???)
-      public   ushort      Critical;    // Sound played when player make critical hits
-      public   ushort      Magic;       // Sound played when player is casting a magic
-      public   ushort      Cover;       // Sound played when player cover others
-      public   ushort      Dying;       // Sound played when player is dying
+      public   int      Death;       // Sound played when player dies
+      public   int      Attack;      // Sound played when player attacks
+      public   int      Weapon;      // Sound weapon (???)
+      public   int      Critical;    // Sound played when player make critical hits
+      public   int      Magic;       // Sound played when player is casting a magic
+      public   int      Cover;       // Sound played when player cover others
+      public   int      Dying;       // Sound played when player is dying
    }
 
    public class Script

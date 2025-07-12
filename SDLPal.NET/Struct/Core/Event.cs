@@ -34,7 +34,7 @@ public class Event
       public   int      SpriteFrames;        // Total number of frames of the sprite
 
       [JsonProperty("Pos")]
-      public   Trail    _Trail;              // Current frame number
+      public   Trail    Trail;              // Current frame number
    }
 
    public class Status

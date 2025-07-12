@@ -1,0 +1,32 @@
+{
+  "Comment": "跃阿奴",
+  "Frame": {
+    "VanishTime": 0,
+    "StillTime": 0,
+    "LayerOffset": 10,
+    "SpriteID": 448,
+    "SpriteFrames": 0,
+    "Pos": {
+      "Pos": {
+        "X": 1008,
+        "Y": 600
+      },
+      "Direction": 0,
+      "FrameID": 28
+    }
+  },
+  "Status": {
+    "Display": false,
+    "IsObstacle": false,
+    "IsAutoTrigger": false,
+    "TriggerDistance": 0
+  },
+  "Script": {
+    "SrcTrigger": "Null",
+    "ScrAuto": "Null"
+  },
+  "ScriptFrame": {
+    "TriggerIdleFrame": 0,
+    "AutoIdleFrame": 0
+  }
+}

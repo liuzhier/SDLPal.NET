@@ -1,0 +1,30 @@
+{
+  "Name": "精铁战甲",
+  "Description": [
+    "以椭圆形的精铁片编缀而成，",
+    "光亮照人，",
+    "又称“光明铠”。防御+40 身法-7"
+  ],
+  "Bitmap": 83,
+  "Price": 9900,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00157_Equip",
+    "Throw": "Null"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "Name": "毒吞天下",
+  "Description": [],
+  "BaseDamage": 205,
+  "CostMP": 48,
+  "SoundID": 167,
+  "SummonID": -1,
+  "Genus": {
+    "Sword": false,
+    "Wind": false,
+    "Thunder": false,
+    "Water": false,
+    "Fire": false,
+    "Earth": false,
+    "Poison": true,
+    "Sorcery": false,
+    "Ultimate": false,
+    "Angel": false,
+    "Evil": false,
+    "Heal": false,
+    "Buff": false
+  },
+  "AttackMode": 1,
+  "Frame": {
+    "BitmapID": 25,
+    "OffsetPos": {
+      "X": -4,
+      "Y": -20
+    },
+    "LayerOffset": 99,
+    "Preview": 0,
+    "Speed": 1,
+    "KeepEffect": false,
+    "TotalTimes": 0,
+    "Shake": 0,
+    "Wave": 0
+  },
+  "Scope": {
+    "UsableOutsideBattle": false,
+    "UsableInBattle": true,
+    "UsableToHero": true,
+    "UsableToEnemy": false,
+    "ApplyToAllHero": true,
+    "ApplyToAllEnemy": true
+  },
+  "Script": {
+    "Success": "Magic_00079_Success",
+    "Use": "Magic_00079_Use"
+  }
+}

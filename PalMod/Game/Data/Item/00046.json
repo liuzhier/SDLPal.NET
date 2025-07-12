@@ -1,0 +1,30 @@
+{
+  "Name": "龙涎草",
+  "Description": [
+    "经蛟龙唾涎灌溉而生，",
+    "具有补中益气之疗效。",
+    "MP+110"
+  ],
+  "Bitmap": 139,
+  "Price": 440,
+  "Scope": {
+    "Usable": true,
+    "Throwable": false,
+    "Equipable": false,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00046_Use",
+    "Equip": "Null",
+    "Throw": "Null"
+  }
+}

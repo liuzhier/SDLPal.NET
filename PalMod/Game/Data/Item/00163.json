@@ -1,0 +1,30 @@
+{
+  "Name": "玄武战袍",
+  "Description": [
+    "以玄武的壳甲锻造而成，",
+    "材质坚韧色黑而无光泽。",
+    "防御+80"
+  ],
+  "Bitmap": 89,
+  "Price": 25000,
+  "Scope": {
+    "Usable": false,
+    "Throwable": false,
+    "Equipable": true,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": true,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": true,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": true,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Null",
+    "Equip": "Item_00163_Equip",
+    "Throw": "Null"
+  }
+}

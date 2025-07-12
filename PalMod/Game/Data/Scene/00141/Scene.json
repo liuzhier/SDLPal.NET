@@ -1,0 +1,8 @@
+{
+  "Name": "忆往昔·毒仙林晋元救蝶",
+  "MapID": 129,
+  "Script": {
+    "ScrEnter": "Scene_00141_Enter",
+    "ScrTeleport": "Null"
+  }
+}

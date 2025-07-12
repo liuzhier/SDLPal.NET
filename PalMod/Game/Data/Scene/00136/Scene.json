@@ -1,0 +1,8 @@
+{
+  "Name": "长安·民居",
+  "MapID": 123,
+  "Script": {
+    "ScrEnter": "Null",
+    "ScrTeleport": "Null"
+  }
+}

@@ -138,7 +138,7 @@ public unsafe class GoScene
                      LayerOffset = lpEvent->sLayer,
                      SpriteID = lpEvent->wSpriteNum,
                      SpriteFrames = lpEvent->nSpriteFrames,
-                     _Trail = new Trail
+                     Trail = new Trail
                      {
                         Pos = new PalMap.Pos
                         {

@@ -1,0 +1,30 @@
+{
+  "Name": "孟婆汤",
+  "Description": [
+    "消除死者罪孽业障，",
+    "使死者复活。",
+    "HP恢复50%"
+  ],
+  "Bitmap": 42,
+  "Price": 2800,
+  "Scope": {
+    "Usable": true,
+    "Throwable": false,
+    "Equipable": false,
+    "Sellable": true,
+    "Consuming": true,
+    "ApplyToAllHero": false,
+    "ApplyToAllEnemy": false,
+    "EquipableByHero_0": false,
+    "EquipableByHero_1": true,
+    "EquipableByHero_2": false,
+    "EquipableByHero_3": true,
+    "EquipableByHero_4": false,
+    "EquipableByHero_5": true
+  },
+  "Script": {
+    "Use": "Item_00037_Use",
+    "Equip": "Null",
+    "Throw": "Null"
+  }
+}
