@@ -51,6 +51,8 @@ public unsafe class PalGlobal
          }
 
          scene = PalUnpak.Json2Obj<Scene>($@"{pathFull}\Scene.json");
+         scene._Script._ScrEnter = PalScript.GetScrAddr(scene._Script.ScrEnter);
+         scene._Script._ScrTeleport = PalScript.GetScrAddr(scene._Script.ScrTeleport);
 
          pathFull = $@"{pathFull}\Event";
          listEvent = scene.listEvent;
@@ -65,6 +67,8 @@ public unsafe class PalGlobal
             }
 
             listEvent.Add(PalUnpak.Json2Obj<Event>(pathFile));
+            listEvent[^1]._Script._SrcTrigger = PalScript.GetScrAddr(listEvent[^1]._Script.SrcTrigger);
+            listEvent[^1]._Script._ScrAuto = PalScript.GetScrAddr(listEvent[^1]._Script.ScrAuto);
          }
 
          Save.listScene.Add(scene);
@@ -269,9 +273,6 @@ public unsafe class PalGlobal
 
          Const.listEnemyTeam.Add(team);
       }
-
-      PalScript.Free();
-      PalScript.Init();
    }
 
    public static void

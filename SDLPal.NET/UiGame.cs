@@ -1263,7 +1263,6 @@ public unsafe class PalUiGame
    --*/
    {
       int            scrAddr;
-      string         scr;
       Inventory      inventory;
       Item           item;
 
@@ -1280,11 +1279,8 @@ public unsafe class PalUiGame
          // Execute the script.
          //
          g_fShowSceneInfo = false;
-         scr = item._Script.Use;
-         scrAddr = PalScript.GetScrAddr(scr);
-         item._Script.Use = PalScript.MKScrTag(
-            PalScript.RunTrigger(scrAddr, -1, -1, $"UseItem<{item.Name}>")
-         );
+         scrAddr = item._Script._Use;
+         item._Script._Use = PalScript.RunTrigger(scrAddr, -1, -1, $"UseItem<{item.Name}>");
 
          if (item._Scope.Consuming && g_fScriptSuccess)
          {

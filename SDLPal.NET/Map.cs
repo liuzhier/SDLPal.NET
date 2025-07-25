@@ -14,8 +14,10 @@ using static SafeSys;
 
 public unsafe class PalMap
 {
-   public   static   readonly int
-      MAP_RATIO = 2;
+   public   const    int
+      MAP_WIDTH   = 2064,     // Width of the map in pixels
+      MAP_HEIGHT  = 2055,     // Height of the map in pixels
+      MAP_RATIO   = 2;
 
    public   static   readonly int
       W32   = S_Ratio(32),

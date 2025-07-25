@@ -192,7 +192,8 @@ public unsafe class PalText
       {
          texture = g_pScreenData;
       }
-      else if (Screen.IsFade)
+      else
+      if (Screen.IsFade)
       {
          texture = g_pScreenText;
       }
@@ -862,6 +863,7 @@ public unsafe class PalText
 
       nLine = 0;
       iOffsetPosY = 0;
+      strFacePath = "0";
 
       if (_DialogBox == DialogBox.Middle)
       {

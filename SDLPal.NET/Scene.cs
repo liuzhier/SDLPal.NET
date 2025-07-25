@@ -10,12 +10,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 using static PalCommon;
+using static PalFont;
+using static PalGame;
 using static PalInput;
 using static PalMap;
 using static PalSave;
 using static PalVideo;
-using static PalGame;
-using static PalFont;
+using static Viewport;
 using static SafeSys;
 
 public unsafe class PalScene
@@ -294,8 +295,24 @@ public unsafe class PalScene
          trail = arrParty[i].Trail;
          idDirection = (int)trail.Direction;
          idFrame = save._Entity.Hero[arrParty[i].HeroID].WalkFrames;
-         idFrame = idDirection * idFrame + trail.FrameID;
 
+         if (idFrame == 3)
+         {
+            //
+            // walking character (old version)
+            //
+            if (trail.FrameID == 2)
+            {
+               trail.FrameID = 0;
+            }
+
+            if (trail.FrameID == 3)
+            {
+               trail.FrameID = 2;
+            }
+         }
+
+         idFrame = idDirection * idFrame + trail.FrameID;
          pBitmap = PalResource.GetNpcSprite(true, i, idFrame);
 
          if (pBitmap == 0)
@@ -787,26 +804,28 @@ public unsafe class PalScene
          //
          for (i = 0; i < arrParty.Length; i++)
          {
-            //frameID = trail.FrameID;
             party = arrParty[i];
-            //trail = party._Trail;
-            //dir = trail.Direction;
-            //frameID = trail.FrameID + i % 8;
 
             count = S_GetSave()._Entity.Hero[party.HeroID].WalkFrames;
-            //if (count > 0)
-            //{
-            //   trail.FrameID = S_B(i % 2) ? frameID : frameID + (int)Math.Ceiling(count / (float)2);
-            //   if (count == 3 || count == 9)
-            //   {
-            //      count++;
-            //   }
-            //   trail.FrameID %= count;
-            //}
 
-            if (trail.FrameID >= count)
+            if (count == 0) count = 3;
+
+            if (count == 9)
             {
-               trail.FrameID = 1;
+               if (trail.FrameID >= count)
+               {
+                  trail.FrameID = 1;
+               }
+            }
+            else if(count == 3)
+            {
+               trail.FrameID++;
+               trail.FrameID %= (count == 3) ? 4 : count;
+            }
+            else
+            {
+               trail.FrameID++;
+               trail.FrameID %= trail.SpriteFramesAuto;
             }
 
             party.Trail.FrameID = trail.FrameID;
@@ -953,12 +972,24 @@ public unsafe class PalScene
    --*/
    {
       int            x, y, h, xr, yr, i;
-      int            blockX = Viewport.Rect.X / 32, blockY = Viewport.Rect.Y / 16;
       List<Event>    listEvent;
       Event          evt;
       Pos            posEvt;
 
-#if false
+      //
+      // Avoid walk out of range, look out of map
+      //
+      x = pos.X;
+      y = pos.Y;
+      if (fCheckRange)
+      {
+         if (x <= -16 || x > MAP_WIDTH - 32 || y <= -8 || y > MAP_HEIGHT - 8)
+         {
+            return true;
+         }
+      }
+
+#if DEBUG_NoObstacle
       if (fCheckRange)
       {
          //
@@ -966,25 +997,14 @@ public unsafe class PalScene
          //
          return false;
       }
-#endif // false
+#endif // !DEBUG_NoObstacle
 
       //
       // Check if the map tile at the specified position is blocking
       //
-      x = pos.X / 32;
-      y = pos.Y / 16;
+      x /=  32;
+      y /= 16;
       h = 0;
-
-      //
-      // Avoid walk out of range, look out of map
-      //
-      if (fCheckRange)
-      {
-         if (x < blockX || x >= 2048 || y < blockY || y >= 2048)
-         {
-            return true;
-         }
-      }
 
       xr = pos.X % 32;
       yr = pos.Y % 16;
@@ -1403,10 +1423,9 @@ public unsafe class PalScene
 
    --*/
    {
-      int      xOffset, yOffset, dx, dy, i;
+      int      xOffset, yOffset, dx, dy;
       uint     t;
       Pos      pos, posEvt;
-      Event    evt;
 
       pos = S_GetPartyPos().Clone();
       posEvt = S_GetEventTrail(iSceneID, iEvtID).Pos;

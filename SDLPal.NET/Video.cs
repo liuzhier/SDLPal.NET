@@ -7,26 +7,28 @@ using System.Threading.Tasks;
 
 using static PalCommon;
 using static PalConfig;
+using static PalInput;
 using static PalVideo;
+using static PalGame;
 using static SafeSys;
 
 public unsafe class PalVideo
 {
-   public   static    int      VIDEO_WIDTH    = 1200;
-   public   static    int      VIDEO_HEIGHT   = 900;
-   //public   static   int      VIDEO_WIDTH    = 960;
-   //public   static   int      VIDEO_HEIGHT   = 960;
+   public   const    int         VIDEO_WIDTH    = 1200;
+   public   const    int         VIDEO_HEIGHT   = 900;
+   public   static   uint[]      FILTER_COLOR   = [0x00019723, 0x00000000, 0xCF543040, 0x00014270];
 
    public   const    SDL.PixelFormat      g_Formnat = SDL.PixelFormat.RGBA8888;
 
    public   static   nint     g_pWindow;
    public   static   nint     g_pRenderer;
-   public   static   nint     g_pScreenActual;     // Actual texture of the window
+   private  static   nint     g_pScreenActual;     // Actual texture of the window
    public   static   nint     g_pScreen;           // Main texture of the video
    public   static   nint     g_pScreenBak;        // Backup of the main video screen
    public   static   nint     g_pScreenData;
    public   static   nint     g_pScreenText;       // When the screen fades out, the text will be drawn here
    private  static   nint     g_pScreenFade;       // Occlusion texture used for video fade-in and fade-out
+   public   static   nint     g_pScreenFilter;     // The filter effect of the video
    public   static   nint     g_pDrawFRect;        // The area of the actual screen video
 
    public class Screen
@@ -34,6 +36,14 @@ public unsafe class PalVideo
       public   static   bool     Rotated           = false;
       public   static   bool     IsFade            = false;
       public   static   bool     IsFadeToScreen    = false;
+
+      public enum Filter
+      {
+         Morning  = 0,
+         Noon,
+         Dusk,
+         Night,
+      }
 
       public class Wave
       {
@@ -201,6 +211,8 @@ public unsafe class PalVideo
 
       --*/
       {
+         float             flAlpha;
+
          SDL.SetRenderTarget(g_pRenderer, g_pScreenActual);
          SDL.SetRenderDrawColor(g_pRenderer, 0, 0, 0, 0xFF);
          SDL.RenderClear(g_pRenderer);
@@ -240,6 +252,20 @@ public unsafe class PalVideo
          }
 
          //
+         // Apply the time filter
+         //
+         //SDL.GetTextureAlphaModFloat(g_pScreenFilter, out flAlpha);
+         //if (flAlpha > 0)
+         if (S_GetSave().Filter != Filter.Noon)
+         {
+            SDL.SetTextureBlendMode(g_pScreenActual, SDL.BlendMode.BlendPremultiplied);
+            {
+               Copy(g_pScreenFilter, g_pScreenActual, true);
+            }
+            SDL.SetTextureBlendMode(g_pScreenActual, SDL.BlendMode.Blend);
+         }
+
+         //
          // Synthesize the final screen video
          //
          Copy(g_pScreenActual, 0, g_pDrawFRect);
@@ -253,8 +279,8 @@ public unsafe class PalVideo
       public static void
       Fade(
          int      iDelay,
-         bool     fIsFadeOut  = true,
-         byte     bStepCount  = 2
+         bool     fIsFadeOut     = true,
+         byte     bStepCount     = 2
       )
       /*++
         Purpose:
@@ -318,6 +344,82 @@ public unsafe class PalVideo
       }
 
       public static void
+      FadeAndUpdate(
+         int      iDelay,
+         bool     fIsFadeOut  = true,
+         byte     bStepCount  = 2
+      )
+      /*++
+        Purpose:
+
+          Fade Out the screen.
+
+        Parameters:
+
+          [IN]  iDelay - The delay between each frame.
+          [IN]  fIsFadeOut - Whether to fade out the screen.
+          [IN]  iStepCount - Total step length.
+
+        Return value:
+
+          None.
+
+      --*/
+      {
+         float    alpha, addNum;
+
+         PalGlobal.NeedToFadeIn = false;
+         addNum = bStepCount * 1.65f / 255.0f;
+
+         if (fIsFadeOut)
+         {
+            for (alpha = 0; ; alpha += addNum)
+            {
+               SDL.SetTextureAlphaModFloat(g_pScreen, alpha);
+
+               PalInput.ClearKeyState();
+               g_InputState.dir = PalDirection.Unknown;
+               PalPlay.GameUpdate(false);
+               PalScene.Draw();
+               Update();
+
+               PalTimer.Delay(100, 5);
+
+               if (alpha >= 1)
+               {
+                  break;
+               }
+            }
+
+            IsFade = false;
+         }
+         else
+         {
+            IsFade = true;
+
+            S_CleanUpTex(g_pScreenText);
+
+            for (alpha = 1; ; alpha -= addNum)
+            {
+               SDL.SetTextureAlphaModFloat(g_pScreen, alpha);
+
+               PalInput.ClearKeyState();
+               g_InputState.dir = PalDirection.Unknown;
+               PalPlay.GameUpdate(false);
+               PalScene.Draw();
+               Update();
+
+               PalTimer.Delay(100, 5);
+
+               if (alpha <= 0)
+               {
+                  break;
+               }
+            }
+         }
+      }
+
+      public static void
       FadeToScreen(
          int      iDelay,
          byte     bStepCount  = 2
@@ -351,9 +453,10 @@ public unsafe class PalVideo
       public static void
       FadeToColor(
          int      iDelay,
-         uint     dwHexColor  = 0x000000,
-         bool     fIsFadeOut  = true,
-         byte     bStepCount  = 2
+         uint     dwHexColor        = 0x000000,
+         bool     fIsFadeOut        = true,
+         bool     fUpdateScene      = false,
+         byte     bStepCount        = 2
       )
       /*++
         Purpose:
@@ -365,6 +468,7 @@ public unsafe class PalVideo
           [IN]  iDelay - The delay between each frame.
           [IN]  dwHexColor - RGB color value.
           [IN]  fIsFadeOut - Whether to fade out the screen.
+          [IN]  fUpdateScene - The scene needs to be updated..
           [IN]  iStepCount - Total step length.
 
         Return value:
@@ -399,6 +503,14 @@ public unsafe class PalVideo
             {
                SDL.SetTextureAlphaModFloat(g_pScreenFade, alpha);
 
+               if (fUpdateScene)
+               {
+                  PalInput.ClearKeyState();
+                  g_InputState.dir = PalDirection.Unknown;
+                  PalPlay.GameUpdate(false);
+                  PalScene.Draw();
+               }
+
                Update();
 
                PalTimer.Delay(iDelay);
@@ -415,6 +527,14 @@ public unsafe class PalVideo
             {
                SDL.SetTextureAlphaModFloat(g_pScreenFade, alpha);
 
+               if (fUpdateScene)
+               {
+                  PalInput.ClearKeyState();
+                  g_InputState.dir = PalDirection.Unknown;
+                  PalPlay.GameUpdate(false);
+                  PalScene.Draw();
+               }
+
                Update();
 
                PalTimer.Delay(iDelay);
@@ -426,6 +546,90 @@ public unsafe class PalVideo
             }
 
             IsFade = false;
+         }
+      }
+
+      public static void
+      FadeToFilter(
+         Filter      filter,
+         bool        fUpdateScene,
+         bool        fIsFadeOut     = true
+      )
+      /*++
+        Purpose:
+
+          Fade from the current palette to the specified one.
+
+        Parameters:
+
+          [IN]  filter - The time filter to be set.
+
+          [IN]  fUpdateScene - TRUE if update the scene in the progress.
+
+        Return value:
+
+          None.
+
+      --*/
+      {
+         float             alpha, addNum;
+         int               time;
+
+         alpha = 0.0f;
+         addNum = 0.38f / 100.0f;
+         time = (fUpdateScene ? FRAME_TIME : FRAME_TIME / 4);
+
+         S_CleanUpTex(g_pScreenFilter, FILTER_COLOR[(int)filter]);
+
+         SDL.SetTextureAlphaModFloat(g_pScreenFilter, alpha);
+
+         if (fIsFadeOut)
+         {
+            for (alpha = 0; ; alpha += addNum)
+            {
+               SDL.SetTextureAlphaModFloat(g_pScreenFilter, alpha);
+
+               if (fUpdateScene)
+               {
+                  PalInput.ClearKeyState();
+                  g_InputState.dir = PalDirection.Unknown;
+                  PalPlay.GameUpdate(false);
+                  PalScene.Draw();
+               }
+
+               Update();
+
+               PalTimer.Delay(time, 5);
+
+               if (alpha >= 1)
+               {
+                  break;
+               }
+            }
+         }
+         else
+         {
+            for (alpha = 1; ; alpha -= addNum)
+            {
+               SDL.SetTextureAlphaModFloat(g_pScreenFilter, alpha);
+
+               if (fUpdateScene)
+               {
+                  PalInput.ClearKeyState();
+                  g_InputState.dir = PalDirection.Unknown;
+                  PalPlay.GameUpdate(false);
+                  PalScene.Draw();
+               }
+
+               Update();
+
+               PalTimer.Delay(time, 5);
+
+               if (alpha <= 0)
+               {
+                  break;
+               }
+            }
          }
       }
 
@@ -708,6 +912,7 @@ public unsafe class PalVideo
       g_pScreenData = SC_Texture(VIDEO_WIDTH, VIDEO_HEIGHT, g_Formnat, 2);
       g_pScreenText = SC_Texture(VIDEO_WIDTH, VIDEO_HEIGHT, g_Formnat, 2);
       g_pScreenFade  = SC_Texture(1, 1, g_Formnat, 2);
+      g_pScreenFilter = SC_Texture(1, 1, g_Formnat, 2);
 
       //
       // Set the default background color of the renderer
@@ -760,6 +965,7 @@ public unsafe class PalVideo
       //
       // Destroy the SDL surface and texture
       //
+      SF_Texture(ref g_pScreenFilter);
       SF_Texture(ref g_pScreenFade);
       SF_Texture(ref g_pScreenText);
       SF_Texture(ref g_pScreenData);

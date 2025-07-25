@@ -424,7 +424,6 @@ end:
          case "KillRole":                          // 0x005F
          case "KillEnemy":                         // 0x0060
          case "BattleEnemyEscape":                 // 0x0069
-         case "BattleStealFromEnemy":              // 0x006A
          case "MusicStop":                         // 0x0077
          case "BattleEnd":                         // 0x0078
          case "BattleEnableAuto":                  // 0x008A
@@ -447,7 +446,7 @@ end:
             Val(wp[1]);
             break;
 
-         case "Call":                       // 0x0004
+         case "Call":                              // 0x0004
             Addr(wp[0]);
             GetSEvent(sp[1]);
             SEvent();
@@ -545,10 +544,11 @@ end:
             break;
 
          case "NPCSetFrame":                       // 0x0014
+         case "BattleStealFromEnemy":              // 0x006A
             Val(wp[0]);
             break;
 
-         case "RoleSetDirFrame":                  // 0x0015
+         case "RoleSetDirFrame":                   // 0x0015
             Val(wp[2]);
             Val(wp[0]);
             Val(wp[1]);
@@ -829,11 +829,11 @@ end:
             switch (Cmd)
             {
                case 0x0053:
-                  Val(0);
+                  Val(1);
                   break;
 
                case 0x0054:
-                  Val(2);
+                  Val(3);
                   break;
             }
             break;
@@ -1132,7 +1132,8 @@ end:
             break;
 
          case "VideoFadeAndUpdate":                // 0x0093
-            Val(wp[0]);
+            Val(short.Abs(sp[0]));
+            Bool((sp[0] >= 0) ? 1 : 0);
             break;
 
          case "JumpIfEventStateMatches":           // 0x0094
@@ -1153,7 +1154,7 @@ end:
             {
                if (S_B(wp[i]))
                {
-                  Addr(wp[i]);
+                  Val(wp[i]);
                }
             }
             break;
@@ -1161,7 +1162,7 @@ end:
          case "SceneSetMap":                       // 0x0099
             GetSEvent(sp[0]);
             Val(SceneID);
-            Addr(wp[1]);
+            Val(wp[1]);
             break;
 
          case "EventSetStateSequence":             // 0x009A

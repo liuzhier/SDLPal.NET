@@ -34,13 +34,15 @@ public unsafe partial class PalScript
 
    --*/
    {
-      Script      scr;
-      Event       evt;
+      Script            scr;
+      Event             evt;
+      Script.Arg[]      args;
 
       PalGlobal.DrawMoreData = false;
 
    begin:
       scr = listScript[iScrAddr];
+      args = scr.arrArg;
       evt = S_GetEvent(iSceneID, iEvtID);
 
       PalLog.Go($@"RunAuto[({iEvtID}){evt.Comment}]: {MakeFunc(scr)}");
@@ -71,9 +73,9 @@ public unsafe partial class PalScript
             // 0x0002
             // Stop running and replace the entry with the specified one
             //
-            if (scr.INT(1) == 0 || ++(evt._ScriptFrame.AutoIdleFrame) < scr.INT(1))
+            if (args[1].INT == 0 || ++(evt._ScriptFrame.AutoIdleFrame) < args[1].INT)
             {
-               iScrAddr = scr.ADDR(0);
+               iScrAddr = args[0].ADDR;
             }
             else
             {
@@ -87,9 +89,9 @@ public unsafe partial class PalScript
             // 0x0003
             // unconditional jump
             //
-            if (scr.INT(1) == 0 || ++(evt._ScriptFrame.AutoIdleFrame) < scr.INT(1))
+            if (args[1].INT == 0 || ++(evt._ScriptFrame.AutoIdleFrame) < args[1].INT)
             {
-               iScrAddr = scr.ADDR(0);
+               iScrAddr = args[0].ADDR;
                goto begin;
             }
             else
@@ -107,7 +109,7 @@ public unsafe partial class PalScript
             // 0x0004
             // Call subroutine
             //
-            RunTrigger(scr.ADDR(0), scr.BOOL(1) ? scr.INT(1) : iSceneID, scr.BOOL(2) ? scr.INT(2) : iEvtID);
+            RunTrigger(args[0].ADDR, args[1].BOOL ? args[1].INT : iSceneID, args[2].BOOL ? args[2].INT : iEvtID);
             iScrAddr++;
             break;
 
@@ -116,11 +118,11 @@ public unsafe partial class PalScript
             // 0x0006
             // Jump to the specified address by the specified rate
             //
-            if (S_RandomLong(1, 100) >= scr.INT(0))
+            if (S_RandomLong(1, 100) >= args[0].INT)
             {
-               if (scr.ADDR(1) != 0)
+               if (args[1].ADDR != 0)
                {
-                  iScrAddr = scr.ADDR(1);
+                  iScrAddr = args[1].ADDR;
                   goto begin;
                }
             }
@@ -135,7 +137,7 @@ public unsafe partial class PalScript
             // 0x0009
             // Wait for a certain number of frames
             //
-            if (++(evt._ScriptFrame.AutoIdleFrame) >= scr.INT(0))
+            if (++(evt._ScriptFrame.AutoIdleFrame) >= args[0].INT)
             {
                //
                // waiting ended; go further

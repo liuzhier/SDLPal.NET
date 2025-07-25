@@ -8,6 +8,7 @@ using static PalCommon;
 using static PalVideo;
 using static SafeSys;
 using static PalGlobal;
+using System.Diagnostics;
 
 public unsafe class PalMain
 {
@@ -47,6 +48,7 @@ public unsafe class PalMain
       PalFont.Init();
       PalText.Init();
       PalUiGame.Init();
+      PalScript.Init();
    }
 
    public static void

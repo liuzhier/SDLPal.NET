@@ -47,7 +47,12 @@ public class Event
 
    public class Script
    {
+      [JsonIgnore]
+      public   int         _SrcTrigger = 0;
       public   string      SrcTrigger;    // Trigger script entry
+
+      [JsonIgnore]
+      public   int         _ScrAuto    = 0;
       public   string      ScrAuto;       // Auto script entry
    }
 

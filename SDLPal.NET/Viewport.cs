@@ -12,13 +12,13 @@ using static PalVideo;
 
 public class Viewport
 {
-   public   static   Pos         Offset   = new Pos     // Viewport coordinate offset
+   public   static   Pos         Offset         = new Pos     // Viewport coordinate offset
    {
       X = 0,
       Y = 0,
    };
 
-   public   static   SDL.Rect    Rect     = new SDL.Rect
+   public   static   SDL.Rect    Rect           = new SDL.Rect
    {
       X = -S_UnRatio(VIDEO_WIDTH) / 2,
       Y = -(S_UnRatio(VIDEO_HEIGHT) / 2 + S_Ratio(10)),
@@ -30,7 +30,7 @@ public class Viewport
       //H = 280,
    };
 
-   private  static   Pos      _PosR = new Pos(0, 0);
+   private  static   Pos      _PosR             = new Pos(0, 0);
    public   static   Pos      PosR
    {
       get
@@ -42,7 +42,7 @@ public class Viewport
       }
    }
 
-   private  static   Pos      _Pos  = new Pos(0, 0);
+   private  static   Pos      _Pos              = new Pos(0, 0);
    public   static   Pos      Pos
    {
       get
@@ -54,11 +54,17 @@ public class Viewport
          _Pos.X = PosV.X + posParty.X;
          _Pos.Y = PosV.Y + posParty.Y;
 
+         _Pos.X = int.Max(_Pos.X, 0);
+         _Pos.Y = int.Max(_Pos.Y, 0);
+
+         _Pos.X = int.Min(_Pos.X, VIEWPORT_MAX_X);
+         _Pos.Y = int.Min(_Pos.Y, VIEWPORT_MAX_Y);
+
          return _Pos;
       }
    }
    
-   private  static   Pos      _PosV  = new Pos(0, 0);
+   private  static   Pos      _PosV             = new Pos(0, 0);
    public   static   Pos      PosV
    {
       get
@@ -69,4 +75,7 @@ public class Viewport
          return _PosV;
       }
    }
+
+   public   static   int      VIEWPORT_MAX_X    => MAP_WIDTH - S_UnRatio(VIDEO_WIDTH) - 32;
+   public   static   int      VIEWPORT_MAX_Y    => MAP_HEIGHT - S_UnRatio(VIDEO_HEIGHT) - 16;
 }

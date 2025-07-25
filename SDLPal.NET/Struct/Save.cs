@@ -26,6 +26,7 @@ public class PalSave
       ChaseRange        = 1,     // The range of enemy pursuit
       ChaseCycles       = 0;     // The time of enemy pursuit/fainting
 
+   public   Screen.Filter        Filter         = Screen.Filter.Noon;         // Filter (current time)
    public   Screen.Wave          SceneWave      = new Screen.Wave();
    public   Trail                PartyTrail     = new Trail();                // Player party main trail
    public   Party[]              arrParty       = new Party[MAX_HERO_NUM];    // Player party

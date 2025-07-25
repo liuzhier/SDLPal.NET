@@ -44,7 +44,6 @@ public unsafe class PalPlay
       PalDirection      dir;
       Scene             scene;
       Event             evt;
-      string            scr;
       Trail             trail;
       bool              fContinue;
       Pos               pos;
@@ -71,14 +70,11 @@ public unsafe class PalPlay
             // Execute the scene entry script
             //
             g_fShowSceneInfo = false;
-            scr = scene._Script.ScrEnter;
-            scrAddr = PalScript.GetScrAddr(scr);
+            scrAddr = scene._Script._ScrEnter;
             if (scrAddr != 0)
             {
                PalLog.Go($@"SceneEnter[Begin]: {scene.Name}");
-               scene._Script.ScrEnter = PalScript.MKScrTag(
-                  PalScript.RunTrigger(scrAddr, -1, -1, $"SceneEnter<{PalGlobal.Save.SceneID}>")
-               );
+               scene._Script._ScrEnter = PalScript.RunTrigger(scrAddr, -1, -1, $"SceneEnter<{PalGlobal.Save.SceneID}>");
                PalLog.Go($@"SceneEnter[End]: {scene.Name}");
             }
 
@@ -187,11 +183,8 @@ public unsafe class PalPlay
                   // Execute the script.
                   //
                   g_fShowSceneInfo = false;
-                  scr = evt._Script.SrcTrigger;
-                  scrAddr = PalScript.GetScrAddr(scr);
-                  evt._Script.SrcTrigger = PalScript.MKScrTag(
-                     PalScript.RunTrigger(scrAddr, -1, i)
-                  );
+                  scrAddr = evt._Script._SrcTrigger;
+                  evt._Script._SrcTrigger = PalScript.RunTrigger(scrAddr, -1, i);
 
                   PalInput.ClearKeyState();
 
@@ -218,13 +211,11 @@ public unsafe class PalPlay
 
          if (evt._Status.Display && evt._Frame.VanishTime == 0)
          {
-            scr = evt._Script.ScrAuto;
-            scrAddr = PalScript.GetScrAddr(scr);
+            scrAddr = evt._Script._ScrAuto;
+
             if (scrAddr != 0)
             {
-               evt._Script.ScrAuto = PalScript.MKScrTag(
-                  PalScript.RunAuto(scrAddr, -1, i)
-               );
+               evt._Script._ScrAuto = PalScript.RunAuto(scrAddr, -1, i);
 
                if (PalGlobal.EnterScene)
                {
@@ -299,14 +290,13 @@ public unsafe class PalPlay
 
    --*/
    {
-      int               x, y, xOffset, yOffset, dx, dy, dh, ex, ey, eh, i, k, l, scrAddr;
+      int               x, y, xOffset, yOffset, dx, dy, dh, ex, ey, eh, i, k, l;
       Event             evt;
       Pos[]             arrPos;
       Pos               pos;
       Trail             trail;
       PalDirection      dir;
       List<Event>       listEvent;
-      string            scr;
 
       arrPos = new Pos[13];
 
@@ -406,11 +396,7 @@ public unsafe class PalPlay
             //
             // Execute the script
             //
-            scr = evt._Script.SrcTrigger;
-            scrAddr = PalScript.GetScrAddr(scr);
-            evt._Script.SrcTrigger = PalScript.MKScrTag(
-               PalScript.RunTrigger(scrAddr, -1, k)
-            );
+            evt._Script._SrcTrigger = PalScript.RunTrigger(evt._Script._SrcTrigger, -1, k);
 
             //
             // Clear inputs and delay for a short time

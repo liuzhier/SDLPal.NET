@@ -116,7 +116,8 @@ public unsafe class GoHero
                Name = GoMsg.listWord[OBJ_HERO_BEGIN + i],
                CoveredBy = lpBase->rgwCoveredBy[i],
                //WalkFrames = lpBase->rgwWalkFrames[i],
-               WalkFrames = 9,
+               //WalkFrames = 9,
+               WalkFrames = 3,
                Resistance = new Resistance
                {
                   _Elemental = new Resistance.Elemental

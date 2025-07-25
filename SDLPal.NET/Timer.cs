@@ -19,7 +19,8 @@ public unsafe class PalTimer
 
    public static void
    DelayUntil(
-      ulong    time
+      ulong    time,
+      uint     dwDelayStep = 1
    )
    {
       PalInput.ProcessEvent();
@@ -27,15 +28,16 @@ public unsafe class PalTimer
       while (!TicksPass(SDL.GetTicks(), time))
       {
          PalInput.ProcessEvent();
-         SDL.Delay(1);
+         SDL.Delay(dwDelayStep);
       }
    }
 
    public static void
    Delay(
-      int      ms
+      int      ms,
+      uint     dwDelayStep = 1
    )
    {
-      DelayUntil(SDL.GetTicks() + (uint)ms);
+      DelayUntil(SDL.GetTicks() + (uint)ms, dwDelayStep);
    }
 }

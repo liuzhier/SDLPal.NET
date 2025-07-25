@@ -20,7 +20,12 @@ public class Scene
 
    public class Script
    {
+      [JsonIgnore]
+      public   int         _ScrEnter      = 0;
       public   string      ScrEnter;        // when entering this scene, execute script from here
+      
+      [JsonIgnore]
+      public   int         _ScrTeleport   = 0;
       public   string      ScrTeleport;     // when teleporting out of this scene, execute script from here
    }
 }

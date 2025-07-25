@@ -6,33 +6,41 @@ using System.Linq;
 using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
+
 using static PalCommon;
 using static PalGame;
 using static PalMap;
 using static PalSave;
 using static PalVideo;
+using static PalVideo.Screen;
 using static SafeSys;
+using static Script;
 
 public unsafe partial class PalScript
 {
+   public   static   ReadOnlySpan<char>         FUNC_DLG    => "Dlg".AsSpan();
    public   static   Dictionary<string, int>    dictScrTag  = new Dictionary<string, int>();
+   public   static   Dictionary<int, string>    dictScrAddr = new Dictionary<int, string>();
    public   static   List<Script>               listScript  = new List<Script>();
    
-   public   static   bool     g_fScriptSuccess = true;
-   public   static   bool     g_fUpdatedInBattle = false;
+   public   static   bool     g_fScriptSuccess     = true;
+   public   static   bool     g_fUpdatedInBattle   = false;
 
    public static void
    Init()
    {
-      int         i, addr;
-      string      entry, name;
-      string[]    arrTmp, arrArg;
+      int                     i, begin, end, addr;
+      List<string>            listArg;
+      ReadOnlySpan<char>      entry, name, tmp;
 
       using (var reader = new StreamReader($@"{DATA_PATH}\Script\ScriptEntry.js", Encoding.UTF8))
       {
-         for (i = 0, addr = 0; ; i++)
+         for (i = 1, addr = 0; ; i++)
          {
-            entry = reader.ReadLine();
+            //
+            // Read a line of text
+            //
+            entry = reader.ReadLine().AsSpan();
 
             if (entry == null)
             {
@@ -43,6 +51,7 @@ public unsafe partial class PalScript
             }
 
             entry = entry.Trim();
+            listArg = [];
 
             if (entry == "")
             {
@@ -50,68 +59,75 @@ public unsafe partial class PalScript
                // An empty line is the sign of the end of the script
                //
                name = "End";
-               arrArg = null;
             }
             else
             {
                //
                // Check the script flag
                //
-               switch (entry[0])
+               if (entry.StartsWith('[') && entry.EndsWith(']'))
                {
-                  case '[':   // Script address
+                  //
+                  // Script address
+                  //
+                  // Extract the address name
+                  //
+                  entry = entry[1..(entry.Length - 1)].Trim();
+
+                  //
+                  // Put the addresses into the list
+                  //
+                  dictScrTag.Add(entry.ToString(), addr);
+                  continue;
+               }
+               else if (entry.StartsWith("//"))
+               {
+                  //
+                  // Dialogue script
+                  //
+                  // Extract the dialogue
+                  //
+                  name = FUNC_DLG;
+                  listArg.Add(entry.Slice(2).ToString()); 
+               }
+               else if (entry.EndsWith(')'))
+               {
+                  //
+                  // Call the function
+                  //
+                  // Start splitting the function name and parameter list
+                  //
+                  name = entry[0..entry.IndexOf('(')].Trim();
+                  begin = entry.IndexOf('(') + 1;
+                  end = entry.Length - 1;
+
+                  if (end > begin)
+                  {
+                     entry = entry[begin..end].Trim();
+
+                     foreach (Range range in entry.Split(','))
                      {
-                        //
-                        // Extract the address name
-                        //
-                        name = entry.Split('[')[1].Split(']')[0].Trim();
-
-                        //
-                        // Put the addresses into the list
-                        //
-                        dictScrTag.Add(name, addr);
-                        continue;
+                        listArg.Add(entry[range].Trim().ToString());
                      }
-
-                  case '/':   // Dialogue script
-                     {
-                        //
-                        // Extract the dialogue
-                        //
-                        name = "Dlg";
-                        arrArg = [entry.Split("//")[1]];
-                     }
-                     break;
-
-                  default:    // Call the function
-                     {
-                        //
-                        // Normal function call
-                        //
-
-                        //
-                        // Start splitting the function name and parameter list
-                        //
-                        arrTmp = entry.Split("(");
-                        name = arrTmp[0];
-                        arrArg = arrTmp[1].Split(")")[0].Split(",");
-                        for (i = 0; i < arrArg.Length; i++)
-                        {
-                           arrArg[i] = arrArg[i].Trim();
-                        }
-                     }
-                     break;
+                  }
+               }
+               else
+               {
+                  //
+                  // Syntax error
+                  //
+                  S_FAILED(
+                     "Script.Init",
+                     $"Syntax error! Line({i}): '{entry.ToString()}'"
+                  );
+                  continue;
                }
             }
 
             //
             // Add the function information to the list
             //
-            listScript.Add(new Script
-            {
-               FuncName = name,
-               Args = arrArg,
-            });
+            AddScrFunc(name.ToString(), listArg, i);
 
             //
             // Address increase
@@ -120,25 +136,185 @@ public unsafe partial class PalScript
          }
       }
 
-      if (listScript.Last().FuncName != "End")
+      if (listScript.Count > 0 && listScript[^1].FuncName != "End")
       {
          //
          // If the last function is not End(),
          // add it to prevent the last script block from failing to exit normally
          //
-         listScript.Add(new Script
-         {
-            FuncName = "End",
-            Args = null,
-         });
+         AddScrFunc("End", null);
       }
    }
 
    public static void
-   Free()
+   AddAddr(
+      string      strTag,
+      int         iAddr
+   )
    {
-      dictScrTag.Clear();
-      listScript.Clear();
+      dictScrTag.Add(strTag, iAddr);
+      dictScrAddr.Add(iAddr, strTag);
+   }
+
+   public static void
+   AddScrFunc(
+      string            name,
+      List<string>      args,
+      int               lineID = -1
+   )
+   {
+      int                  i, j, len;
+      bool                 fIsList;
+      string               strVal;
+      Script.ArgType[]     arrArgType;
+      Script.Arg[]         arrArg;
+      Script.ArgType       argType;
+
+      Script.GetFuncArgType(name, out arrArgType, lineID);
+
+      arrArg = new Script.Arg[arrArgType.Length];
+      fIsList = (arrArgType.Length > 0) && (arrArgType[0] == ArgType.LIST);
+      i = fIsList ? 1 : 0;
+      len = fIsList ? (args.Count - 1) : arrArg.Length;
+
+      if (lineID == 8772)
+      {
+         i = i;
+      }
+
+      for (; i < len; i++)
+      {
+         arrArg[i] = new Script.Arg();
+         strVal = args[i];
+         j = fIsList ? 1 : i;
+
+         switch (arrArgType[j])
+         {
+            case Script.ArgType.CHAR:
+               arrArg[i].CHAR = S_CHAR(strVal);
+               break;
+
+            case Script.ArgType.BYTE:
+            case Script.ArgType.BX:
+            case Script.ArgType.BY:
+            case Script.ArgType.BH:
+               arrArg[i].BYTE = S_BYTE(strVal);
+               break;
+
+            case Script.ArgType.SHORT:
+            case Script.ArgType.X:
+            case Script.ArgType.Y:
+               arrArg[i].SHORT = S_SHORT(strVal);
+               break;
+
+            case Script.ArgType.WORD:
+               arrArg[i].WORD = S_WORD(strVal);
+               break;
+
+            case Script.ArgType.INT:
+            case Script.ArgType.SCENE:
+            case Script.ArgType.EVENT:
+            case Script.ArgType.DIRECTION:
+               arrArg[i].INT = S_INT(strVal);
+               break;
+
+            case Script.ArgType.DWORD:
+               arrArg[i].DWORD = S_DWORD(strVal);
+               break;
+
+            case Script.ArgType.LONG:
+               arrArg[i].LONG = S_LONG(strVal);
+               break;
+
+            case Script.ArgType.QWORD:
+               arrArg[i].QWORD = S_QWORD(strVal);
+               break;
+
+            case Script.ArgType.BOOL:
+               arrArg[i].BOOL = S_BOOL(strVal);
+               break;
+
+            case Script.ArgType.FLOAT:
+               arrArg[i].FLOAT = S_FLOAT(strVal);
+               break;
+
+            case Script.ArgType.STR:
+            case Script.ArgType.ADDR:
+               arrArg[i].STR = strVal;
+               break;
+         }
+      }
+
+      //
+      // Put the function parsing result into the script list
+      //
+      listScript.Add(new()
+      {
+         FuncName = name,
+         arrArg = arrArg,
+      });
+   }
+
+   public static string
+   MakeFunc(
+      Script      scr
+   )
+   {
+      int                  i;
+      StringBuilder        func;
+      Script.Arg           arg;
+      Script.ArgType[]     arrArgType;
+
+      if (!Script.FuncArgType.TryGetValue(scr.FuncName, out arrArgType))
+      {
+         S_FAILED(
+            "Script.MakeFunc",
+            $"Unknown script function: {scr.FuncName}"
+         );
+      }
+
+      func = new StringBuilder($"{scr.FuncName}(");
+
+      for (i = 0; i < scr.arrArg.Length; i++)
+      {
+         arg = scr.arrArg[i];
+
+         if (i != 0)
+         {
+            func.Append(", ");
+         }
+
+         switch (arrArgType[i])
+         {
+            case Script.ArgType.LONG:
+               func.Append($"{arg.LONG}");
+               break;
+
+            case Script.ArgType.DWORD:
+               func.Append($"{arg.DWORD}");
+               break;
+
+            case Script.ArgType.BOOL:
+               func.Append($"{arg.BOOL}");
+               break;
+
+            case Script.ArgType.FLOAT:
+               func.Append($"{arg.FLOAT}");
+               break;
+
+            case Script.ArgType.STR:
+               func.Append(arg.STR);
+               break;
+
+            default:
+               func.Append($"{arg.INT}");
+               break;
+         }
+      }
+
+      func.Append(")");
+
+      return func.ToString();
    }
 
    public static int
@@ -150,15 +326,7 @@ public unsafe partial class PalScript
 
       strAddrName = strAddrName.Trim();
 
-      //if (strAddrName.StartsWith("Scr_"))
-      if (strAddrName.StartsWith("0x"))
-      {
-         //
-         // General script address
-         //
-         addr = S_INT(strAddrName);
-      }
-      else if (!dictScrTag.TryGetValue(strAddrName, out addr))
+      if (!dictScrTag.TryGetValue(strAddrName, out addr))
       {
          S_FAILED(
             "Script.GetScrAddr",
@@ -169,39 +337,27 @@ public unsafe partial class PalScript
       return addr;
    }
 
-   public static string
-   MKScrTag(
-      int      iScrAddr
-   )
-   {
-      //return $"Scr_0x{iScrAddr:X4}";
-      return $"0x{iScrAddr:X4}";
-   }
-
    public static Script
    GetScript(
       int      iScrAddr
    )
    {
-      S_FAILED(
-         "Script.GetScript",
-         $"The script address {MKScrTag(iScrAddr)} does not exist",
-         iScrAddr >= listScript.Count
-      );
+      string      strTag;
+
+      if (iScrAddr >= listScript.Count)
+      {
+         if (!dictScrAddr.TryGetValue(iScrAddr, out strTag))
+         {
+            strTag = "Undefined";
+         }
+
+         S_FAILED(
+            "Script.GetScript",
+            $"The script address [{strTag}: 0x{iScrAddr:X4}] does not exist"
+         );
+      }
 
       return listScript[iScrAddr];
-   }
-
-   public static string
-   MakeFunc(
-      Script      scr
-   )
-   {
-      string      arg;
-
-      arg = (scr.Args != null) ? string.Join(", ", scr.Args) : "";
-
-      return $"{scr.FuncName}({arg})";
    }
 
    public static int
@@ -229,19 +385,22 @@ public unsafe partial class PalScript
 
    --*/
    {
-      int               roleID, heroID, i, j, x, y, w, sceneCurrID, evtCurrID;
-      string            arg;
-      Scene             scene, sceneCurr;
-      Event             evt, evtCurr;
-      Script            scr;
-      PalSave           save;
-      Party             party;
-      Trail             trail;
-      BlockPos          bposTmp;
-      Pos               posTmp;
-      PalDirection      dirCurr;
+      int                  roleID, heroID, i, j, x, y, w, sceneCurrID, evtCurrID;
+      Scene                scene, sceneCurr;
+      Event                evt, evtCurr;
+      Script               scr;
+      PalSave              save;
+      Party                party;
+      Trail                trail;
+      BlockPos             bposTmp;
+      Pos                  posTmp;
+      PalDirection         dirCurr;
+      Script.Arg[]         args;
+      Script.ArgType[]     arrArgType;
 
       scr = listScript[iScrAddr];
+      args = scr.arrArg;
+      Script.GetFuncArgType(scr.FuncName, out arrArgType);
 
       save = S_GetSave();
       bposTmp = new BlockPos();
@@ -254,100 +413,87 @@ public unsafe partial class PalScript
       evtCurr = null;
       trail = null;
 
-      void
-      GetEvt()
+      if (iSceneID != 0)
       {
-         switch (iSceneID)
+         scene = S_GetScene(iSceneID);
+
+         if (iEvtID != 0 && iEvtID != -1 && iEvtID < scene.listEvent.Count)
          {
-            case -1:
-               scene = save.CurrScene;
-               goto evt;
+            evt = scene.listEvent[iEvtID];
+         }
+      }
 
-            case 0:
-               break;
-
-            default:
-               scene = save.listScene[iSceneID];
-               goto evt;
-
-            evt:
-               switch (iEvtID)
+      if (arrArgType.Length >= 1)
+      {
+         switch (arrArgType[0])
+         {
+            case ArgType.SCENE:
+               switch (args[0].SCENE)
                {
-                  case 0:
                   case -1:
+                  case 0:
+                     sceneCurrID = save.SceneID;
+                     sceneCurr = save.CurrScene;
                      break;
 
                   default:
-                     if (iEvtID < scene.listEvent.Count)
+                     if (args[0].SCENE < save.listScene.Count)
                      {
-                        //evt = scene.listEvent[iEvtID - 1];
-                        evt = scene.listEvent[iEvtID];
+                        sceneCurrID = args[0].SCENE;
+                        sceneCurr = save.listScene[sceneCurrID];
                      }
                      break;
-
                }
+               break;
+
+            case ArgType.BX:
+               bposTmp.X = args[0].BYTE;
                break;
          }
       }
 
-      void
-      GetEvtCurr()
+      if (arrArgType.Length >= 2)
       {
-         GetEvt();
-
-         try
+         switch (arrArgType[1])
          {
-            switch (scr.INT(0))
-            {
-               case -1:
-               case 0:
-                  sceneCurrID = save.SceneID;
-                  sceneCurr = save.CurrScene;
-                  break;
+            case ArgType.EVENT:
+               switch (args[1].EVENT)
+               {
+                  case -1:
+                  case 0:
+                     evtCurrID = iEvtID;
+                     break;
 
-               default:
-                  if (scr.INT(0) < save.listScene.Count)
-                  {
-                     sceneCurrID = scr.INT(0);
-                     sceneCurr = save.listScene[sceneCurrID];
-                  }
-                  break;
-            }
+                  default:
+                     evtCurrID = args[1].EVENT;
+                     break;
+               }
 
-            switch (scr.INT(1))
-            {
-               case -1:
-               case 0:
-                  evtCurrID = iEvtID;
+               if (args[1].EVENT < sceneCurr.listEvent.Count)
+               {
                   evtCurr = sceneCurr.listEvent[evtCurrID];
-                  break;
 
-               default:
-                  if (scr.INT(1) < sceneCurr.listEvent.Count)
-                  {
-                     evtCurrID = scr.INT(1);
-                     evtCurr = sceneCurr.listEvent[evtCurrID];
-                  }
-                  break;
-            }
+                  //
+                  // Generally speaking, automatic scripts cannot directly use this variable
+                  //
+                  trail = evtCurr._Frame.Trail;
+               }
+               break;
 
-            //
-            // Generally speaking, automatic scripts cannot directly use this variable
-            //
-            trail = evtCurr._Frame.Trail;
-         }
-         catch (Exception)
-         {
-
+            case ArgType.BY:
+               bposTmp.Y = args[1].BYTE;
+               break;
          }
       }
-
-      void
-      GetBlockPos()
+      
+      if (arrArgType.Length >= 3)
       {
-         bposTmp.X = scr.BYTE(0);
-         bposTmp.Y = scr.BYTE(1);
-         bposTmp.H = scr.BYTE(2);
+         switch (arrArgType[2])
+         {
+            case ArgType.BH:
+               bposTmp.H = args[2].BYTE;
+               break;
+         }
       }
 
       //roleID = (scr.iP(0) < MAX_HERO_NUM) ? scr.iP(0) : 0;
@@ -360,12 +506,11 @@ public unsafe partial class PalScript
             // 0x000B, 0x000C, 0x000D, 0x000E, 0x0087
             // walk one step
             //
-            GetEvt();
-            if (scr.INT(0) != -1)
+            if (args[0].INT != -1)
             {
-               evt._Frame.Trail.Direction = (PalDirection)scr.INT(0);
+               evt._Frame.Trail.Direction = args[0].DIRECTION;
             }
-            PalScene.NPCWalkOneStep(iSceneID, iEvtID, scr.INT(1));
+            PalScene.NPCWalkOneStep(iSceneID, iEvtID, args[1].INT);
             break;
 
          case "NPCSetDirFrame":
@@ -373,14 +518,13 @@ public unsafe partial class PalScript
             // 0x000F
             // Set the direction and/or gesture for event object
             //
-            GetEvt();
-            if (scr.INT(0) != -1)
+            if (args[0].DIRECTION != PalDirection.Unknown)
             {
-               evt._Frame.Trail.Direction = (PalDirection)scr.INT(0);
+               evt._Frame.Trail.Direction = args[0].DIRECTION;
             }
-            if (scr.INT(1) != -1)
+            if (args[1].INT != -1)
             {
-               evt._Frame.Trail.FrameID = scr.INT(1);
+               evt._Frame.Trail.FrameID = args[1].INT;
             }
             break;
 
@@ -389,10 +533,9 @@ public unsafe partial class PalScript
             // 0x0010, 0x0011, 0x007C, 0x0082
             // Walk straight to the specified position
             //
-            GetBlockPos();
-            if (!scr.BOOL(4) || S_B((iEvtID & 1) ^ (PalGlobal.FrameNum & 1)))
+            if (!args[4].BOOL || S_B((iEvtID & 1) ^ (PalGlobal.FrameNum & 1)))
             {
-               if (!PalScene.NPCWalkTo(iSceneID, iEvtID, bposTmp, scr.INT(3)))
+               if (!PalScene.NPCWalkTo(iSceneID, iEvtID, bposTmp, args[3].INT))
                {
                   iScrAddr--;
                }
@@ -408,10 +551,9 @@ public unsafe partial class PalScript
             // 0x0013
             // Set the position of the event object, relative to the party
             //
-            GetEvtCurr();
             posTmp = S_GetPartyPos();
-            trail.Pos.X = posTmp.X + scr.INT(2);
-            trail.Pos.Y = posTmp.Y + scr.INT(3);
+            trail.Pos.X = posTmp.X + args[2].X;
+            trail.Pos.Y = posTmp.Y + args[3].Y;
             break;
 
          case "EventSetPos":
@@ -419,9 +561,8 @@ public unsafe partial class PalScript
             // 0x0013
             // Set the position of the event object
             //
-            GetEvtCurr();
-            trail.Pos.X = scr.INT(2);
-            trail.Pos.Y = scr.INT(3);
+            trail.Pos.X = args[2].X;
+            trail.Pos.Y = args[3].Y;
             break;
 
          case "NPCSetFrame":
@@ -429,8 +570,7 @@ public unsafe partial class PalScript
             // 0x0014
             // Set the gesture of the event object
             //
-            GetEvt();
-            evt._Frame.Trail.FrameID = scr.INT(0);
+            evt._Frame.Trail.FrameID = args[0].INT;
             evt._Frame.Trail.Direction = PalDirection.South;
             break;
 
@@ -439,10 +579,10 @@ public unsafe partial class PalScript
             // 0x0015
             // Set the direction and gesture for a party member
             //
-            trail = S_GetRoleTrail(scr.INT(0));
-            S_SetRoleDirection(scr.INT(0), (PalDirection)scr.INT(1));
+            trail = S_GetRoleTrail(args[0].INT);
+            S_SetRoleDirection(args[0].INT, args[1].DIRECTION);
             //trail.Direction = (PalDirection)scr.INT(1);
-            trail.FrameID = scr.INT(2);
+            trail.FrameID = args[2].INT;
             break;
 
          case "EventSetDirFrame":
@@ -450,12 +590,11 @@ public unsafe partial class PalScript
             // 0x0016
             // Set the direction and gesture for an event object
             //
-            GetEvtCurr();
             //trail = evtCurr._Frame._Trail;
-            if (scr.BOOL(0) && scr.BOOL(1))
+            if (args[0].BOOL && args[1].BOOL)
             {
-               trail.Direction = (PalDirection)scr.INT(2);
-               trail.FrameID = scr.INT(3);
+               trail.Direction = args[2].DIRECTION;
+               trail.FrameID = args[3].INT;
             }
             break;
 
@@ -464,17 +603,17 @@ public unsafe partial class PalScript
             // 0x001E
             // Increase or decrease cash by the specified amount
             //
-            if (scr.INT(0) < 0 && save.Cash < -scr.INT(0))
+            if (args[0].INT < 0 && save.Cash < -args[0].INT)
             {
                //
                // not enough cash
                //
                //iScrAddr = scr.ADDR(1) - 1;
-               iScrAddr = scr.ADDR(1);
+               iScrAddr = args[1].ADDR;
             }
             else
             {
-               save.Cash += scr.INT(0);
+               save.Cash += args[0].INT;
             }
             break;
 
@@ -483,7 +622,7 @@ public unsafe partial class PalScript
             // 0x001F
             // Add item to inventory
             //
-            S_InventoryAddItem(scr.INT(0), scr.INT(1));
+            S_InventoryAddItem(args[0].INT, args[1].INT);
             break;
 
          case "RemoveItem":
@@ -495,8 +634,8 @@ public unsafe partial class PalScript
                Hero     hero;
                int*     ipEquip;
 
-               x = scr.INT(0);      // Item ID
-               y = scr.INT(1);      // Number of Item
+               x = args[0].INT;     // Item ID
+               y = args[1].INT;     // Number of Item
 
                if (y == 0)
                {
@@ -555,10 +694,9 @@ public unsafe partial class PalScript
             // 0x0024
             // Set the autoscript entry address for an event object
             //
-            GetEvtCurr();
-            if (scr.INT(0) != 0)
+            if (args[0].INT != 0)
             {
-               evtCurr._Script.ScrAuto = scr.STR(2);
+               evtCurr._Script._ScrAuto = args[2].ADDR;
             }
             break;
 
@@ -567,10 +705,9 @@ public unsafe partial class PalScript
             // 0x0025
             // Set the trigger script entry address for an event object
             //
-            GetEvtCurr();
-            if (scr.INT(0) != 0)
+            if (args[0].INT != 0)
             {
-               evtCurr._Script.SrcTrigger = scr.STR(2);
+               evtCurr._Script._SrcTrigger = args[2].ADDR;
             }
             break;
 
@@ -579,8 +716,7 @@ public unsafe partial class PalScript
             // 0x003F
             // Ride the event object to the specified position, at a low speed
             //
-            GetBlockPos();
-            PalScene.PartyRideEventObject(iSceneID, iEvtID, bposTmp, scr.INT(3));
+            PalScene.PartyRideEventObject(iSceneID, iEvtID, bposTmp, args[3].INT);
             break;
 
          case "EventSetTriggerMode":
@@ -588,11 +724,10 @@ public unsafe partial class PalScript
             // 0x0040
             // set the trigger method for a event object
             //
-            GetEvtCurr();
-            if (scr.INT(0) != 0)
+            if (args[0].INT != 0)
             {
-               evtCurr._Status.IsAutoTrigger = scr.BOOL(2);
-               evtCurr._Status.TriggerDistance = scr.INT(3);
+               evtCurr._Status.IsAutoTrigger = args[2].BOOL;
+               evtCurr._Status.TriggerDistance = args[3].INT;
             }
             break;
 
@@ -601,8 +736,8 @@ public unsafe partial class PalScript
             // 0x0043
             // Set background music
             //
-            save.MusicID = scr.INT(0);
-            PalAudio.PlayMusic(save.MusicID, (scr.FLOAT(0) == 3 && scr.FLOAT(0) != 9) ? 3.0f : 0.0f, scr.BOOL(1));
+            save.MusicID = args[0].INT;
+            PalAudio.PlayMusic(save.MusicID, (args[2].FLOAT == 3 && args[2].FLOAT != 9) ? 3.0f : 0.0f, args[1].BOOL);
             break;
 
          case "SetBattleMusic":
@@ -610,7 +745,7 @@ public unsafe partial class PalScript
             // 0x0045
             // Set battle music
             //
-            save.BattleMusicID = scr.INT(0);
+            save.BattleMusicID = args[0].INT;
             break;
 
          case "PartySetPos":
@@ -619,8 +754,8 @@ public unsafe partial class PalScript
             // Set the party position on the map
             //
             S_SetPartyPos(
-               scr.INT(0) * 32 + scr.INT(2) * 16,
-               scr.INT(1) * 16 + scr.INT(2) * 8
+               args[0].BX * 32 + args[2].BH * 16,
+               args[1].BY * 16 + args[2].BH * 8
             );
             break;
 
@@ -629,7 +764,7 @@ public unsafe partial class PalScript
             // 0x0047
             // Play sound effect
             //
-            PalAudio.PlaySound(scr.INT(0));
+            PalAudio.PlaySound(args[0].INT);
             break;
 
          case "EventSetState":
@@ -637,11 +772,10 @@ public unsafe partial class PalScript
             // 0x0049
             // Set the state of event object
             //
-            GetEvtCurr();
-            if (scr.BOOL(0))
+            if (args[0].BOOL)
             {
-               evtCurr._Status.Display = scr.BOOL(2);
-               evtCurr._Status.IsObstacle = scr.BOOL(3);
+               evtCurr._Status.Display = args[2].BOOL;
+               evtCurr._Status.IsObstacle = args[3].BOOL;
             }
             break;
 
@@ -650,7 +784,7 @@ public unsafe partial class PalScript
             // 0x004A
             // Set the current battlefield
             //
-            save.BattleFieldID = scr.INT(0);
+            save.BattleFieldID = args[0].INT;
             break;
 
          case "NPCChase":
@@ -658,8 +792,8 @@ public unsafe partial class PalScript
             // 0x004C
             // chase the player
             //
-            i = scr.INT(0);   // speed
-            j = scr.INT(1);   // max. distance
+            i = args[0].INT;     // speed
+            j = args[1].INT;     // max. distance
 
             if (i == 0)
             {
@@ -671,7 +805,7 @@ public unsafe partial class PalScript
                j = 8;
             }
 
-            PalScene.MonsterChasePlayer(iSceneID, iEvtID, i, j, scr.BOOL(2));
+            PalScene.MonsterChasePlayer(iSceneID, iEvtID, i, j, args[2].BOOL);
             break;
 
          case "FadeOut":
@@ -680,7 +814,7 @@ public unsafe partial class PalScript
             // screen fade out
             //
             Screen.Update();
-            Screen.Fade(scr.BOOL(0) ? scr.INT(0) : 1);
+            Screen.Fade(args[0].BOOL ? args[0].INT : 1);
             PalGlobal.NeedToFadeIn = true;
             break;
 
@@ -690,7 +824,7 @@ public unsafe partial class PalScript
             // screen fade in
             //
             Screen.Update();
-            Screen.Fade(scr.BOOL(0) ? scr.INT(0) : 1, false);
+            Screen.Fade(args[0].BOOL ? args[0].INT : 1, false);
             PalGlobal.NeedToFadeIn = false;
             break;
 
@@ -699,9 +833,16 @@ public unsafe partial class PalScript
             // 0x0052
             // hide the event object for a while, default 800 frames
             //
-            GetEvt();
             evt._Status.Display = false;;
-            evt._Frame.VanishTime = (scr.INT(0) != 0) ? scr.INT(0) : 800;
+            evt._Frame.VanishTime = (args[0].INT != 0) ? args[0].INT : 800;
+            break;
+
+         case "SetTimeFilter":
+            //
+            // 0x0053
+            // Set the time filter
+            //
+            S_GetSave().Filter = args[0].Filter;
             break;
 
          case "SceneEnter":
@@ -709,13 +850,14 @@ public unsafe partial class PalScript
             // 0x0059
             // Change to the specified scene
             //
-            if (scr.INT(0) > 0 && scr.INT(0) <= save.listScene.Count
-               && save.SceneID != scr.INT(0))
+            if (args[0].INT > 0
+               && args[0].INT <= save.listScene.Count
+               && save.SceneID != args[0].INT)
             {
                //
                // Set data to load the scene in the next frame
                //
-               save.SceneID = scr.INT(0);
+               save.SceneID = args[0].INT;
                PalResource.SetLoadFlags(PalResource.LoadFlag.Scene);
                PalGlobal.EnterScene = true;
                save.PartyLayerOffset = 0;
@@ -727,8 +869,8 @@ public unsafe partial class PalScript
             // 0x0065
             // Set the player's sprite
             //
-            save._Entity.Hero[scr.INT(0) + 1]._HeroBase.SpriteID = scr.INT(1);
-            if (!PalGlobal.InBattle && scr.BOOL(2))
+            save._Entity.Hero[args[0].INT + 1]._HeroBase.SpriteID = args[1].INT;
+            if (!PalGlobal.InBattle && args[2].BOOL)
             {
                PalResource.SetLoadFlags(PalResource.LoadFlag.RoleSprite);
                PalResource.Load();
@@ -740,9 +882,8 @@ public unsafe partial class PalScript
             // 0x006C
             // Walk the NPC in one step
             //
-            GetEvtCurr();
-            trail.Pos.X += scr.SHORT(2);
-            trail.Pos.Y += scr.SHORT(3);
+            trail.Pos.X += args[2].SHORT;
+            trail.Pos.Y += args[3].SHORT;
             PalScene.NPCWalkOneStep(sceneCurrID, evtCurrID, 0);
             break;
 
@@ -751,18 +892,18 @@ public unsafe partial class PalScript
             // 0x006D
             // Set the enter script and teleport script for a scene
             //
-            if (scr.INT(0) != 0)
+            if (args[0].INT != 0)
             {
-               scene = S_GetScene(scr.INT(0));
+               scene = S_GetScene(args[0].INT);
 
-               if (scr.ADDR(1) != 0)
+               if (args[1].ADDR != 0)
                {
-                  scene._Script.ScrEnter = scr.STR(1);
+                  scene._Script._ScrEnter = args[1].ADDR;
                }
 
-               if (scr.ADDR(2) != 0)
+               if (args[2].ADDR != 0)
                {
-                  scene._Script.ScrEnter = scr.STR(2);
+                  scene._Script._ScrTeleport = args[2].ADDR;
                }
             }
             break;
@@ -773,13 +914,13 @@ public unsafe partial class PalScript
             // Move the player to the specified position in one step
             //
             posTmp = S_GetPartyPos();
-            posTmp.X += scr.INT(0);
-            posTmp.Y += scr.INT(1);
+            posTmp.X += args[0].X;
+            posTmp.Y += args[1].Y;
             PalScene.UpdateTeamPos(posTmp);
 
-            save.PartyLayerOffset = scr.INT(2) * 8;
+            save.PartyLayerOffset = args[2].INT * 8;
 
-            if (scr.INT(0) != 0 || scr.INT(1) != 0)
+            if (args[0].X != 0 || args[1].Y != 0)
             {
                PalScene.UpdatePartyGestures(true);
             }
@@ -790,12 +931,11 @@ public unsafe partial class PalScript
             // 0x006F
             // Sync the state of current event object with another event object
             //
-            GetEvtCurr();
-            if (evtCurr._Status.IsAutoTrigger == scr.BOOL(2)
-               && evtCurr._Status.IsObstacle == scr.BOOL(3))
+            if (evtCurr._Status.IsAutoTrigger == args[2].BOOL
+               && evtCurr._Status.IsObstacle == args[3].BOOL)
             {
-               evt._Status.IsAutoTrigger = scr.BOOL(2);
-               evt._Status.IsObstacle = scr.BOOL(4);
+               evt._Status.IsAutoTrigger = args[2].BOOL;
+               evt._Status.IsObstacle = args[4].BOOL;
             }
             break;
 
@@ -804,8 +944,7 @@ public unsafe partial class PalScript
             // 0x0070, 0x007A, 0x007B
             // Walk the party to the specified position
             //
-            GetBlockPos();
-            PalScene.PartyWalkTo(bposTmp, scr.INT(3));
+            PalScene.PartyWalkTo(bposTmp, args[3].INT);
             break;
 
          case "FadeToScene":
@@ -815,7 +954,7 @@ public unsafe partial class PalScript
             //
             Screen.Backup(g_pScreen);
             PalScene.Draw();
-            Screen.FadeToScreen(scr.INT(1));
+            Screen.FadeToScreen(args[1].INT);
             break;
 
          case "PartySetRole":
@@ -823,14 +962,15 @@ public unsafe partial class PalScript
             // 0x0075
             // Set the player party
             //
-            arg = scr.Args[0];
+            j = args[0].INT;
+            x = S_GetDigitCount(j);
             save.PartySize = 0;
 
-            for (i = 0; i < arg.Length; i++)
+            for (i = 0; i < x; i++)
             {
                party = save.arrParty[i];
 
-               party.HeroID = S_INT(arg[i]);
+               party.HeroID = S_GetDigitVal(j, x - i - 1);
 
                party.Trail.Direction = S_GetPartyDirection();
                save.PartySize++;
@@ -848,6 +988,14 @@ public unsafe partial class PalScript
             PalGlobal.UpdateEquipEffect();
             break;
 
+         case "FadeFBP":
+            //
+            // 0x0076
+            // Show FBP picture
+            //
+            S_CleanUpTex(g_pScreen, 0x000000FF);
+            break;
+
          case "MusicStop":
             //
             // 0x0077
@@ -862,9 +1010,8 @@ public unsafe partial class PalScript
             // 0x007D
             // Move the event object
             //
-            GetEvtCurr();
-            trail.Pos.X += scr.INT(2);
-            trail.Pos.Y += scr.INT(3);
+            trail.Pos.X += args[2].X;
+            trail.Pos.Y += args[3].Y;
             break;
 
          case "ViewportMove":
@@ -874,8 +1021,8 @@ public unsafe partial class PalScript
             //
             posTmp = S_GetRolePos(0);
 
-            x = scr.INT(0);
-            y = scr.INT(1);
+            x = args[0].X;
+            y = args[1].Y;
 
             if (x == 0 && y == 0)
             {
@@ -885,7 +1032,7 @@ public unsafe partial class PalScript
                Viewport.Offset.X = x;
                Viewport.Offset.Y = y;
 
-               if (scr.INT(2) != -1)
+               if (args[2].INT != -1)
                {
                   PalScene.Draw();
                   Screen.Update();
@@ -900,7 +1047,7 @@ public unsafe partial class PalScript
 
                do
                {
-                  if (scr.INT(2) == -1)
+                  if (args[2].INT == -1)
                   {
                      Viewport.Offset.X = x * 32;
                      Viewport.Offset.Y = y * 16;
@@ -911,7 +1058,7 @@ public unsafe partial class PalScript
                      Viewport.Offset.Y += y;
                   }
 
-                  if (scr.INT(2) != -1)
+                  if (args[2].INT != -1)
                   {
                      PalPlay.GameUpdate(false);
                   }
@@ -924,7 +1071,26 @@ public unsafe partial class PalScript
                   //
                   PalTimer.DelayUntil(time);
                   time = (uint)(SDL.GetTicks() + FRAME_TIME);
-               } while (++i < scr.INT(2) && scr.INT(2) != -1);
+               } while (++i < args[2].INT && args[2].INT != -1);
+            }
+            break;
+
+         case "ToggleDayNight":
+            //
+            // 0x0080
+            // Toggle noon/night filter
+            //
+            {
+               bool     fIsSoon;
+
+               fIsSoon = (S_GetSave().Filter == Screen.Filter.Noon);
+
+               S_GetSave().Filter = Filter.Night;
+               Screen.FadeToFilter(
+                  Screen.Filter.Night,
+                  !args[0].BOOL, fIsFadeOut: fIsSoon
+               );
+               S_GetSave().Filter = fIsSoon ? Filter.Night : Filter.Noon;
             }
             break;
 
@@ -934,17 +1100,16 @@ public unsafe partial class PalScript
             // Jump if the player is not facing the specified event object
             //
             {
-               if (scr.INT(0) != save.SceneID)
+               if (args[0].INT != save.SceneID)
                {
                   //
                   // The event object is not in the current scene
                   //
-                  iScrAddr = scr.ADDR(3) - 1;
+                  iScrAddr = args[3].ADDR - 1;
                   g_fScriptSuccess = false;
                   break;
                }
 
-               GetEvtCurr();
                posTmp = S_GetPartyPos();
                x = trail.Pos.X - posTmp.X;
                y = trail.Pos.Y - posTmp.Y;
@@ -953,21 +1118,21 @@ public unsafe partial class PalScript
                x += (dirCurr == PalDirection.West || dirCurr == PalDirection.South) ? 16 : -16;
                y += (dirCurr == PalDirection.West || dirCurr == PalDirection.North) ? 8 : -8;
 
-               if (Math.Abs(x) + Math.Abs(y * 2) < scr.INT(2) * 32 + 16
-                  && S_GetEvent(-1, scr.INT(1))._Status.Display)
+               if (Math.Abs(x) + Math.Abs(y * 2) < args[2].INT * 32 + 16
+                  && S_GetEvent(-1, args[1].INT)._Status.Display)
                {
-                  if (scr.INT(2) > 0)
+                  if (args[2].INT > 0)
                   {
                      //
                      // Change the trigger mode so that the object can be triggered in next frame
                      //
                      evtCurr._Status.IsAutoTrigger = true;
-                     evtCurr._Status.TriggerDistance = scr.INT(2) + 1;
+                     evtCurr._Status.TriggerDistance = args[2].INT + 1;
                   }
                }
                else
                {
-                  iScrAddr = scr.ADDR(3) - 1;
+                  iScrAddr = args[3].ADDR - 1;
                   g_fScriptSuccess = false;
                }
             }
@@ -978,7 +1143,7 @@ public unsafe partial class PalScript
             // 0x0085
             // Delay for a period
             //
-            PalTimer.Delay(scr.INT(0) * 80);
+            PalTimer.Delay(args[0].INT * 80);
             break;
 
          case "VideoFadeAndUpdate":
@@ -986,9 +1151,8 @@ public unsafe partial class PalScript
             // 0x0093
             // Fade the screen. Update scene in the process.
             //
-            //PAL_SceneFade(gpGlobals->wNumPalette, gpGlobals->fNightPalette,
-            //   (SHORT)(pScript->rgwOperand[0]));
-            PalGlobal.NeedToFadeIn = (scr.INT(0) < 0);
+            Screen.FadeAndUpdate(args[0].INT, args[1].BOOL);
+            PalGlobal.NeedToFadeIn = (args[0].INT < 0);
             break;
 
          case "JumpIfEventStateMatches":
@@ -996,11 +1160,10 @@ public unsafe partial class PalScript
             // 0x0094
             // Jump if the state of event object is the specified one
             //
-            GetEvtCurr();
-            if (evtCurr._Status.Display == scr.BOOL(2) &&
-               evtCurr._Status.IsObstacle == scr.BOOL(3))
+            if (evtCurr._Status.Display == args[2].BOOL &&
+               evtCurr._Status.IsObstacle == args[3].BOOL)
             {
-               iScrAddr = scr.ADDR(4);
+               iScrAddr = args[4].ADDR;
             }
             break;
 

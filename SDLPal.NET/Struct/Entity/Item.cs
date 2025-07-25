@@ -38,8 +38,16 @@ public class Item
 
    public class Script
    {
+      [JsonIgnore]
+      public   int         _Use     = 0;
       public   string      Use;        // Script executed when using this item
+
+      [JsonIgnore]
+      public   int         _Equip   = 0;
       public   string      Equip;      // Script executed when equipping this item
+
+      [JsonIgnore]
+      public   int         _Throw   = 0;
       public   string      Throw;      // Script executed when throwing this item to enemy
    }
 }

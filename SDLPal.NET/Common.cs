@@ -35,6 +35,13 @@ public unsafe class PalCommon
    IMG_ITEM_PATH        = $@"{IMG_PATH}\Item",
    IMG_FIGHT_PATH       = $@"{IMG_PATH}\Fight";
 
+   public   const    bool
+      TRUE = true,
+      FALSE = false;
+
+   public   const    char
+      NULL     = '\0';
+
    public   static   int
       MAX_SAVE_NUM            = 99,
       MAX_HERO_NUM            = 6,
@@ -66,11 +73,11 @@ public unsafe class PalCommon
 
    public enum PalDirection
    {
-      South = 0,
+      Unknown  = -1,
+      South    = 0,
       West,
       North,
       East,
-      Unknown
    }
 
    public enum PalAlign

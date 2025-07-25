@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-using static PalText;
-using static PalVideo;
 using static PalGame;
 using static PalScene;
+using static PalText;
+using static PalVideo;
 using static SafeSys;
+using static Script;
 
 public unsafe partial class PalScript
 {
@@ -44,12 +44,13 @@ public unsafe partial class PalScript
 
    --*/
    {
-      int         iScrAddrNext, i, len;
-      ulong       time;
-      bool        fEnded;
-      Event       evt;
-      Script      scr;
-      string      evtComment;
+      int               iScrAddrNext, i, len;
+      ulong             time;
+      bool              fEnded;
+      Event             evt;
+      Script            scr;
+      string            evtComment;
+      Script.Arg[]      args;
 
       PalGlobal.DrawMoreData = false;
 
@@ -95,6 +96,7 @@ public unsafe partial class PalScript
       while (iScrAddr != 0 && !fEnded)
       {
          scr = listScript[iScrAddr];
+         args = scr.arrArg;
 
          PalLog.Go($@"RunTrigger[{evtComment}]: {MakeFunc(scr)}");
 
@@ -122,10 +124,10 @@ public unsafe partial class PalScript
                // 0x0002
                // Stop running and replace the entry with the specified one
                //
-               if (scr.INT(1) == 0 || ++(evt._ScriptFrame.TriggerIdleFrame) < scr.INT(1))
+               if (args[1].INT == 0 || ++(evt._ScriptFrame.TriggerIdleFrame) < args[1].INT)
                {
                   fEnded = true;
-                  iScrAddr = scr.ADDR(0);
+                  iScrAddr = args[0].ADDR;
                }
                else
                {
@@ -142,9 +144,9 @@ public unsafe partial class PalScript
                // 0x0003
                // unconditional jump
                //
-               if (scr.INT(1) == 0 || ++(evt._ScriptFrame.TriggerIdleFrame) < scr.INT(1))
+               if (args[1].INT == 0 || ++(evt._ScriptFrame.TriggerIdleFrame) < args[1].INT)
                {
-                  iScrAddr = scr.ADDR(0);
+                  iScrAddr = args[0].ADDR;
                }
                else
                {
@@ -161,7 +163,7 @@ public unsafe partial class PalScript
                // 0x0004
                // Call script
                //
-               RunTrigger(scr.ADDR(0), scr.BOOL(1) ? scr.INT(1) : iSceneID, scr.BOOL(2) ? scr.INT(2) : iEvtID);
+               RunTrigger(args[0].ADDR, args[1].BOOL ? args[1].INT : iSceneID, args[2].BOOL ? args[2].INT : iEvtID);
                iScrAddr++;
                break;
 
@@ -184,7 +186,7 @@ public unsafe partial class PalScript
                }
                else
                {
-                  if (scr.BOOL(1))
+                  if (args[1].BOOL)
                   {
                      PalScene.UpdatePartyGestures(false);
                   }
@@ -192,7 +194,7 @@ public unsafe partial class PalScript
                   PalScene.Draw();
                   Screen.Update();
 
-                  PalTimer.Delay((scr.INT(0) == 0) ? 60 : (scr.INT(0) * 60));
+                  PalTimer.Delay((args[0].INT == 0) ? 60 : (args[0].INT * 60));
                }
                iScrAddr++;
                break;
@@ -202,9 +204,9 @@ public unsafe partial class PalScript
                // 0x0006
                // Jump to the specified address by the specified rate
                //
-               if (S_RandomLong(1, 100) >= scr.INT(0))
+               if (S_RandomLong(1, 100) >= args[0].INT)
                {
-                  iScrAddr = scr.ADDR(1);
+                  iScrAddr = args[1].ADDR;
                   continue;
                }
                else
@@ -240,19 +242,19 @@ public unsafe partial class PalScript
 
                   time = SDL.GetTicks() + FRAME_TIME;
 
-                  len = (scr.BOOL(0) ? scr.INT(0) : 1);
+                  len = (args[0].BOOL ? args[0].INT : 1);
                   for (i = 0; i < len; i++)
                   {
                      PalTimer.DelayUntil(time);
 
                      time = SDL.GetTicks() + FRAME_TIME;
 
-                     if (scr.BOOL(2))
+                     if (args[2].BOOL)
                      {
                         PalScene.UpdatePartyGestures(false);
                      }
 
-                     PalPlay.GameUpdate(scr.BOOL(1));
+                     PalPlay.GameUpdate(args[1].BOOL);
                      PalScene.Draw();
                      Screen.Update();
                   }
@@ -266,7 +268,7 @@ public unsafe partial class PalScript
                // Show dialog in the middle part of the screen
                //
                PalText.ClearDialog(true);
-               PalText.SetDialog(PalText.DialogBox.Middle, scr.STR(0), scr.DWORD(1), scr.BOOL(2));
+               PalText.SetDialog(PalText.DialogBox.Middle, args[0].STR, args[1].DWORD, args[2].BOOL);
                iScrAddr++;
                break;
 
@@ -276,7 +278,7 @@ public unsafe partial class PalScript
                // Show dialog in the upper part of the screen
                //
                PalText.ClearDialog(true);
-               PalText.SetDialog(PalText.DialogBox.Upper, scr.STR(0), scr.DWORD(1), scr.BOOL(2));
+               PalText.SetDialog(PalText.DialogBox.Upper, args[0].STR, args[1].DWORD, args[2].BOOL);
                iScrAddr++;
                break;
 
@@ -286,7 +288,7 @@ public unsafe partial class PalScript
                // Show dialog in the lower part of the screen
                //
                PalText.ClearDialog(true);
-               PalText.SetDialog(PalText.DialogBox.Lower, scr.STR(0), scr.DWORD(1), scr.BOOL(2));
+               PalText.SetDialog(PalText.DialogBox.Lower, args[0].STR, args[1].DWORD, args[2].BOOL);
                iScrAddr++;
                break;
 
@@ -298,7 +300,7 @@ public unsafe partial class PalScript
                PalText.ClearDialog(true);
                PalText.SetDialog(
                   PalText.DialogBox.Box,
-                  colorHex: scr.DWORD(0),
+                  colorHex: args[0].DWORD,
                   playingRNG: false
                );
                iScrAddr++;
@@ -318,7 +320,7 @@ public unsafe partial class PalScript
                // 0xFFFF
                // Print dialog text
                //
-               PalText.DrawTalkText(scr.Args[0]);
+               PalText.DrawTalkText(args[0].STR);
                iScrAddr++;
                break;
 

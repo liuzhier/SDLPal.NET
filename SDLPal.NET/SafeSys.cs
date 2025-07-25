@@ -9,12 +9,15 @@ using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
+
 using static HeroBase;
 using static PalCommon;
 using static PalConfig;
 using static PalMap;
 using static PalSave;
 using static PalVideo;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public unsafe class SafeSys
 {
@@ -849,21 +852,48 @@ public unsafe class SafeSys
       return val;
    }
 
-   public static bool
-   S_IsHex(
-   ref   string      strVal
+   private static ReadOnlySpan<char>
+   S_CheckHex(
+         string            strVal,
+   out   NumberStyles      numberStyles
    )
    {
-      bool     fIsHex;
+      ReadOnlySpan<char>      span;
 
-      fIsHex = strVal.StartsWith("0x");
+      span = strVal.AsSpan().Trim();
 
-      if (fIsHex)
+      if (span.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
       {
-         strVal = strVal.Split("0x")[1].ToUpper();
+         span = span.Slice(2);
+
+         numberStyles = NumberStyles.HexNumber;
+      }
+      else
+      {
+         numberStyles = NumberStyles.Integer;
       }
 
-      return fIsHex;
+      return span;
+   }
+
+   public static char
+   S_CHAR(
+      string      strVal
+   )
+   {
+      char     val;
+
+      val = '\0';
+
+      if (!char.TryParse(strVal, out val))
+      {
+         S_FAILED(
+            "S_BYTE",
+            $@"The string '{strVal}' is not a number"
+         );
+      }
+
+      return val;
    }
 
    public static byte
@@ -871,15 +901,15 @@ public unsafe class SafeSys
       string      strVal
    )
    {
-      byte     val;
+      byte                    val;
+      ReadOnlySpan<char>      span;
+      NumberStyles            numberStyles;
+
+      span = S_CheckHex(strVal, out numberStyles);
 
       val = 0;
 
-      try
-      {
-         val = Convert.ToByte(strVal, S_IsHex(ref strVal) ? 16 : 10);
-      }
-      catch
+      if (!byte.TryParse(span, numberStyles, CultureInfo.InvariantCulture, out val))
       {
          S_FAILED(
             "S_BYTE",
@@ -895,18 +925,42 @@ public unsafe class SafeSys
       string      strVal
    )
    {
-      short    val;
+      short                   val;
+      ReadOnlySpan<char>      span;
+      NumberStyles            numberStyles;
+
+      span = S_CheckHex(strVal, out numberStyles);
 
       val = 0;
 
-      try
-      {
-         val = Convert.ToInt16(strVal, S_IsHex(ref strVal) ? 16 : 10);
-      }
-      catch
+      if (!short.TryParse(span, numberStyles, CultureInfo.InvariantCulture, out val))
       {
          S_FAILED(
             "S_SHORT",
+            $@"The string '{strVal}' is not a number"
+         );
+      }
+
+      return val;
+   }
+
+   public static ushort
+   S_WORD(
+      string      strVal
+   )
+   {
+      ushort                  val;
+      ReadOnlySpan<char>      span;
+      NumberStyles            numberStyles;
+
+      span = S_CheckHex(strVal, out numberStyles);
+
+      val = 0;
+
+      if (!ushort.TryParse(span, numberStyles, CultureInfo.InvariantCulture, out val))
+      {
+         S_FAILED(
+            "S_WORD",
             $@"The string '{strVal}' is not a number"
          );
       }
@@ -919,45 +973,21 @@ public unsafe class SafeSys
       string      strVal
    )
    {
-      int      val;
-      bool     parseRet;
+      int                     val;
+      ReadOnlySpan<char>      span;
+      NumberStyles            numberStyles;
 
-      if (strVal.StartsWith("0x"))
-      {
-         ReadOnlySpan<char> span = strVal.AsSpan().Trim();
+      span = S_CheckHex(strVal, out numberStyles);
 
-         if (span.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
-         {
-            span = span.Slice(2);
-         }
+      val = 0;
 
-         parseRet = int.TryParse(span, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out val);
-      }
-      else
-      {
-         parseRet = int.TryParse(strVal, NumberStyles.Integer, CultureInfo.InvariantCulture, out val);
-      }
-
-      if (!parseRet)
+      if (!int.TryParse(span, numberStyles, CultureInfo.InvariantCulture, out val))
       {
          S_FAILED(
             "S_INT",
             $@"The string '{strVal}' is not a number"
          );
       }
-
-      //val = 0;
-      //try
-      //{
-      //   val = Convert.ToInt32(strVal, S_IsHex(ref strVal) ? 16 : 10);
-      //}
-      //catch
-      //{
-      //   S_FAILED(
-      //      "S_INT",
-      //      $@"The string '{strVal}' is not a number"
-      //   );
-      //}
 
       return val;
    }
@@ -975,15 +1005,63 @@ public unsafe class SafeSys
       string      strVal
    )
    {
-      uint     val;
+      uint                    val;
+      ReadOnlySpan<char>      span;
+      NumberStyles            numberStyles;
+
+      span = S_CheckHex(strVal, out numberStyles);
 
       val = 0;
 
-      try
+      if (!uint.TryParse(span, numberStyles, CultureInfo.InvariantCulture, out val))
       {
-         val = Convert.ToUInt32(strVal, S_IsHex(ref strVal) ? 16 : 10);
+         S_FAILED(
+            "S_DWORD",
+            $@"The string '{strVal}' is not a number"
+         );
       }
-      catch
+
+      return val;
+   }
+
+   public static long
+   S_LONG(
+      string      strVal
+   )
+   {
+      long                    val;
+      ReadOnlySpan<char>      span;
+      NumberStyles            numberStyles;
+
+      span = S_CheckHex(strVal, out numberStyles);
+
+      val = 0;
+
+      if (!long.TryParse(span, numberStyles, CultureInfo.InvariantCulture, out val))
+      {
+         S_FAILED(
+            "S_SHORT",
+            $@"The string '{strVal}' is not a number"
+         );
+      }
+
+      return val;
+   }
+
+   public static ulong
+   S_QWORD(
+      string      strVal
+   )
+   {
+      ulong                   val;
+      ReadOnlySpan<char>      span;
+      NumberStyles            numberStyles;
+
+      span = S_CheckHex(strVal, out numberStyles);
+
+      val = 0;
+
+      if (!ulong.TryParse(span, numberStyles, CultureInfo.InvariantCulture, out val))
       {
          S_FAILED(
             "S_DWORD",
@@ -995,27 +1073,90 @@ public unsafe class SafeSys
    }
 
    public static float
-   S_FLT(
+   S_FLOAT(
       string      strVal
    )
    {
-      float    val;
+      float                   val;
+      ReadOnlySpan<char>      span;
+
+      span = strVal;
 
       val = 0;
 
-      try
-      {
-         val = Convert.ToSingle(strVal);
-      }
-      catch
+      if (!float.TryParse(span, NumberStyles.Float | NumberStyles.AllowThousands,
+         CultureInfo.InvariantCulture, out val))
       {
          S_FAILED(
-            "S_FLT",
-            $@"The string '{strVal}' is not a number"
+            "S_FLOAT",
+            $@"The string '{strVal}' is not a floating-point number"
          );
       }
 
       return val;
+   }
+
+   public static int
+   S_GetDigitCount(
+      int      num
+   )
+   {
+      int      value;
+
+      if (num == 0) return 1;
+
+      //
+      // Handle negative numbers
+      //
+      value = Math.Abs(num);
+
+      //
+      // Logarithmic formula: floor(log10(n)) + 1
+      //
+      return (int)Math.Floor(Math.Log10(value)) + 1;
+   }
+
+   //
+   // Calculate in advance 10 to the power of 19
+   //
+   private static readonly long[] PowersOf10 =
+   {
+        1L,                   // 10^0
+        10L,                  // 10^1
+        100L,                 // 10^2
+        1000L,                // 10^3
+        10000L,               // 10^4
+        100000L,              // 10^5
+        1000000L,             // 10^6
+        10000000L,            // 10^7
+        100000000L,           // 10^8
+        1000000000L,          // 10^9
+        10000000000L,         // 10^10
+        100000000000L,        // 10^11
+        1000000000000L,       // 10^12
+        10000000000000L,      // 10^13
+        100000000000000L,     // 10^14
+        1000000000000000L,    // 10^15
+        10000000000000000L,   // 10^16
+        100000000000000000L,  // 10^17
+        1000000000000000000L  // 10^18
+    };
+
+   public static int
+   S_GetDigitVal(
+      long     num,
+      int      pos
+   )
+   {
+      long     absValue;
+      long     divisor;
+
+      absValue = Math.Abs(num);
+      divisor = PowersOf10[pos];
+
+      if (absValue < divisor) return 0;
+
+      return (int)((absValue / divisor) % 10);
    }
 
    public static PalSave
@@ -1239,7 +1380,24 @@ public unsafe class SafeSys
       int      iSceneID
    )
    {
-      return (iSceneID == -1) ? S_GetSave().CurrScene : S_GetSave().listScene[iSceneID];
+      List<Scene>    listScene;
+
+      if (iSceneID == -1)
+      {
+         return S_GetSave().CurrScene;
+      }
+
+      listScene = S_GetSave().listScene;
+
+      if (iSceneID >= listScene.Count)
+      {
+         S_FAILED(
+            "S_GetScene",
+            $"Scene {iSceneID} does not exist! The maximum scene number is {listScene.Count}"
+         );
+      }
+
+      return listScene[iSceneID];
    }
 
    public static Event

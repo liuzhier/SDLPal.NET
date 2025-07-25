@@ -381,7 +381,7 @@ public unsafe class PalResource
 
       listSprite = fIsRole ? arrRoleSprite[spriteId] : arrEventSprite[spriteId];
 
-      pTex = listSprite[frameID];
+      pTex = (frameID > listSprite.Count - 1) ? 0 : listSprite[frameID];
 
       return pTex;
    }
