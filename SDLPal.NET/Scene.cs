@@ -295,24 +295,8 @@ public unsafe class PalScene
          trail = arrParty[i].Trail;
          idDirection = (int)trail.Direction;
          idFrame = save._Entity.Hero[arrParty[i].HeroID].WalkFrames;
-
-         if (idFrame == 3)
-         {
-            //
-            // walking character (old version)
-            //
-            if (trail.FrameID == 2)
-            {
-               trail.FrameID = 0;
-            }
-
-            if (trail.FrameID == 3)
-            {
-               trail.FrameID = 2;
-            }
-         }
-
          idFrame = idDirection * idFrame + trail.FrameID;
+
          pBitmap = PalResource.GetNpcSprite(true, i, idFrame);
 
          if (pBitmap == 0)
@@ -821,6 +805,19 @@ public unsafe class PalScene
             {
                trail.FrameID++;
                trail.FrameID %= (count == 3) ? 4 : count;
+
+               //
+               // walking character (old version)
+               //
+               if (trail.FrameID == 2)
+               {
+                  trail.FrameID = 0;
+               }
+
+               if (trail.FrameID == 3)
+               {
+                  trail.FrameID = 2;
+               }
             }
             else
             {

@@ -14,7 +14,7 @@ public unsafe class PalCommon
 #if DEBUG
    WORK_PATH            = $@"E:\SDLPal.NET",
 #else
-   WORK_PATH            = $@".",
+   WORK_PATH            = $@"..\",
 #endif // DEBUG
    GAME_PATH            = $@"{WORK_PATH}\Game",
    LOG_PATH             = $@"{GAME_PATH}\..\Log",

@@ -1,1 +1,0 @@
-.\ImageTo2x.ps1 -SourceFolder "Face" -OutputFolder "..\Face2" -OutputFormat PNG

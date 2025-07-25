@@ -1,2 +1,0 @@
-﻿[Error]  Unknown function: PlayCDOrMusic(9, 14).
-[Error]  S_INT failed: The string '310E' is not a number.
