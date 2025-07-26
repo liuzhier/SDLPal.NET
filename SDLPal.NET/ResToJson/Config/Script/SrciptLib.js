@@ -75,15 +75,18 @@ GotoWithNop(
  * 
  * @deprecated
  * -  调用地址 {ScrAddress}，完成调用后返回并继续执行；
- *    累计触发 {Count} 次后，该指令将成为 NOP
+ *    参数 {SceneID} 和 {EventID} 只有 Event 触发脚本时才用到；
+ *    注意：不是只有玩家才能触发脚本，Event 也是可以主动触发脚本的！
  * 
  * @param ScrAddress 欲跳转到的地址
- * @param Count 最大可触发的次数，若设置为 0 则为总是可触发
+ * @param SceneID 当前事件所在的场景ID
+ * @param EventID 当前事件ID
  */
 function
-CallWithNop(
+Call(
    ScrAddress,
-   Count
+   SceneID,
+   EventID
 )
 {
    
@@ -139,13 +142,13 @@ GotoWithProbability(
  * 
  * @param EnemyTeamID 敌方队列 ID
  * @param ScrDefeat 战斗失败脚本
- * @param ScrVictory 战斗胜利脚本
+ * @param ScrFleed 战斗逃跑脚本
  */
 function
 BattleStart(
    EnemyTeamID,
    ScrDefeat,
-   ScrVictory
+   ScrFleed
 )
 {
    
@@ -224,6 +227,7 @@ GotoWithSelect(
  *    0x0087：向 -1（当前方向）行，速度 0；
  * 
  * @param DirectionID 行走方向
+ * @param Speed 行走速度
  */
 function
 EventAnimate(
@@ -1366,13 +1370,15 @@ NPCSetStillTime()
  * @deprecated
  * -  当前事件追逐队伍，追逐速度 {Speed}，警戒范围 {Range}
  * 
- * @param Speed 追逐速度，缺省则为 8
- * @param Range 警戒范围，队伍走范围内开始被追逐，缺省则为 4
+ * @param Speed 追逐速度，缺省则为 4
+ * @param Range 警戒范围，队伍走范围内开始被追逐，缺省则为 8
+ * @param CanFly 能够穿墙追逐角色
  */
 function
 NPCChase(
    Speed,
-   Range
+   Range,
+   CanFly
 )
 {
    
@@ -2215,7 +2221,7 @@ ViewportMove(
  * @deprecated
  * -  昼夜时间滤镜切换
  * 
- * @param UpdateScene 是否更新画面（1 = 不更新）
+ * @param UpdateScene 是否更新画面
  */
 function
 ToggleDayNight(
@@ -2234,12 +2240,14 @@ ToggleDayNight(
  * 
  * @param SceneID 场景编号
  * @param EventID 事件编号
+ * @param TriggerDistance 触发范围
  * @param ScrAddress 队伍领队没有面向事件则跳转到的地址
  */
 function
 JumpIfPartyNotFacingEvent(
    SceneID,
    EventID,
+   TriggerDistance,
    ScrAddress
 )
 {

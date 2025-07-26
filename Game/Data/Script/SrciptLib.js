@@ -2221,7 +2221,7 @@ ViewportMove(
  * @deprecated
  * -  昼夜时间滤镜切换
  * 
- * @param UpdateScene 是否更新画面（1 = 不更新）
+ * @param UpdateScene 是否更新画面
  */
 function
 ToggleDayNight(

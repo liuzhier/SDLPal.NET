@@ -178,7 +178,7 @@ public unsafe class SafeSys
 
       S_FAILED(
          "S_FILE_EXISTS",
-         $@"The file '{path}' does not exist"
+         $@"The file '{Path.GetFullPath(path)}' does not exist"
       );
    }
 
@@ -1616,6 +1616,74 @@ public unsafe class SafeSys
             equipEffect.Foot = new HeroBase();
             break;
       }
+   }
+
+   public static void
+   S_RoleAddMagic(
+      int iRoleID,
+      int iMagicID
+   )
+   {
+      S_GetEntity().Hero[iRoleID]._Magic.listLearned.Add(iMagicID);
+   }
+
+   public static void
+   S_RoleRemoveMagic(
+      int iRoleID,
+      int iMagicID
+   )
+   {
+      S_GetEntity().Hero[iRoleID]._Magic.listLearned.Remove(iMagicID);
+   }
+
+   public static bool
+   S_HeroModifyHPMP(
+      int      iHeroID,
+      int      iHP,
+      int      iMP
+   )
+   {
+      bool     fSuccess;
+      int      iOriginHP, iOriginMP;
+      Hero     hero;
+
+      fSuccess = true;
+      hero = S_GetHero(iHeroID);
+      iOriginHP = hero._HeroBase.HP;
+      iOriginMP = hero._HeroBase.MP;
+
+      fixed (HeroBase* hb = &hero._HeroBase)
+      {
+         //
+         // Only care about alive players
+         //
+         if (hb->HP > 0)
+         {
+            //
+            // Change HP
+            //
+            hb->HP += iHP;
+            hb->HP = int.Max(hb->HP, 0);
+            hb->HP = int.Min(hb->HP, hb->MaxHP);
+
+            //
+            // Change MP
+            //
+            hb->MP += iMP;
+            hb->MP = int.Max(hb->MP, 0);
+            hb->MP = int.Min(hb->MP, hb->MaxMP);
+
+            if (iOriginHP == hb->HP || iOriginMP == hb->MP)
+            {
+               //
+               // Role with full HMP do not need treatment
+               //
+               fSuccess = false;
+            }
+         }
+      }
+
+      return fSuccess;
    }
 
    public static void

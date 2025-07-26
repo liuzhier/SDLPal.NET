@@ -1,7 +1,7 @@
 {
-  "Name": "巫后",
+  "Name": "阿奴",
   "CoveredBy": 0,
-  "WalkFrames": 0,
+  "WalkFrames": 3,
   "Resistance": {
     "Elemental": {
       "Wind": 0.0,

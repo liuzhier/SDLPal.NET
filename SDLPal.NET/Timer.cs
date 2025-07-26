@@ -33,6 +33,21 @@ public unsafe class PalTimer
    }
 
    public static void
+   DelayUntilPC(
+      double      dflTime,
+      uint        dwDelayStep = 1
+   )
+   {
+      PalInput.ProcessEvent();
+
+      while (SDL.GetPerformanceCounter() < dflTime)
+      {
+         PalInput.ProcessEvent();
+         SDL.Delay(dwDelayStep);
+      }
+   }
+
+   public static void
    Delay(
       int      ms,
       uint     dwDelayStep = 1

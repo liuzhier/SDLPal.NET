@@ -994,18 +994,6 @@ end:
             Addr(wp[0]);
             break;
 
-         case "PartySetRole":                      // 0x0075
-            StrDec = "";
-            for (i = 0; i < sizeof(Core) / sizeof(ushort) - 1; i++)
-            {
-               if (S_B(wp[i]))
-               {
-                  StrDec += $"{wp[i]}";
-               }
-            }
-            listParameter.Add(StrDec);
-            break;
-
          case "FadeFBP":                           // 0x0076
             Val(sp[0]);
             Val(wp[1]);
@@ -1149,6 +1137,7 @@ end:
             Addr(wp[1]);
             break;
 
+         case "PartySetRole":                      // 0x0075
          case "PartySetFollower":                  // 0x0098
             for (i = 0; i < 3; i++)
             {

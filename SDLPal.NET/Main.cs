@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 using SDL3;
 
@@ -8,7 +9,6 @@ using static PalCommon;
 using static PalVideo;
 using static SafeSys;
 using static PalGlobal;
-using System.Diagnostics;
 
 public unsafe class PalMain
 {
@@ -107,7 +107,7 @@ public unsafe class PalMain
       //
       // Customize the game working directory in DEBUG mode
       //
-      Environment.CurrentDirectory = GAME_PATH;
+      Environment.CurrentDirectory = Path.GetFullPath($@"{WORK_PATH}\");
 #endif // DEBUG
 
       //

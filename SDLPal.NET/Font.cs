@@ -21,7 +21,7 @@ public class PalFont
       FONT_OFFSET_H_NUM       = FONT_SIZE_NUM + FONT_SHADOW_OFFSET;
 
    public   const string
-      FONT_NAME = "汉仪花木兰 简.ttf";
+      FONT_NAME = "Master.ttf";
 
    public   static   nint     g_pFont, g_pFontNum;
 

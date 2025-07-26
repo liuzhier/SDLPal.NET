@@ -77,7 +77,7 @@ public unsafe partial class PalScript
                   //
                   // Put the addresses into the list
                   //
-                  dictScrTag.Add(entry.ToString(), addr);
+                  dictScrTag[entry.ToString()] = addr;
                   continue;
                }
                else if (entry.StartsWith("//"))
@@ -172,17 +172,11 @@ public unsafe partial class PalScript
 
       Script.GetFuncArgType(name, out arrArgType, lineID);
 
-      arrArg = new Script.Arg[arrArgType.Length];
       fIsList = (arrArgType.Length > 0) && (arrArgType[0] == ArgType.LIST);
-      i = fIsList ? 1 : 0;
-      len = fIsList ? (args.Count - 1) : arrArg.Length;
+      arrArg = new Script.Arg[fIsList ? args.Count : arrArgType.Length];
+      len = arrArg.Length;
 
-      if (lineID == 8772)
-      {
-         i = i;
-      }
-
-      for (; i < len; i++)
+      for (i = 0; i < len; i++)
       {
          arrArg[i] = new Script.Arg();
          strVal = args[i];
@@ -260,7 +254,8 @@ public unsafe partial class PalScript
       Script      scr
    )
    {
-      int                  i;
+      int                  i, j;
+      bool                 fIsList;
       StringBuilder        func;
       Script.Arg           arg;
       Script.ArgType[]     arrArgType;
@@ -274,6 +269,7 @@ public unsafe partial class PalScript
       }
 
       func = new StringBuilder($"{scr.FuncName}(");
+      fIsList = (arrArgType.Length > 0) && (arrArgType[0] == ArgType.LIST);
 
       for (i = 0; i < scr.arrArg.Length; i++)
       {
@@ -284,7 +280,9 @@ public unsafe partial class PalScript
             func.Append(", ");
          }
 
-         switch (arrArgType[i])
+         j = fIsList ? 1 : i;
+
+         switch (arrArgType[j])
          {
             case Script.ArgType.LONG:
                func.Append($"{arg.LONG}");
@@ -598,6 +596,35 @@ public unsafe partial class PalScript
             }
             break;
 
+         case "RoleModifyHPMP":
+            //
+            // 0x001D
+            // Increase/decrease player's HP and MP
+            //
+            if (args[1].BOOL)
+            {
+               //
+               // Apply to everyone
+               //
+               for (i = 0; i <= S_GetSave().PartySize; i++)
+               {
+                  w = S_GetRole(i).HeroID;
+                  S_HeroModifyHPMP(w, args[1].INT, args[1].INT);
+               }
+            }
+            else
+            {
+               //
+               // Apply to one player.
+               // The wEventObjectID parameter should indicate the player role.
+               //
+               if (!S_HeroModifyHPMP(iEvtID, args[1].INT, args[1].INT))
+               {
+                  g_fScriptSuccess = false;
+               }
+            }
+            break;
+
          case "CashModify":
             //
             // 0x001E
@@ -709,6 +736,23 @@ public unsafe partial class PalScript
             {
                evtCurr._Script._SrcTrigger = args[2].ADDR;
             }
+            break;
+
+         case "SetRNG":
+            //
+            // 0x0036
+            // Set the current playing RNG animation
+            //
+            PalGlobal.CurrRngID = args[0].INT;
+            break;
+
+         case "PlayRNG":
+            //
+            // 0x0037
+            // Play RNG animation
+            //
+            PalRng.Play(PalGlobal.CurrRngID, args[0].INT, args[1].INT > 0 ? args[1].INT : -1,
+               args[2].INT > 0 ? args[2].INT : 16);
             break;
 
          case "RideNPCToPos":
@@ -845,6 +889,22 @@ public unsafe partial class PalScript
             S_GetSave().Filter = args[0].Filter;
             break;
 
+         case "RoleAddMagic":
+            //
+            // 0x0055
+            // Add magic to a player
+            //
+            S_RoleAddMagic(args[0].INT, args[1].INT);
+            break;
+
+         case "RoleRemoveMagic":
+            //
+            // 0x0056
+            // Remove magic from a player
+            //
+            S_RoleRemoveMagic(args[0].INT, args[1].INT);
+            break;
+
          case "SceneEnter":
             //
             // 0x0059
@@ -931,11 +991,11 @@ public unsafe partial class PalScript
             // 0x006F
             // Sync the state of current event object with another event object
             //
-            if (evtCurr._Status.IsAutoTrigger == args[2].BOOL
+            if (evtCurr._Status.Display == args[2].BOOL
                && evtCurr._Status.IsObstacle == args[3].BOOL)
             {
-               evt._Status.IsAutoTrigger = args[2].BOOL;
-               evt._Status.IsObstacle = args[4].BOOL;
+               evt._Status.Display = args[2].BOOL;
+               evt._Status.IsObstacle = args[3].BOOL;
             }
             break;
 
@@ -962,17 +1022,15 @@ public unsafe partial class PalScript
             // 0x0075
             // Set the player party
             //
-            j = args[0].INT;
-            x = S_GetDigitCount(j);
             save.PartySize = 0;
 
-            for (i = 0; i < x; i++)
+            for (i = 0; i < args.Length; i++)
             {
                party = save.arrParty[i];
 
-               party.HeroID = S_GetDigitVal(j, x - i - 1);
-
+               party.HeroID = args[i].INT;
                party.Trail.Direction = S_GetPartyDirection();
+
                save.PartySize++;
             }
 
@@ -1086,9 +1144,8 @@ public unsafe partial class PalScript
                fIsSoon = (S_GetSave().Filter == Screen.Filter.Noon);
 
                S_GetSave().Filter = Filter.Night;
-               Screen.FadeToFilter(
-                  Screen.Filter.Night,
-                  !args[0].BOOL, fIsFadeOut: fIsSoon
+               Screen.FadeToFilter(Screen.Filter.Night, args[0].BOOL,
+                  fIsFadeOut: fIsSoon
                );
                S_GetSave().Filter = fIsSoon ? Filter.Night : Filter.Noon;
             }
@@ -1164,6 +1221,44 @@ public unsafe partial class PalScript
                evtCurr._Status.IsObstacle == args[3].BOOL)
             {
                iScrAddr = args[4].ADDR;
+            }
+            break;
+
+         case "EventSetStateSequence":
+            //
+            // 0x009A
+            // Uniformly set the collection of events within a certain range to the specified state
+            //
+            scene = S_GetScene(args[0].SCENE);
+            for (i = args[1].EVENT; i < scene.listEvent.Count; i++)
+            {
+               evt = scene.listEvent[i];
+
+               evt._Status.Display = args[2].BOOL;
+               evt._Status.IsObstacle = args[3].BOOL;
+            }
+            for (i = args[0].SCENE + 1; i < args[2].SCENE; i++)
+            {
+               scene = S_GetScene(i);
+
+               for (j = 1; j < scene.listEvent.Count; j++)
+               {
+                  evt = scene.listEvent[j];
+
+                  evt._Status.Display = args[2].BOOL;
+                  evt._Status.IsObstacle = args[3].BOOL;
+               }
+            }
+            if (args[2].SCENE > args[0].SCENE)
+            {
+               scene = S_GetScene(args[2].SCENE);
+               for (i = 1; i <= args[3].EVENT; i++)
+               {
+                  evt = scene.listEvent[i];
+
+                  evt._Status.Display = args[2].BOOL;
+                  evt._Status.IsObstacle = args[3].BOOL;
+               }
             }
             break;
 

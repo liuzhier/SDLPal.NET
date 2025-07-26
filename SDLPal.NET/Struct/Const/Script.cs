@@ -830,7 +830,8 @@ public unsafe class Script
             //
             // 0x0075
             //
-            ArgType.INT,      // Dec sequence
+            ArgType.LIST,     // It can be any number of parameters of the same type
+            ArgType.INT,      // HeroID
          ],
          ["FadeFBP"] = [
             //

@@ -576,7 +576,7 @@ public unsafe class PalVideo
          int               time;
 
          alpha = 0.0f;
-         addNum = 0.38f / 100.0f;
+         addNum = 1.5625f / 100.0f;
          time = (fUpdateScene ? FRAME_TIME : FRAME_TIME / 4);
 
          S_CleanUpTex(g_pScreenFilter, FILTER_COLOR[(int)filter]);

@@ -1,7 +1,7 @@
 {
   "Name": "林月如",
   "CoveredBy": 0,
-  "WalkFrames": 0,
+  "WalkFrames": 3,
   "Resistance": {
     "Elemental": {
       "Wind": 0.0,

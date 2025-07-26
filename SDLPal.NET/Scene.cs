@@ -986,7 +986,7 @@ public unsafe class PalScene
          }
       }
 
-#if DEBUG_NoObstacle
+#if !DEBUG_NoObstacle
       if (fCheckRange)
       {
          //

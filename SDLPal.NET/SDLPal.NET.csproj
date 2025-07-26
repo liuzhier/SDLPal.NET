@@ -8,7 +8,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <ApplicationIcon>Resources\LOGO.ICO</ApplicationIcon>
-    <PublishTrimmed>True</PublishTrimmed>
     <PublishAot>False</PublishAot>
   </PropertyGroup>
 
@@ -20,5 +19,23 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="SDL3-CS" Version="3.2.16.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <FilesToCopy Include="$(SolutionDir)bin\libavif-16.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\libtiff-6.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\libwebp-7.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\libwebpdemux-2.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\SDL3.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\SDL3_image.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\SDL3_mixer.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\SDL3_net.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\SDL3_rtf.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\SDL3_shadercross.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\SDL3_ttf.dll" />
+  </ItemGroup>
+
+  <Target Name="CopyDllToOutDir" BeforeTargets="Build">
+    <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="$(OutDir)" />
+  </Target>
 
 </Project>

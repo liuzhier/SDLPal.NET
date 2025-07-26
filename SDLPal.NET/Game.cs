@@ -12,7 +12,7 @@ using static SafeSys;
 
 public unsafe class PalGame
 {
-   public   const int      FPS = 15;
+   public   const int      FPS = 1500000000;
    public   const int      FRAME_TIME = (1000 / FPS);
 
    public static void

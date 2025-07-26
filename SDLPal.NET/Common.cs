@@ -4,22 +4,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using static PalMap;
 using static PalSave;
 using static SafeSys;
 
 public unsafe class PalCommon
 {
-   public   static   string
+   public   const string
 #if DEBUG
-   WORK_PATH            = $@"E:\SDLPal.NET",
+   WORK_PATH            = $@"..\..\..\..",
+   GAME_PATH            = "Game",
 #else
-   WORK_PATH            = $@"..\",
-#endif // DEBUG
+   WORK_PATH            = $@"..",
    GAME_PATH            = $@"{WORK_PATH}\Game",
-   LOG_PATH             = $@"{GAME_PATH}\..\Log",
-   SAVE_PATH            = $@"{GAME_PATH}\..\Save",
-   SCREENSHOT_PATH      = $@"{GAME_PATH}\..\Screenshot",
+#endif // DEBUG
+   LOG_PATH             = $@"{WORK_PATH}\Log",
+   SAVE_PATH            = $@"{WORK_PATH}\Save",
+   SCREENSHOT_PATH      = $@"{WORK_PATH}\Screenshot",
    FONT_PATH            = $@"{GAME_PATH}\Font",
    UI_PATH              = $@"{GAME_PATH}\Ui",
    WAV_PATH             = $@"{GAME_PATH}\Wav",
@@ -33,11 +35,8 @@ public unsafe class PalCommon
    IMG_MGO_PATH         = $@"{IMG_PATH}\Mgo",
    IMG_FACE_PATH        = $@"{IMG_PATH}\Face",
    IMG_ITEM_PATH        = $@"{IMG_PATH}\Item",
-   IMG_FIGHT_PATH       = $@"{IMG_PATH}\Fight";
-
-   public   const    bool
-      TRUE = true,
-      FALSE = false;
+   IMG_FIGHT_PATH       = $@"{IMG_PATH}\Fight",
+   IMG_RNG_PATH         = $@"{IMG_PATH}\Rng";
 
    public   const    char
       NULL     = '\0';

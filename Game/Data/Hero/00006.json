@@ -1,7 +1,7 @@
 {
   "Name": "盖罗娇",
   "CoveredBy": 4,
-  "WalkFrames": 0,
+  "WalkFrames": 3,
   "Resistance": {
     "Elemental": {
       "Wind": 0.0,

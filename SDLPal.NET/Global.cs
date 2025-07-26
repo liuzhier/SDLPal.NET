@@ -16,6 +16,7 @@ using static SafeSys;
 public unsafe class PalGlobal
 {
    public   static   int      CurrSaveID     = 0;
+   public   static   int      CurrRngID      = 0;
    public   static   long     FrameNum       = 0;
    public   static   bool     EnterScene     = false;
    public   static   bool     NeedToFadeIn   = false;
@@ -137,6 +138,9 @@ public unsafe class PalGlobal
          }
 
          entity.Item.Add(PalUnpak.Json2Obj<Item>(pathFull));
+         entity.Item[^1]._Script._Use = PalScript.GetScrAddr(entity.Item[^1]._Script.Use);
+         entity.Item[^1]._Script._Equip = PalScript.GetScrAddr(entity.Item[^1]._Script.Equip);
+         entity.Item[^1]._Script._Throw = PalScript.GetScrAddr(entity.Item[^1]._Script.Throw);
       }
 
 #if false

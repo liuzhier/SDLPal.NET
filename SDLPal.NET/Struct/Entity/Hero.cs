@@ -39,14 +39,16 @@ public class Hero
 
    public class Magic
    {
-      public   int                  Cooperative;      // Cooperative magic
-      public   List<int>            listLearned;      // A list of magic that has been learned
-      public   List<Learnable>      listLearnable;    // A list of magic that can be learned
+      public   int                     Cooperative;      // Cooperative magic
+      public   HashSet<int>            listLearned;      // A list of magic that has been learned
+      public   HashSet<Learnable>      listLearnable;    // A list of magic that can be learned
 
       public class Learnable
       {
          public   int      Level;
          public   int      MagicID;
+
+         public override int GetHashCode() => MagicID.GetHashCode();
       }
    }
 
