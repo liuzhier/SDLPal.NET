@@ -606,7 +606,7 @@ public unsafe partial class PalScript
                //
                // Apply to everyone
                //
-               for (i = 0; i <= S_GetSave().PartySize; i++)
+               for (i = 0; i < S_GetSave().PartySize; i++)
                {
                   w = S_GetRole(i).HeroID;
                   S_HeroModifyHPMP(w, args[1].INT, args[1].INT);
@@ -801,6 +801,7 @@ public unsafe partial class PalScript
                args[0].BX * 32 + args[2].BH * 16,
                args[1].BY * 16 + args[2].BH * 8
             );
+            PalScene.UpdateTeamPosNeat();
             break;
 
          case "PlaySound":

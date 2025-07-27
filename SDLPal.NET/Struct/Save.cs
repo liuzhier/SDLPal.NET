@@ -64,6 +64,9 @@ public class PalSave
       public   int               FrameID     = 0;                       // Current frame number
 
       [JsonIgnore]
+      public   int         WalkCount         = 0;     // Step count statistics
+
+      [JsonIgnore]
       public   int         SpriteFramesAuto  = 0;     // Total number of frames of the sprite, used by auto script
 
       [JsonIgnore]

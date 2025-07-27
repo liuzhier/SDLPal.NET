@@ -311,7 +311,7 @@ public unsafe partial class PalScript
                // 0x008E
                // Restore the screen
                //
-               //PalText.DialogNextPage();
+               PalText.DialogNextPage();
                iScrAddr++;
                break;
 
@@ -320,7 +320,7 @@ public unsafe partial class PalScript
                // 0xFFFF
                // Print dialog text
                //
-               //PalText.DrawTalkText(args[0].STR);
+               PalText.DrawTalkText(args[0].STR);
                iScrAddr++;
                break;
 

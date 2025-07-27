@@ -636,7 +636,7 @@ public unsafe class PalScene
          PalText.GetNumWidth(strBPos, fIsText: true)
       );
       boxFRect.H = FONT_OFFSET_H_NUM * 4;
-      
+
       PalGlobal.ShowMoreData = true;
       {
          PalUi.DrawBox(boxFRect, PalAlign.Right, PalText.GetScreen());
@@ -772,7 +772,7 @@ public unsafe class PalScene
       Party             party;
       List<Follower>    listFollower;
       Follower          follower;
-      Trail             trail;
+      Trail             trail, trailRole;
 
       arrParty = S_GetSave().arrParty;
       listFollower = S_GetSave().listFollower;
@@ -781,51 +781,50 @@ public unsafe class PalScene
 
       if (fWalking)
       {
-         trail.FrameID++;
-
          //
          // Update the gesture for party leader
          //
          for (i = 0; i < arrParty.Length; i++)
          {
             party = arrParty[i];
+            trailRole = party.Trail;
 
             count = S_GetSave()._Entity.Hero[party.HeroID].WalkFrames;
 
-            if (count == 0) count = 3;
-
             if (count == 9)
             {
-               if (trail.FrameID >= count)
+               trailRole.FrameID++;
+
+               if (trailRole.FrameID >= count)
                {
-                  trail.FrameID = 1;
+                  trailRole.FrameID = 1;
                }
             }
-            else if(count == 3)
+            else if (count == 3)
             {
-               trail.FrameID++;
-               trail.FrameID %= (count == 3) ? 4 : count;
+               trailRole.WalkCount++;
+               trailRole.FrameID = trailRole.WalkCount % 4;
 
                //
                // walking character (old version)
                //
-               if (trail.FrameID == 2)
+               if (trailRole.FrameID == 2)
                {
-                  trail.FrameID = 0;
+                  trailRole.FrameID = 0;
                }
 
-               if (trail.FrameID == 3)
+               if (trailRole.FrameID == 3)
                {
-                  trail.FrameID = 2;
+                  trailRole.FrameID = 2;
                }
             }
             else
             {
-               trail.FrameID++;
-               trail.FrameID %= trail.SpriteFramesAuto;
+               trailRole.FrameID++;
+               trailRole.FrameID %= trailRole.SpriteFramesAuto;
             }
 
-            party.Trail.FrameID = trail.FrameID;
+            //trailRole.FrameID = trail.FrameID;
          }
 
          for (j = 0; j < listFollower.Count; j++)
@@ -850,6 +849,7 @@ public unsafe class PalScene
       }
       else
       {
+         trail.WalkCount = 0;
          trail.FrameID = 0;
 
          //
@@ -986,7 +986,7 @@ public unsafe class PalScene
          }
       }
 
-#if !DEBUG_NoObstacle
+#if DEBUG_NoObstacle
       if (fCheckRange)
       {
          //
@@ -994,7 +994,7 @@ public unsafe class PalScene
          //
          return false;
       }
-#endif // !DEBUG_NoObstacle
+#endif // DEBUG_NoObstacle
 
       //
       // Check if the map tile at the specified position is blocking
@@ -1139,9 +1139,11 @@ public unsafe class PalScene
       int      xOffset, yOffset;
       ulong    time;
       Pos      pos;
+      Trail    trail;
 
       time = 0;
       pos = S_GetPartyPos();
+      trail = S_GetPartyTrail();
 
       while (true)
       {
@@ -1164,11 +1166,11 @@ public unsafe class PalScene
 
          if (yOffset < 0)
          {
-            S_GetPartyTrail().Direction = ((xOffset < 0) ? PalDirection.West : PalDirection.North);
+            trail.Direction = ((xOffset < 0) ? PalDirection.West : PalDirection.North);
          }
          else
          {
-            S_GetPartyTrail().Direction = ((xOffset < 0) ? PalDirection.South: PalDirection.East);
+            trail.Direction = ((xOffset < 0) ? PalDirection.South: PalDirection.East);
          }
 
          if (Math.Abs(xOffset) <= iSpeed * 2)
@@ -1591,7 +1593,7 @@ public unsafe class PalScene
          //
          // Is the party near to the event object?
          //
-         if (Math.Abs(x) + Math.Abs(y) * 2 < iChaseRange * 32 * S_GetSave().ChaseRange)
+         if (int.Abs(x) + int.Abs(y) * 2 < iChaseRange * 32 * S_GetSave().ChaseRange)
          {
             if (x < 0)
             {
@@ -1618,7 +1620,7 @@ public unsafe class PalScene
 
             if (x != 0)
             {
-               x = trail.Pos.X + x / Math.Abs(x) * 16;
+               x = trail.Pos.X + x / int.Abs(x) * 16;
             }
             else
             {
@@ -1627,7 +1629,7 @@ public unsafe class PalScene
 
             if (y != 0)
             {
-               y = trail.Pos.X + y / Math.Abs(y) * 8;
+               y = trail.Pos.Y + y / int.Abs(y) * 8;
             }
             else
             {

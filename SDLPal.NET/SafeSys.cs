@@ -1195,8 +1195,6 @@ public unsafe class SafeSys
 
       pos.X = x;
       pos.Y = y;
-
-      PalScene.UpdateTeamPosNeat();
    }
 
    public static void

@@ -5641,8 +5641,8 @@ Replace()
 
 [Event_00001_00021_Trigger]
 SetDlgCenter(0, 0x00000000, false)
-//"桌上摆着一份丰盛的酒菜
-//嗯～看起来很好吃的样子"
+//"桌上摆着一份丰盛的酒菜"
+//"嗯～看起来很好吃的样子"
 
 [Scr_0x1387]
 EventSetDirFrame(1, 20, 0, 0)
@@ -5782,8 +5782,8 @@ SetDlgUpper(7-1-1, 0x00000000, false)
 EventSetState(-1, -1, false, false)
 FadeToScene(-1, 0)
 SetDlgCenter(0, 0x00000000, false)
-//"醉道士话说完一溜烟地
-//就不见了．．"
+//"醉道士话说完一溜烟地"
+//"就不见了．．"
 RoleSetDirFrame(0, 0, 0)
 VideoUpdate(0, false)
 SetDlgLower(1-2-1, 0x00000000, false)
@@ -6215,7 +6215,7 @@ SetDlgLower(1-1-1, 0x00000000, false)
 SetDlgUpper(25-1-1, 0x00000000, false)
 //苗人头领：
 //阵中有六具阿修罗神像，你用
-//这"破天鎚"将这些石像逐一敲
+//这"破天锤"将这些石像逐一敲
 //碎，在迷阵的中央便会出现一
 //块"发亮的石板"
 //届时你只要往石板上一踏
@@ -6249,7 +6249,7 @@ SetDlgLower(1-9-1, 0x00000000, false)
 //好！　我相信你
 VideoUpdate(0, false)
 SetDlgUpper(0, 0x00000000, false)
-//"李逍遥收下破天鎚，并服下"
+//"李逍遥收下破天锤，并服下"
 //"苗人给的丹丸（忘忧散）"
 ReplaceAndPause()
 [Scr_0x15CB]
@@ -7091,14 +7091,14 @@ SetDlgBox(0x00000000)
 AddItem(24, 1)
 EventSetState(-1, -1, false, false)
 
-[Event_00001_00023_Trigger]
+[Event_00001_00024_Trigger]
 PlaySound(78)
 SetDlgBox(0x00000000)
 //得到腌肉
 AddItem(34, 1)
 EventSetState(-1, -1, false, false)
 
-[Event_00001_00024_Trigger]
+[Event_00001_00023_Trigger]
 PlaySound(78)
 SetDlgBox(0x00000000)
 //得到雄黄
@@ -7407,7 +7407,17 @@ SetDlgUpper(7-1-1, 0x00000000, false)
 FadeOut(0)
 SetRNG(1)
 MusicPlay(86, true, 0.00)
-PlayRNG(0, -1, 14)
+PlayRNG(0, 112, 16)
+PlaySound(86)
+PlayRNG(113, 162, 16)
+PlaySound(87)
+PlayRNG(163, 186, 16)
+PlaySound(85)
+PlayRNG(187, 195, 16)
+PlaySound(85)
+PlayRNG(196, 266, 16)
+PlaySound(88)
+PlayRNG(267, 0, 16)
 FadeOut(0)
 PartySetPos(21, 25, 0)
 HeroSetSprite(0, 193, true)
@@ -8764,9 +8774,7 @@ RoleModifyHPMP(9999, true)
 ReplaceAndPause()
 
 [Scene_00001_Enter]
-Call(Test, 0, 0)
-ReplaceAndPause()
-MusicPlay(31, true, 0.00)
+GotoWithNop(Test, 0)
 SetBattleMusic(37)
 PartySetPos(10, 100, 0)
 HeroSetSprite(0, 193, false)
@@ -8788,6 +8796,7 @@ VideoRestore()
 PartySetPos(41, 18, 0)
 EventSetDirFrame(1, 12, 0, 0)
 EventSetPos(1, 12, 1328, 296)
+MusicPlay(31, true, 2.00)
 FadeToScene(-1, 2)
 VideoUpdate(0, false)
 SetDlgUpper(21-1-1, 0x00000000, false)
@@ -10343,8 +10352,8 @@ JumpIfEventStateMatches(17, 7, true, true, Null)
 JumpIfEventStateMatches(17, 8, true, true, Null)
 JumpIfEventStateMatches(17, 9, true, true, Null)
 SetDlgCenter(0, 0x00000000, false)
-//"第六具石像亦应声而碎
-//然而破天鎚也断了"
+//"第六具石像亦应声而碎"
+//"然而破天锤也断了"
 RemoveItem(219, 1, Null)
 EventSetState(17, 29, true, false)
 
@@ -46398,11 +46407,9 @@ EventSetState(182, 2, true, false)
 
 [Test]
 SceneEnter(20)
-MusicPlay(12, true, 3.00)
 SetBattleMusic(37)
-PartySetPos(28, 79, 0)
-HeroSetSprite(0, 2, false)
+PartySetPos(54, 61, 0)
+HeroSetSprite(0, 193, false)
 RoleSetDirFrame(0, 0, 0)
-PartySetRole(1, 2, 3, 4, 5, 6)
-EventSetState(-1, 8, true, false)
+PartySetRole(1)
 VideoUpdate(0, false)
