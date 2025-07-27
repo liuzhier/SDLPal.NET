@@ -121,7 +121,7 @@ public unsafe class PalInput
 
    --*/
    {
-
+      SDL.SetHint(SDL.Hints.IMEImplementedUI, "0");
    }
 
    public static void
