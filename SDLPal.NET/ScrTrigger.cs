@@ -127,7 +127,7 @@ public unsafe partial class PalScript
                if (args[1].INT == 0 || ++(evt._ScriptFrame.TriggerIdleFrame) < args[1].INT)
                {
                   fEnded = true;
-                  iScrAddr = args[0].ADDR;
+                  iScrAddrNext = args[0].ADDR;
                }
                else
                {

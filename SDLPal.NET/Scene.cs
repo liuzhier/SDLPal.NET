@@ -802,7 +802,19 @@ public unsafe class PalScene
             }
             else if (count == 3)
             {
-               trailRole.WalkCount++;
+               if (trailRole.WalkCount == 0)
+               {
+                  //
+                  // The question of the contemplative ghost in the Demon Locking Tower:
+                  // Should I step with my left foot or right foot first?
+                  //
+                  trailRole.WalkCount = S_B(S_RandomLong(0, 1)) ? 1 : 3;
+               }
+               else
+               {
+                  trailRole.WalkCount++;
+               }
+
                trailRole.FrameID = trailRole.WalkCount % 4;
 
                //
@@ -849,7 +861,11 @@ public unsafe class PalScene
       }
       else
       {
-         trail.WalkCount = 0;
+         for (i = 0; i < arrParty.Length; i++)
+         {
+            arrParty[i].Trail.WalkCount = 0;
+         }
+
          trail.FrameID = 0;
 
          //
@@ -1159,11 +1175,6 @@ public unsafe class PalScene
 
          time = SDL.GetTicks() + FRAME_TIME;
 
-         //
-         // Update the coordinates of all team members
-         //
-         UpdateTeamPos(pos);
-
          if (yOffset < 0)
          {
             trail.Direction = ((xOffset < 0) ? PalDirection.West : PalDirection.North);
@@ -1195,6 +1206,11 @@ public unsafe class PalScene
          // Update the coordinates of the party
          //
          S_SetPartyPos(pos);
+
+         //
+         // Update the coordinates of all team members
+         //
+         UpdateTeamPos(pos);
 
          UpdatePartyGestures(true);
          PalPlay.GameUpdate(false);
@@ -1449,7 +1465,7 @@ public unsafe class PalScene
             S_SetPartyDirection((xOffset < 0) ? PalDirection.South : PalDirection.East);
          }
 
-         if (Math.Abs(xOffset) > iSpeed * 2)
+         if (int.Abs(xOffset) > iSpeed * 2)
          {
             dx = iSpeed * (xOffset < 0 ? -2 : 2);
          }
@@ -1458,7 +1474,7 @@ public unsafe class PalScene
             dx = xOffset;
          }
 
-         if (Math.Abs(yOffset) > iSpeed)
+         if (int.Abs(yOffset) > iSpeed)
          {
             dy = iSpeed * (yOffset < 0 ? -1 : 1);
          }

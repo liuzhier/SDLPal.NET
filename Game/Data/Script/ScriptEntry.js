@@ -5721,7 +5721,7 @@ SetDlgUpper(7-1-1, 0x00000000, false)
 VideoUpdate(0, false)
 SetDlgUpper(7-1-1, 0x00000000, false)
 //醉道士：
-//酒??求求．．你．．
+//酒．．求求．．你．．
 //一口．．喝一口．．就好
 SetDlgLower(1-1-1, 0x00000000, false)
 //李逍遥：
@@ -8774,7 +8774,6 @@ RoleModifyHPMP(9999, true)
 ReplaceAndPause()
 
 [Scene_00001_Enter]
-GotoWithNop(Test, 0)
 SetBattleMusic(37)
 PartySetPos(10, 100, 0)
 HeroSetSprite(0, 193, false)
@@ -9481,7 +9480,6 @@ RideNPCToPos(43, 35, 1, 4)
 RideNPCToPos(41, 33, 1, 4)
 [Scr_0x2193]
 RideNPCToPos(40, 35, 0, 4)
-EventSetState(17, 27, false, false)
 EventSetState(17, 27, false, false)
 EventSetState(17, 28, true, true)
 PartyWalkToBlock(40, 35, 1, 4)
@@ -46404,12 +46402,3 @@ VideoUpdate(0, false)
 [Scr_0xA542]
 MusicPlay(56, true, 0.00)
 EventSetState(182, 2, true, false)
-
-[Test]
-SceneEnter(20)
-SetBattleMusic(37)
-PartySetPos(54, 61, 0)
-HeroSetSprite(0, 193, false)
-RoleSetDirFrame(0, 0, 0)
-PartySetRole(1)
-VideoUpdate(0, false)

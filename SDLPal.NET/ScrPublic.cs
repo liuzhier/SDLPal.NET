@@ -301,6 +301,7 @@ public unsafe partial class PalScript
                break;
 
             case Script.ArgType.STR:
+            case Script.ArgType.ADDR:
                func.Append(arg.STR);
                break;
 
