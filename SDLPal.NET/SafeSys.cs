@@ -21,28 +21,28 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public unsafe class SafeSys
 {
-    private static nint
-    memset(nint dst, int c, long len)
-    {
-        NativeMemory.Fill((void*)dst, (nuint)len, (byte)c);
-        return dst;
-    }
+   private static nint
+   memset(nint dst, int c, long len)
+   {
+      NativeMemory.Fill((void*)dst, (nuint)len, (byte)c);
+      return dst;
+   }
 
-    private static nint
-    memcpy(nint dst, nint src, long len)
-    {
-        NativeMemory.Copy((void*)src, (void*)dst, (nuint)len);
-        return dst;
-    }
+   private static nint
+   memcpy(nint dst, nint src, long len)
+   {
+      NativeMemory.Copy((void*)src, (void*)dst, (nuint)len);
+      return dst;
+   }
 
-    private static nint
-    memmove(nint dst, nint src, long len)
-    {
-        NativeMemory.Copy((void*)src, (void*)dst, (nuint)len);
-        return dst;
-    }
+   private static nint
+   memmove(nint dst, nint src, long len)
+   {
+      NativeMemory.Copy((void*)src, (void*)dst, (nuint)len);
+      return dst;
+   }
 
-    public static bool
+   public static bool
    S_B(
       decimal     val
    )
