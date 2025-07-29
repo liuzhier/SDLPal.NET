@@ -38,12 +38,4 @@
     <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="$(OutDir)" />
   </Target>
 
-  <ItemGroup>
-    <EditorConfigFiles Remove="Z:\SDLPal.NET\SDLPal.NET\.editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Z:\SDLPal.NET\SDLPal.NET\.editorconfig" />
-  </ItemGroup>
-
 </Project>
