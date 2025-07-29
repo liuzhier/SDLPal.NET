@@ -10,7 +10,7 @@ using static PalMap;
 using static SafeSys;
 using static SDL3.SDL;
 
-public unsafe class PalUnpak
+public unsafe partial class PalUnpak
 {
    public class PakFile
    {
@@ -41,8 +41,8 @@ public unsafe class PalUnpak
          {
             surface = (SDL.Surface*)pSurface;
 
-            Marshal.FreeHGlobal(surface->Pixels);
-            Marshal.FreeHGlobal(pSurface);
+            NativeMemory.Free((void*)surface->Pixels);
+            NativeMemory.Free((void*)pSurface);
          }
       }
    }

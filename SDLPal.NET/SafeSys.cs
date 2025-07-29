@@ -21,19 +21,28 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public unsafe class SafeSys
 {
-   [DllImport("msvcrt.dll")]
-   private static extern nint
-   memset(nint dst, int c, long len);
+    private static nint
+    memset(nint dst, int c, long len)
+    {
+        NativeMemory.Fill((void*)dst, (nuint)len, (byte)c);
+        return dst;
+    }
 
-   [DllImport("msvcrt.dll")]
-   private static extern nint
-   memcpy(nint dst, nint src, long len);
+    private static nint
+    memcpy(nint dst, nint src, long len)
+    {
+        NativeMemory.Copy((void*)src, (void*)dst, (nuint)len);
+        return dst;
+    }
 
-   [DllImport("msvcrt.dll")]
-   private static extern nint
-   memmove(nint dst, nint src, long len);
+    private static nint
+    memmove(nint dst, nint src, long len)
+    {
+        NativeMemory.Copy((void*)src, (void*)dst, (nuint)len);
+        return dst;
+    }
 
-   public static bool
+    public static bool
    S_B(
       decimal     val
    )
@@ -291,7 +300,7 @@ public unsafe class SafeSys
    {
       if (pSrc != 0)
       {
-         Marshal.FreeHGlobal(pSrc);
+         NativeMemory.Free((void*)pSrc);
       }
    }
 
@@ -343,7 +352,7 @@ public unsafe class SafeSys
    {
       if (lpSrc != null)
       {
-         Marshal.FreeHGlobal((nint)lpSrc);
+         NativeMemory.Free(lpSrc);
       }
    }
 
@@ -462,11 +471,7 @@ public unsafe class SafeSys
 
    --*/
    {
-      nint     pDest;
-
-      pDest = Marshal.AllocHGlobal(len);
-
-      return S_MEMSET(pDest, 0, len);
+        return (nint)NativeMemory.AllocZeroed((nuint)len);
    }
 
    public static void
@@ -476,7 +481,7 @@ public unsafe class SafeSys
       long     len = -1
    )
    {
-      if (pDest != 0) Marshal.FreeHGlobal(pDest);
+      if (pDest != 0) NativeMemory.Free((void*)pDest);
 
       S_ARRCPY(arr, out pDest, len);
    }
