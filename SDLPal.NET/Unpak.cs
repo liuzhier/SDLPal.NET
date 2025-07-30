@@ -6,110 +6,25 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+
 using static PalMap;
+using static PalCommon;
 using static SafeSys;
-using static SDL3.SDL;
 
 public unsafe partial class PalUnpak
 {
-   public class PakFile
-   {
-      public static void
-      GetSurfaceAll(
-            byte[]      arrByte,
-      out   nint[]      arrpSurface
-      )
-      {
-         int      i;
-
-         arrpSurface = new nint[GetPakChunkCount(arrByte)];
-
-         for (i = 0; i < arrpSurface.Length; i++)
-         {
-            GetPakChunk(arrByte, i, out arrpSurface[i]);
-         }
-      }
-
-      public static void
-      FreeSurfaceAll(
-         List<nint>     listpSurface
-      )
-      {
-         SDL.Surface*      surface;
-
-         foreach (nint pSurface in listpSurface)
-         {
-            surface = (SDL.Surface*)pSurface;
-
-            NativeMemory.Free((void*)surface->Pixels);
-            NativeMemory.Free((void*)pSurface);
-         }
-      }
-   }
-
-   public static int
-   GetPakChunkCount(
-      byte[]      arrData
+   public static T?
+   Json2Obj<T>(
+      string      value
    )
-   {
-      int*     ip;
-
-      fixed (byte* bp = arrData)
-      {
-         ip = (int*)bp;
-
-         return ip[0] / sizeof(int) - 1;
-      }
-   }
-
-   public static void
-   GetPakChunk(
-         byte[]      arrData,
-         int         iPakChunkID,
-   out   nint        pSurfaceDest
-   )
-   {
-      PakFile     pakdata;
-      byte*       bp;
-      short*      sp;
-      int*        ip;
-      int         w, h, len;
-      nint        pPixel;
-
-      pakdata = new PakFile();
-
-      fixed (byte* bpo = arrData)
-      {
-         bp = bpo;
-         ip = (int*)bpo;
-
-         //
-         // 定位到 iPakChunkID 指定的块
-         //
-         bp += ip[iPakChunkID];
-         sp = (short*)bp;
-
-         w = sp[0];
-         h = sp[1];
-         len = w * h;
-         pPixel = S_MALLOC(len);
-
-         //
-         // 定位到像素数据
-         //
-         bp += sizeof(short) * 2;
-         S_MEMCPY((nint)bp, pPixel, len);
-
-         pSurfaceDest = SDL.CreateSurfaceFrom(w, h, SDL.PixelFormat.RGBA8888, pPixel, w * 4);
-
-         //S_FREE(ref pPixel);
-      }
-   }
-
-   public static T? Json2Obj<T>(string value)
    {
       return JsonConvert.DeserializeObject<T>(File.ReadAllText(value));
    }
+
+   public static byte
+   CalcShadowColor(
+      byte     bSourceColor
+   ) => (byte)((bSourceColor & 0xF0) | ((bSourceColor & 0x0F) >> 1));
 
    public static void
    DrawRLE(
@@ -161,7 +76,7 @@ public unsafe partial class PalUnpak
       }
 
       byte*             lpBitmapRLE = (byte*)pRLE;
-      SDL.Surface*      lpDstSurface = (Surface*)pSurface;
+      SDL.Surface*      lpDstSurface = (SDL.Surface*)pSurface;
       byte*             pPixels = (byte*)lpDstSurface->Pixels;
 
       //
@@ -325,230 +240,6 @@ public unsafe partial class PalUnpak
       // Success
       //
       return;
-   }
-
-   public static void
-   DrawRLE1(
-      nint     pRLE,
-      nint     pSurface,
-      Pos      pos,
-      bool     fIsShadow = false
-   )
-   /*++
-     Purpose:
-
-       Blit an RLE-compressed bitmap to an SDL surface.
-       NOTE: Assume the surface is already locked, and the surface is a 8-bit one.
-
-     Parameters:
-
-       [IN]  pRLE - pointer to the RLE-compressed bitmap to be decoded.
-
-       [OUT] pSurface - pointer to the destination SDL surface.
-
-       [IN]  pos - position of the destination area.
-
-       [IN]  fIsShadow - flag to mention whether blit source color or just shadow.
-
-     Return value:
-
-       0 = success, -1 = error.
-
-   --*/
-   {
-      int      i, j, k, sx;
-      int      x, y;
-      int      iLen = 0;
-      int      iWidth = 0;
-      int      iHeight = 0;
-      int      iSrcX = 0;
-      byte     T;
-      int      dx = pos.X;
-      int      dy = pos.Y;
-      byte*    p;
-
-      byte*             lpBitmapRLE    = (byte*)pRLE;
-      SDL.Surface*      lpDstSurface   = (SDL.Surface*)pSurface;
-
-      //
-      // Check for NULL pointer.
-      //
-      if (pRLE == 0 || pSurface == 0)
-      {
-         return;
-      }
-
-      //
-      // Skip the 0x00000002 in the file header.
-      //
-      if (lpBitmapRLE[0] == 0x02 && lpBitmapRLE[1] == 0x00 &&
-         lpBitmapRLE[2] == 0x00 && lpBitmapRLE[3] == 0x00)
-      {
-         lpBitmapRLE += 4;
-      }
-
-      //
-      // Get the width and height of the bitmap.
-      //
-      iWidth = lpBitmapRLE[0] | (lpBitmapRLE[1] << 8);
-      iHeight = lpBitmapRLE[2] | (lpBitmapRLE[3] << 8);
-
-      //
-      // Check whether bitmap intersects the surface.
-      //
-      if (iWidth + dx <= 0 || dx >= lpDstSurface->Width ||
-         iHeight + dy <= 0 || dy >= lpDstSurface->Height)
-      {
-         goto end;
-      }
-
-      //
-      // Calculate the total length of the bitmap.
-      // The bitmap is 8-bpp, each pixel will use 1 byte.
-      //
-      iLen = iWidth * iHeight;
-
-      //
-      // Start decoding and blitting the bitmap.
-      //
-      lpBitmapRLE += 4;
-
-      for (i = 0; i < iLen;)
-      {
-         T = *lpBitmapRLE++;
-
-         if ((T & 0x80) != 0 &&
-            T <= (0x80 + iWidth))
-         {
-            i += T - 0x80;
-            iSrcX += T - 0x80;
-            if (iSrcX >= iWidth)
-            {
-               iSrcX -= iWidth;
-               dy++;
-            }
-         }
-         else
-         {
-            //
-            // Prepare coordinates.
-            //
-            j = 0;
-            sx = iSrcX;
-            x = dx + iSrcX;
-            y = dy;
-
-            //
-            // Skip the points which are out of the surface.
-            //
-            if (y < 0)
-            {
-               j += -y * iWidth;
-               y = 0;
-            }
-            else if (y >= lpDstSurface->Height)
-            {
-               goto end; // No more pixels needed, break out
-            }
-
-            while (j < T)
-            {
-               //
-               // Skip the points which are out of the surface.
-               //
-               if (x < 0)
-               {
-                  j += -x;
-
-                  if (j >= T) break;
-
-                  sx += -x;
-                  x = 0;
-               }
-               else if (x >= lpDstSurface->Width)
-               {
-                  j += iWidth - sx;
-                  x -= sx;
-                  sx = 0;
-                  y++;
-
-                  if (y >= lpDstSurface->Height)
-                  {
-                     goto end; // No more pixels needed, break out
-                  }
-
-                  continue;
-               }
-
-               //
-               // Put the pixels in row onto the surface
-               //
-               k = T - j;
-
-               if (lpDstSurface->Width - x < k) k = lpDstSurface->Width - x;
-               if (iWidth - sx < k) k = iWidth - sx;
-
-               sx += k;
-               p = ((byte*)lpDstSurface->Pixels) + y * lpDstSurface->Pitch;
-
-               if (fIsShadow)
-               {
-                  j += k;
-
-                  for (; k != 0; k--)
-                  {
-                     p[x] = CalcShadowColor(p[x]);
-                     x++;
-                  }
-               }
-               else
-               {
-                  for (; k != 0; k--)
-                  {
-                     p[x] = lpBitmapRLE[j];
-                     j++;
-                     x++;
-                  }
-               }
-
-               if (sx >= iWidth)
-               {
-                  sx -= iWidth;
-                  x -= iWidth;
-                  y++;
-
-                  if (y >= lpDstSurface->Height)
-                  {
-                     goto end; // No more pixels needed, break out
-                  }
-               }
-            }
-
-            lpBitmapRLE += T;
-            i += T;
-            iSrcX += T;
-
-            while (iSrcX >= iWidth)
-            {
-               iSrcX -= iWidth;
-               dy++;
-            }
-         }
-      }
-
-   end:
-      //
-      // Success
-      //
-      return;
-   }
-
-   public static byte
-   CalcShadowColor(
-      byte     bSourceColor
-   )
-   {
-      return (byte)((bSourceColor & 0xF0) | ((bSourceColor & 0x0F) >> 1));
    }
 
    public static nint
@@ -717,5 +408,117 @@ public unsafe partial class PalUnpak
       // Return the width of the bitmap.
       //
       return pBitmapRLE[2] | (pBitmapRLE[3] << 8);
+   }
+   
+   public static int
+   GetMKFChunkOffset(
+      FileStream     fs,
+      int            iChunkID
+   )
+   {
+      int      iOffset;
+
+      C_fseek(fs, iChunkID * sizeof(int), SeekOrigin.Begin);
+
+      C_fread(fs, sizeof(int), (nint)(&iOffset));
+
+      return iOffset;
+   }
+
+   public static int
+   GetMKFChunkCount(
+      FileStream     fs
+   )
+   /*++
+     Purpose:
+
+       Get the number of chunks in an MKF archive.
+
+     Parameters:
+
+       [IN]  fp - pointer to an fopen'ed MKF file.
+
+     Return value:
+
+       Integer value which indicates the number of chunks in the specified MKF file.
+
+   --*/
+   {
+      return (GetMKFChunkOffset(fs, 0) / sizeof(int)) - 1;
+   }
+   
+
+   public static int
+   GetMKFChunkSize(
+      FileStream     fs,
+      int            iChunkID
+   )
+   {
+      int      iChunkCount, iOffset, iOffsetNext;
+
+      iChunkCount = GetMKFChunkCount(fs);
+
+      if (iChunkID >= iChunkCount)
+      {
+         S_FAILED(
+            "Unpak.GetMKFChunkSize",
+            $"The MKF file does not have sub-block #{iChunkID}, and the maximum sub-block number is #{iChunkCount}!"
+         );
+      }
+
+      iOffset = GetMKFChunkOffset(fs, iChunkID);
+      iOffsetNext = GetMKFChunkOffset(fs, iChunkID + 1);
+
+      return iOffsetNext - iOffset;
+   }
+
+   public static (nint, int)
+   ReadMKFChunk(
+      FileStream     fs,
+      int            iChunkID
+   )
+   /*++
+     Purpose:
+
+       Read a chunk from an MKF archive into pDest.
+
+     Parameters:
+
+       [IN]  fs - pointer to the fopen'ed MKF file.
+
+       [IN]  iChunkNum - the number of the chunk in the MKF archive to read.
+
+     Return value:
+
+       None.
+
+   --*/
+   {
+      int      iChunkLen;
+      nint     pDest;
+
+      if (fs == null)
+      {
+         S_FAILED(
+            $@"Unpak.ReadMKFChunk",
+            "The file pointer is empty"
+         );
+      }
+
+      //
+      // Get the length of the chunk.
+      //
+      iChunkLen = GetMKFChunkSize(fs, iChunkID);
+      pDest = NULL;
+
+      if (iChunkLen != 0)
+      {
+         pDest = S_MALLOC(iChunkLen);
+
+         C_fseek(fs, GetMKFChunkOffset(fs, iChunkID), SeekOrigin.Begin);
+         C_fread(fs, iChunkLen, pDest);
+      }
+
+      return (pDest, iChunkLen);
    }
 }

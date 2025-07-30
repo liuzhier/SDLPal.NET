@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using WORD = System.UInt16;
 
 using static GoMain;
+using static PalCommon;
 
 public unsafe class GoPoison
 {
@@ -34,47 +35,40 @@ public unsafe class GoPoison
       Poison            poison;
 
       listPoison = new List<Poison>();
+      lpCore = (Core*)GoData.listCoreBuf[2].Item1;
+      lpCore += OBJ_POISON_BEGIN;
+      len = (GoData.listCoreBuf[2].Item2 / sizeof(Core)) - OBJ_POISON_BEGIN;
 
-      arrCore = File.ReadAllBytes($@"{CORE_PATH}\SSS2.smkf");
+      S_MKDIR($@"{DATA_PATH}\Poison");
 
-      len = (arrCore.Length / sizeof(Core)) - OBJ_POISON_BEGIN;
-
-      fixed (byte* tmpCore = arrCore)
+      for (i = 0; i < len; i++, lpCore++)
       {
-         lpCore = (Core*)tmpCore;
-         lpCore += OBJ_POISON_BEGIN;
+         ai = i + 1;
 
-         S_MKDIR($@"{OUTPUT_PATH}\Poison");
-
-         for (i = 0; i < len; i++, lpCore++)
+         poison = new Poison
          {
-            ai = i + 1;
-
-            poison = new Poison
+            Name = GoMsg.listWord[OBJ_POISON_BEGIN + i],
+            PoisonLevel = lpCore->wPoisonLevel,
+            ColorHex = "",
+            _Script = new Poison.Script
             {
-               Name = GoMsg.listWord[OBJ_POISON_BEGIN + i],
-               PoisonLevel = lpCore->wPoisonLevel,
-               ColorHex = "",
-               _Script = new Poison.Script
+               Player = GoScript.AddTag(new GoScript.Tag
                {
-                  Player = GoScript.AddTag(new GoScript.Tag
-                  {
-                     Addr = lpCore->wPlayerScript,
-                     Name = $@"Poison_{ai:D5}_Player",
-                  }).Name,
-                  Enemy = GoScript.AddTag(new GoScript.Tag
-                  {
-                     Addr = lpCore->wEnemyScript,
-                     Name = $@"Poison_{ai:D5}_Enemy",
-                  }).Name,
-               },
-            };
+                  Addr = lpCore->wPlayerScript,
+                  Name = $@"Poison_{ai:D5}_Player",
+               }).Name,
+               Enemy = GoScript.AddTag(new GoScript.Tag
+               {
+                  Addr = lpCore->wEnemyScript,
+                  Name = $@"Poison_{ai:D5}_Enemy",
+               }).Name,
+            },
+         };
 
-            File.WriteAllText(
-               $@"{OUTPUT_PATH}\Poison\{ai:D5}.json",
-               JsonConvert.SerializeObject(poison, Formatting.Indented)
-            );
-         }
+         File.WriteAllText(
+            $@"{DATA_PATH}\Poison\{ai:D5}.json",
+            JsonConvert.SerializeObject(poison, Formatting.Indented)
+         );
       }
    }
 }

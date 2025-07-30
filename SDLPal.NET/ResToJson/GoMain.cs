@@ -7,21 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using static PalCommon;
 using static SafeSys;
 
 public class GoMain
 {
-   public const   string
-#if DEBUG
-      GAME_PATH   = $@"E:\PALDOS\pal",
-#else
-      GAME_PATH   = $@".\",
-#endif // DEBUG
-      BASE_PATH   = $@"{GAME_PATH}\DATA",
-      CORE_PATH   = $@"{GAME_PATH}\SSS",
-      CFG_PATH    = $@"{GAME_PATH}\PALMOD",
-      OUTPUT_PATH = $@"E:\SDLPal.NET\Game\Data";
-
    public   const int
       OBJ_SYS_BEGIN     = 0x0000,
       OBJ_HERO_BEGIN    = 0x0024,
@@ -68,16 +58,26 @@ public class GoMain
       return SafeSys.S_B(val);
    }
 
-   public static void Go()
+   public static void
+   Init()
+   {
+      S_MKDIR(WORK_PATH);
+   }
+
+   public static void
+   Go()
    {
 #if DEBUG
       //
       // Customize the game working directory in DEBUG mode
       //
-      Environment.CurrentDirectory = GAME_PATH;
+      Environment.CurrentDirectory = WORK_PATH;
 #endif // DEBUG
 
+      GoSound.Go();
+
       GoMsg.Init();
+      GoData.Init();
 
       GoData.Go();
       GoHero.Go();
@@ -87,5 +87,7 @@ public class GoMain
       GoPoison.Go();
       GoScene.Go();
       GoScript.Go();
+
+      GoData.Free();
    }
 }

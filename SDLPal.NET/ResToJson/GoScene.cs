@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using static GoMain;
 using static PalMap;
 using static PalSave;
+using static PalCommon;
 
 using SHORT = System.Int16;
 using USHORT = System.UInt16;
@@ -51,7 +52,6 @@ public unsafe class GoScene
    public static void
    Go()
    {
-      byte[]      arrScene, arrEvent;
       _Scene*     lpScene;
       _Event*     lpEvent;
       int         i, ai, j, aj, len_i, len_j;
@@ -59,145 +59,137 @@ public unsafe class GoScene
       Event       eventObj;
       string      path, name;
 
-      arrScene = File.ReadAllBytes($@"{CORE_PATH}\SSS1.SMKF");
-      arrEvent = File.ReadAllBytes($@"{CORE_PATH}\SSS0.SMKF");
+      lpScene = (_Scene*)GoData.listCoreBuf[1].Item1;
+      lpEvent = (_Event*)GoData.listCoreBuf[0].Item1;
+      len_i = GoData.listCoreBuf[1].Item2 / sizeof(_Scene) - 1;
 
-      fixed (byte* tmpScene = arrScene)
-      fixed (byte* tmpEvent = arrEvent)
+      S_MKDIR($@"{DATA_PATH}\Scene");
+      for (i = 0; i < len_i; i++, lpScene++)
       {
-         lpScene = (_Scene*)tmpScene;
-         lpEvent = (_Event*)tmpEvent;
+         ai = i + 1;
 
-         S_MKDIR($@"{OUTPUT_PATH}\Scene");
-
-         len_i = arrScene.Length / sizeof(_Scene) - 1;
-         for (i = 0; i < len_i; i++, lpScene++)
+         try
          {
-            ai = i + 1;
+            name = GoMsg.dictScene[ai];
+         }
+         catch
+         {
+            name = "";
+         }
+
+         scene = new Scene
+         {
+            Name = name,
+            MapID = lpScene->wMapNum,
+            _Script = new Scene.Script
+            {
+               ScrEnter = GoScript.AddTag(new GoScript.Tag
+               {
+                  Addr = lpScene->wScriptOnEnter,
+                  Name = $@"Scene_{ai:D5}_Enter",
+               }).Name,
+               ScrTeleport = GoScript.AddTag(new GoScript.Tag
+               {
+                  Addr = lpScene->wScriptOnTeleport,
+                  Name = $@"Scene_{ai:D5}_Teleport",
+               }).Name,
+            },
+         };
+
+         path = $@"{DATA_PATH}\Scene\{ai:D5}";
+         S_MKDIR(path);
+
+         File.WriteAllText(
+            $@"{path}\Scene.json",
+            JsonConvert.SerializeObject(scene, Formatting.Indented)
+         );
+
+         path = $@"{path}\Event";
+         Directory.CreateDirectory(path);
+
+         len_j = lpScene[1].wEventObjectIndex - lpScene[0].wEventObjectIndex;
+         for (j = 0; j < len_j; j++, lpEvent++)
+         {
+            aj = j + 1;
 
             try
             {
-               name = GoMsg.dictScene[ai];
+               name = GoMsg.dictSprite[lpEvent->wSpriteNum];
             }
             catch
             {
                name = "";
             }
 
-            scene = new Scene
+            eventObj = new Event
             {
-               Name = name,
-               MapID = lpScene->wMapNum,
-               _Script = new Scene.Script
+               Comment = name,
+               _Frame = new Event.Frame
                {
-                  ScrEnter = GoScript.AddTag(new GoScript.Tag
+                  VanishTime = lpEvent->sVanishTime,
+                  StillTime = 0,
+                  LayerOffset = lpEvent->sLayer,
+                  SpriteID = lpEvent->wSpriteNum,
+                  SpriteFrames = lpEvent->nSpriteFrames,
+                  Trail = new Trail
                   {
-                     Addr = lpScene->wScriptOnEnter,
-                     Name = $@"Scene_{ai:D5}_Enter",
-                  }).Name,
-                  ScrTeleport = GoScript.AddTag(new GoScript.Tag
+                     Pos = new PalMap.Pos
+                     {
+                        X = lpEvent->x,
+                        Y = lpEvent->y,
+                     },
+                     Direction = (PalCommon.PalDirection)lpEvent->wDirection,
+                     FrameID = lpEvent->wCurrentFrameNum,
+                     SpriteFramesAuto = lpEvent->nSpriteFramesAuto,
+                  },
+               },
+               _Status = new Event.Status
+               {
+                  Display = lpEvent->sState != 0,
+                  IsObstacle = lpEvent->sState == 2,
+                  IsAutoTrigger = false,
+                  TriggerDistance = 0,
+               },
+               _Script = new Event.Script
+               {
+                  SrcTrigger = GoScript.AddTag(new GoScript.Tag
                   {
-                     Addr = lpScene->wScriptOnTeleport,
-                     Name = $@"Scene_{ai:D5}_Teleport",
+                     Addr = lpEvent->wTriggerScript,
+                     Name = $@"Event_{ai:D5}_{aj:D5}_Trigger",
                   }).Name,
+                  ScrAuto = GoScript.AddTag(new GoScript.Tag
+                  {
+                     Addr = lpEvent->wAutoScript,
+                     Name = $@"Event_{ai:D5}_{aj:D5}_Auto",
+                  }).Name,
+               },
+               _ScriptFrame = new Event.ScriptFrame
+               {
+                  TriggerIdleFrame = lpEvent->nScriptIdleFrame,
+                  AutoIdleFrame = lpEvent->wScriptIdleFrameCountAuto,
                },
             };
 
-            path = $@"{OUTPUT_PATH}\Scene\{ai:D5}";
-            S_MKDIR(path);
+            if (lpEvent->wTriggerMode >= 4)
+            {
+               //
+               // Automatic trigger
+               //
+               eventObj._Status.IsAutoTrigger = true;
+               eventObj._Status.TriggerDistance = (ushort)(lpEvent->wTriggerMode - 4);
+            }
+            else if (lpEvent->wTriggerMode >= 1)
+            {
+               //
+               // Manual trigger
+               //
+               eventObj._Status.TriggerDistance = (ushort)(lpEvent->wTriggerMode - 1) + 1;
+            }
 
             File.WriteAllText(
-               $@"{path}\Scene.json",
-               JsonConvert.SerializeObject(scene, Formatting.Indented)
+               $@"{path}\{aj:D5}.json",
+               JsonConvert.SerializeObject(eventObj, Formatting.Indented)
             );
-
-            path = $@"{path}\Event";
-            Directory.CreateDirectory(path);
-
-            len_j = lpScene[1].wEventObjectIndex - lpScene[0].wEventObjectIndex;
-            for (j = 0; j < len_j; j++, lpEvent++)
-            {
-               aj = j + 1;
-
-               try
-               {
-                  name = GoMsg.dictSprite[lpEvent->wSpriteNum];
-               }
-               catch
-               {
-                  name = "";
-               }
-
-               eventObj = new Event
-               {
-                  Comment = name,
-                  _Frame = new Event.Frame
-                  {
-                     VanishTime = lpEvent->sVanishTime,
-                     StillTime = 0,
-                     LayerOffset = lpEvent->sLayer,
-                     SpriteID = lpEvent->wSpriteNum,
-                     SpriteFrames = lpEvent->nSpriteFrames,
-                     Trail = new Trail
-                     {
-                        Pos = new PalMap.Pos
-                        {
-                           X = lpEvent->x,
-                           Y = lpEvent->y,
-                        },
-                        Direction = (PalCommon.PalDirection)lpEvent->wDirection,
-                        FrameID = lpEvent->wCurrentFrameNum,
-                        SpriteFramesAuto = lpEvent->nSpriteFramesAuto,
-                     },
-                  },
-                  _Status = new Event.Status
-                  {
-                     Display = lpEvent->sState != 0,
-                     IsObstacle = lpEvent->sState == 2,
-                     IsAutoTrigger = false,
-                     TriggerDistance = 0,
-                  },
-                  _Script = new Event.Script
-                  {
-                     SrcTrigger = GoScript.AddTag(new GoScript.Tag
-                     {
-                        Addr = lpEvent->wTriggerScript,
-                        Name = $@"Event_{ai:D5}_{aj:D5}_Trigger",
-                     }).Name,
-                     ScrAuto = GoScript.AddTag(new GoScript.Tag
-                     {
-                        Addr = lpEvent->wAutoScript,
-                        Name = $@"Event_{ai:D5}_{aj:D5}_Auto",
-                     }).Name,
-                  },
-                  _ScriptFrame = new Event.ScriptFrame
-                  {
-                     TriggerIdleFrame = lpEvent->nScriptIdleFrame,
-                     AutoIdleFrame = lpEvent->wScriptIdleFrameCountAuto,
-                  },
-               };
-
-               if (lpEvent->wTriggerMode >= 4)
-               {
-                  //
-                  // Automatic trigger
-                  //
-                  eventObj._Status.IsAutoTrigger = true;
-                  eventObj._Status.TriggerDistance = (ushort)(lpEvent->wTriggerMode - 4);
-               }
-               else if (lpEvent->wTriggerMode >= 1)
-               {
-                  //
-                  // Manual trigger
-                  //
-                  eventObj._Status.TriggerDistance = (ushort)(lpEvent->wTriggerMode - 1) + 1;
-               }
-
-               File.WriteAllText(
-                  $@"{path}\{aj:D5}.json",
-                  JsonConvert.SerializeObject(eventObj, Formatting.Indented)
-               );
-            }
          }
       }
    }

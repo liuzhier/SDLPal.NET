@@ -19,18 +19,22 @@ public unsafe class PalCommon
    WORK_PATH            = $@"..",
    GAME_PATH            = $@"{WORK_PATH}\Game",
 #endif // DEBUG
+   PAL_PATH             = $@"Pal",
+   PAL_DOS_PATH         = $@"{PAL_PATH}\Dos",
+   PAL_WIN_PATH         = $@"{PAL_PATH}\Win",
    LOG_PATH             = $@"{WORK_PATH}\Log",
    SAVE_PATH            = $@"{WORK_PATH}\Save",
    SCREENSHOT_PATH      = $@"{WORK_PATH}\Screenshot",
+   CFG_PATH             = $@"{GAME_PATH}\SDLPal.NET\ResToJson",
    FONT_PATH            = $@"{GAME_PATH}\Font",
    UI_PATH              = $@"{GAME_PATH}\Ui",
    WAV_PATH             = $@"{GAME_PATH}\Wav",
    MUS_PATH             = $@"{GAME_PATH}\Music",
+   DATA_PATH            = $@"{GAME_PATH}\Data",
+   IMG_PATH             = $@"{GAME_PATH}\Bitmap",
    MAP_MAIN_PATH        = $@"{GAME_PATH}\MapData",
    MAP_PATH             = $@"{MAP_MAIN_PATH}\MAP",
    TILE_PATH            = $@"{MAP_MAIN_PATH}\GOP",
-   DATA_PATH            = $@"{GAME_PATH}\Data",
-   IMG_PATH             = $@"{GAME_PATH}\Bitmap",
    IMG_CHAR_PATH        = $@"{IMG_PATH}\Char",
    IMG_MGO_PATH         = $@"{IMG_PATH}\Mgo",
    IMG_FACE_PATH        = $@"{IMG_PATH}\Face",
@@ -39,7 +43,7 @@ public unsafe class PalCommon
    IMG_RNG_PATH         = $@"{IMG_PATH}\Rng";
 
    public   const    char
-      NULL     = '\0';
+      NULL   = '\0';
 
    public   static   int
       MAX_SAVE_NUM            = 99,

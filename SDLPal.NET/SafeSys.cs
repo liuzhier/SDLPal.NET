@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.JavaScript;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -17,38 +18,13 @@ using static PalConfig;
 using static PalMap;
 using static PalSave;
 using static PalVideo;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public unsafe class SafeSys
 {
-   private static nint
-   memset(nint dst, int c, long len)
-   {
-      NativeMemory.Fill((void*)dst, (nuint)len, (byte)c);
-      return dst;
-   }
-
-   private static nint
-   memcpy(nint dst, nint src, long len)
-   {
-      NativeMemory.Copy((void*)src, (void*)dst, (nuint)len);
-      return dst;
-   }
-
-   private static nint
-   memmove(nint dst, nint src, long len)
-   {
-      NativeMemory.Copy((void*)src, (void*)dst, (nuint)len);
-      return dst;
-   }
-
    public static bool
    S_B(
       decimal     val
-   )
-   {
-      return val != 0;
-   }
+   ) => val != 0;
 
    public static bool
    S_B(
@@ -76,8 +52,8 @@ public unsafe class SafeSys
 
    public static void
    S_MSGBOX(
-      string msg,
-      string tile = "SDLPal.Net Log"
+      string      msg,
+      string      tile  = "SDLPal.Net Log"
    )
    {
       //
@@ -279,6 +255,69 @@ public unsafe class SafeSys
       return time;
    }
 
+   public static int
+   S_Ratio(
+      int      val
+   )
+   {
+      return val * MAP_RATIO;
+   }
+
+   public static int
+   S_UnRatio(
+      int      val
+   )
+   {
+      return val / MAP_RATIO;
+   }
+
+   public static bool
+   S_RectCover(
+      SDL.Rect    a,
+      SDL.Rect    b
+   )
+   {
+      return SDL.HasRectIntersection(in a, in b);
+   }
+
+   public static bool
+   S_FRectCover(
+      SDL.FRect      a,
+      SDL.FRect      b
+   )
+   {
+      return SDL.HasRectIntersectionFloat(in a, in b);
+   }
+
+   //public static int
+   //S_ScrAddr(
+   //   string      strSrcTag
+   //)
+   //{
+   //   return S_INT(strSrcTag.Split("Scr_")[1].Trim());
+   //}
+
+
+   #region Memory R/W API
+
+   private static nint
+   memset(
+      nint     dst,
+      int      c,
+      long     len
+   )
+   {
+      NativeMemory.Fill((void*)dst, (nuint)len, (byte)c);
+      return dst;
+   }
+
+   private static nint
+   memmove(nint dst, nint src, long len)
+   {
+      NativeMemory.Copy((void*)src, (void*)dst, (nuint)len);
+      return dst;
+   }
+
    public static void
    S_FREE(
       nint     pSrc
@@ -360,7 +399,7 @@ public unsafe class SafeSys
    S_MEMCPY(
       nint     pSrc,
       nint     pDest,
-      long     len
+      nuint    len
    )
    /*++
      Purpose:
@@ -379,7 +418,8 @@ public unsafe class SafeSys
 
    --*/
    {
-      return memcpy(pDest, pSrc, len);
+      NativeMemory.Copy((void*)pSrc, (void*)pDest, len);
+      return pDest;
    }
 
    public static nint
@@ -476,37 +516,93 @@ public unsafe class SafeSys
 
    public static void
    S_ARRCPY(
-      Array    arr,
-      nint     pDest,
-      long     len = -1
-   )
-   {
-      if (pDest != 0) NativeMemory.Free((void*)pDest);
-
-      S_ARRCPY(arr, out pDest, len);
-   }
-
-   public static void
-   S_ARRCPY(
          Array    arr,
    out   nint     pDest,
-         long     len = -1
+         int      len   = 0
    )
    {
-      int i;
+      int         i;
+      byte[]      aaa;
+      byte*       b;
 
-      byte[] aaa = (byte[])arr;
+      aaa = (byte[])arr;
 
-      if (len <= 0) len = aaa.LongLength;
+      if (len <= 0) len = (int)aaa.LongLength;
 
-      pDest = S_MALLOC((int)len + 1);
-      byte* b = (byte*)pDest;
+      pDest = S_MALLOC(len + 1);
+      b = (byte*)pDest;
 
       for (i = 0; i < len; i++)
       {
          b[i] = aaa[i];
       }
    }
+
+   public static void
+   S_ARRCPY(
+      Array    arr,
+      nint     pDest,
+      int      len   = -1
+   )
+   {
+      if (pDest != NULL) NativeMemory.Free((void*)pDest);
+
+      S_ARRCPY(arr, out pDest, len);
+   }
+
+   #endregion Memory R/W API
+
+
+   #region File IO API
+
+   public static FileStream
+   C_fopen(
+      string      name,
+      FileMode    mode = FileMode.Open
+   ) => File.Open(name, mode);
+
+   public static void
+   C_fclose(
+      FileStream     fs
+   ) => fs.Dispose();
+
+   public static long
+   C_fseek(
+      FileStream     fs,
+      int            offset,
+      SeekOrigin     origin
+   ) => fs.Seek(offset, SeekOrigin.Begin);
+
+   public static void
+   C_fread(
+      FileStream     fs,
+      int            size,
+      nint           dest
+   )
+   {
+      if (size > 0)
+      {
+         fs.Read(new Span<byte>((void*)dest, size));
+      }
+   }
+
+   public static void
+   C_fwrite(
+      FileStream     fs,
+      nint           src,
+      int            size
+   )
+   {
+      if (size > 0)
+      {
+         fs.Write(new Span<byte>((void*)src, size));
+      }
+   }
+
+   #endregion File IO API
+
+
+   #region Init/Free Objects Safely
 
    public static nint
    SC_AudioSpec(
@@ -764,80 +860,10 @@ public unsafe class SafeSys
       return (nint)lpFRect;
    }
 
-   public static void
-   S_GetTexSize(
-         nint     texture,
-   out   float    fw,
-   out   float    fh
-   )
-   {
-      SDL_FAILED(
-         "GetTextureSize",
-         SDL.GetTextureSize(texture, out fw, out fh)
-      );
-   }
+   #endregion Init/Free Objects Safely
 
-   public static int
-   S_Ratio(
-      int      val
-   )
-   {
-      return val * MAP_RATIO;
-   }
 
-   public static int
-   S_UnRatio(
-      int      val
-   )
-   {
-      return val / MAP_RATIO;
-   }
-
-   public static void
-   S_SetTexScale(
-      nint              texture,
-      SDL.ScaleMode     scaleMode
-   )
-   {
-      SDL.SetTextureScaleMode(texture, scaleMode);
-   }
-
-   public static bool
-   S_RectCover(
-      SDL.Rect    a,
-      SDL.Rect    b
-   )
-   {
-      return SDL.HasRectIntersection(in a, in b);
-   }
-
-   public static bool
-   S_FRectCover(
-      SDL.FRect      a,
-      SDL.FRect      b
-   )
-   {
-      return SDL.HasRectIntersectionFloat(in a, in b);
-   }
-
-   public static void
-   S_SetLinearScale(
-      bool     fLinear  = true
-   )
-   {
-      SDL_FAILED(
-         "SDL.SetDefaultTextureScaleMode",
-         SDL.SetDefaultTextureScaleMode(g_pRenderer, fLinear ? SDL.ScaleMode.Linear : g_Config.video._ScaleMode)
-      );
-   }
-
-   //public static int
-   //S_ScrAddr(
-   //   string      strSrcTag
-   //)
-   //{
-   //   return S_INT(strSrcTag.Split("Scr_")[1].Trim());
-   //}
+   #region String Conversion API
 
    public static bool
    S_BOOL(
@@ -1101,68 +1127,10 @@ public unsafe class SafeSys
       return val;
    }
 
-   public static int
-   S_GetDigitCount(
-      int      num
-   )
-   {
-      int      value;
+   #endregion String Conversion API
 
-      if (num == 0) return 1;
 
-      //
-      // Handle negative numbers
-      //
-      value = Math.Abs(num);
-
-      //
-      // Logarithmic formula: floor(log10(n)) + 1
-      //
-      return (int)Math.Floor(Math.Log10(value)) + 1;
-   }
-
-   //
-   // Calculate in advance 10 to the power of 19
-   //
-   private static readonly long[] PowersOf10 =
-   {
-        1L,                   // 10^0
-        10L,                  // 10^1
-        100L,                 // 10^2
-        1000L,                // 10^3
-        10000L,               // 10^4
-        100000L,              // 10^5
-        1000000L,             // 10^6
-        10000000L,            // 10^7
-        100000000L,           // 10^8
-        1000000000L,          // 10^9
-        10000000000L,         // 10^10
-        100000000000L,        // 10^11
-        1000000000000L,       // 10^12
-        10000000000000L,      // 10^13
-        100000000000000L,     // 10^14
-        1000000000000000L,    // 10^15
-        10000000000000000L,   // 10^16
-        100000000000000000L,  // 10^17
-        1000000000000000000L  // 10^18
-    };
-
-   public static int
-   S_GetDigitVal(
-      long     num,
-      int      pos
-   )
-   {
-      long     absValue;
-      long     divisor;
-
-      absValue = Math.Abs(num);
-      divisor = PowersOf10[pos];
-
-      if (absValue < divisor) return 0;
-
-      return (int)((absValue / divisor) % 10);
-   }
+   #region Safely Getter/Setter Objects/Members
 
    public static PalSave
    S_GetSave()
@@ -1437,6 +1405,182 @@ public unsafe class SafeSys
       return S_GetEvent(iSceneID, iEvtID)._Frame.Trail;
    }
 
+   public static int
+   S_GetTextSize(
+      string      strText
+   )
+   {
+      int      i, nLineWord;
+      char     charWord;
+
+      nLineWord = strText.Length;
+
+      for (i = 0; i < strText.Length; i++)
+      {
+         charWord = strText[i];
+
+         switch (charWord)
+         {
+            case '-':
+            case '@':
+            case '\'':
+            case '\"':
+            case '$':
+               nLineWord--;
+               break;
+
+            default:
+               break;
+         }
+      }
+
+      return nLineWord;
+   }
+
+   public static Entity
+   S_GetEntity()
+   {
+      return S_GetSave()._Entity;
+   }
+
+   public static Hero
+   S_GetHero(
+      int      heroID
+   )
+   {
+      return S_GetEntity().Hero[heroID];
+   }
+
+   public static Item
+   S_GetItem(
+      int      itemID
+   )
+   {
+      return S_GetEntity().Item[itemID];
+   }
+
+   public static Magic
+   S_GetMagic(
+      int      magicID
+   )
+   {
+      List<Magic>    Magic;
+
+      Magic = S_GetEntity().Magic;
+
+      if (magicID < 0)
+      {
+         magicID = Magic.Count - magicID;
+      }
+
+      if (magicID >= Magic.Count)
+      {
+         magicID = magicID % Magic.Count;
+      }
+
+      return S_GetEntity().Magic[magicID];
+   }
+
+   public static void
+   S_SetTexScale(
+      nint              texture,
+      SDL.ScaleMode     scaleMode
+   )
+   {
+      SDL.SetTextureScaleMode(texture, scaleMode);
+   }
+
+   public static void
+   S_GetTexSize(
+         nint texture,
+   out float fw,
+   out float fh
+   )
+   {
+      SDL_FAILED(
+         "GetTextureSize",
+         SDL.GetTextureSize(texture, out fw, out fh)
+      );
+   }
+
+   public static void
+   S_SetLinearScale(
+      bool     fLinear  = true
+   )
+   {
+      SDL_FAILED(
+         "SDL.SetDefaultTextureScaleMode",
+         SDL.SetDefaultTextureScaleMode(g_pRenderer, fLinear ? SDL.ScaleMode.Linear : g_Config.video._ScaleMode)
+      );
+   }
+
+
+   public static int
+   S_GetDigitCount(
+      int      num
+   )
+   {
+      int      value;
+
+      if (num == 0) return 1;
+
+      //
+      // Handle negative numbers
+      //
+      value = Math.Abs(num);
+
+      //
+      // Logarithmic formula: floor(log10(n)) + 1
+      //
+      return (int)Math.Floor(Math.Log10(value)) + 1;
+   }
+
+   //
+   // Calculate in advance 10 to the power of 19
+   //
+   private static readonly long[] PowersOf10 =
+   {
+        1L,                   // 10^0
+        10L,                  // 10^1
+        100L,                 // 10^2
+        1000L,                // 10^3
+        10000L,               // 10^4
+        100000L,              // 10^5
+        1000000L,             // 10^6
+        10000000L,            // 10^7
+        100000000L,           // 10^8
+        1000000000L,          // 10^9
+        10000000000L,         // 10^10
+        100000000000L,        // 10^11
+        1000000000000L,       // 10^12
+        10000000000000L,      // 10^13
+        100000000000000L,     // 10^14
+        1000000000000000L,    // 10^15
+        10000000000000000L,   // 10^16
+        100000000000000000L,  // 10^17
+        1000000000000000000L  // 10^18
+    };
+
+   public static int
+   S_GetDigitVal(
+      long     num,
+      int      pos
+   )
+   {
+      long     absValue;
+      long     divisor;
+
+      absValue = Math.Abs(num);
+      divisor = PowersOf10[pos];
+
+      if (absValue < divisor) return 0;
+
+      return (int)((absValue / divisor) % 10);
+   }
+
+   #endregion Safely Getter/Setter Objects/Members
+
+
    /// 
    /// <summary>
    ///   Add or remove items from the inventory.
@@ -1708,82 +1852,6 @@ public unsafe class SafeSys
          SDL.RenderClear(g_pRenderer);
       }
       SDL.SetTextureBlendMode(g_pRenderer, SDL.BlendMode.Blend);
-   }
-
-   public static int
-   S_GetTextSize(
-      string      strText
-   )
-   {
-      int      i, nLineWord;
-      char     charWord;
-
-      nLineWord = strText.Length;
-
-      for (i = 0; i < strText.Length; i++)
-      {
-         charWord = strText[i];
-
-         switch (charWord)
-         {
-            case '-':
-            case '@':
-            case '\'':
-            case '\"':
-            case '$':
-               nLineWord--;
-               break;
-
-            default:
-               break;
-         }
-      }
-
-      return nLineWord;
-   }
-
-   public static Entity
-   S_GetEntity()
-   {
-      return S_GetSave()._Entity;
-   }
-
-   public static Hero
-   S_GetHero(
-      int      heroID
-   )
-   {
-      return S_GetEntity().Hero[heroID];
-   }
-
-   public static Item
-   S_GetItem(
-      int      itemID
-   )
-   {
-      return S_GetEntity().Item[itemID];
-   }
-
-   public static Magic
-   S_GetMagic(
-      int      magicID
-   )
-   {
-      List<Magic>    Magic;
-
-      Magic = S_GetEntity().Magic;
-
-      if (magicID < 0)
-      {
-         magicID = Magic.Count - magicID;
-      }
-
-      if (magicID >= Magic.Count)
-      {
-         magicID = magicID % Magic.Count;
-      }
-
-      return S_GetEntity().Magic[magicID];
    }
 
    static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);

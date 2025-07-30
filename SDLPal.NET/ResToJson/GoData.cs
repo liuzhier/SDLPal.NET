@@ -8,7 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using static GoMain;
+using static PalCommon;
 using static PalMap;
+using static SafeSys;
 
 public unsafe class GoData
 {
@@ -30,10 +32,10 @@ public unsafe class GoData
       public fixed short val[6];
    }
 
-   public   static   List<List<int>>      listShop          = new List<List<int>>();
-   public   static   List<List<int>>      listEnemyTeam     = new List<List<int>>();
-   public   static   List<List<int>>      listLevelExp      = new List<List<int>>();
-   public   static   List<BattleField>    listBattleField   = new List<BattleField>();
+   public   static   List<List<int>>      listShop          = [];
+   public   static   List<List<int>>      listEnemyTeam     = [];
+   public   static   List<List<int>>      listLevelExp      = [];
+   public   static   List<BattleField>    listBattleField   = [];
 
    public class T_EnemyTeam
    {
@@ -48,12 +50,71 @@ public unsafe class GoData
       public int Exp;
    }
 
+   public   static   List<(nint, int)>     listDataBuf = [];
+   public   static   List<(nint, int)>     listCoreBuf = [];
+
+   public static void
+   Init()
+   {
+      int            i, len, size;
+      void*          pData;
+      FileStream     fs;
+
+      S_MKDIR(GAME_PATH);
+
+      fs = C_fopen($@"{PAL_DOS_PATH}/DATA.MKF");
+      len = PalUnpak.GetMKFChunkCount(fs);
+
+      for (i = 0; i < len; i++)
+      {
+         listDataBuf.Add(PalUnpak.ReadMKFChunk(fs, i));
+      }
+
+      C_fclose(fs);
+
+      fs = C_fopen($@"{PAL_DOS_PATH}/SSS.MKF");
+      len = PalUnpak.GetMKFChunkCount(fs);
+
+      for (i = 0; i < len; i++)
+      {
+         listCoreBuf.Add(PalUnpak.ReadMKFChunk(fs, i));
+      }
+
+      C_fclose(fs);
+   }
+
+   public static void
+   Free()
+   {
+      int      i;
+
+      for (i = 0; i < listDataBuf.Count; i++)
+      {
+         if (listDataBuf[i].Item1 != NULL)
+         {
+            S_FREE(listDataBuf[i].Item1);
+         }
+      }
+
+      listDataBuf.Clear();
+
+      for (i = 0; i < listCoreBuf.Count; i++)
+      {
+         if (listCoreBuf[i].Item1 != NULL)
+         {
+            S_FREE(listCoreBuf[i].Item1);
+         }
+      }
+
+      listCoreBuf.Clear();
+   }
+
    public static void
    Go()
    {
       string               path;
-      byte[]               arrData;
-      int                  i, j, len, len2, val;
+      nint                 pData;
+      int                  i, j, size, len, len2, val;
       List<int>            listData;
       C_Shop*              lpShop;
       C_EnemyTeam*         lpEnemyTeam;
@@ -61,18 +122,22 @@ public unsafe class GoData
       T_EnemyTeam          _TEnemyTeam;
       BattleField          _BattleField;
 
-      path = $@"{GoMain.OUTPUT_PATH}\Shop";
-      S_MKDIR(path);
-      arrData = File.ReadAllBytes($@"{GoMain.BASE_PATH}\Data0.smkf");
-      fixed (byte* lpTmp = arrData)
-      {
-         lpShop = (C_Shop*)lpTmp;
+      S_MKDIR(DATA_PATH);
 
-         len = arrData.Length / sizeof(C_Shop);
+      //
+      // Shop
+      //
+      {
+         path = $@"{DATA_PATH}\Shop";
+         S_MKDIR(path);
+
+         lpShop = (C_Shop*)listDataBuf[0].Item1;
+         len = listDataBuf[0].Item2 / sizeof(C_Shop);
          len2 = sizeof(C_Shop) / sizeof(ushort);
+
          for (i = 0; i < len; i++)
          {
-            listData = new List<int>();
+            listData = [];
 
             for (j = 0; j < len2; j++)
             {
@@ -91,14 +156,16 @@ public unsafe class GoData
          }
       }
 
-      path = $@"{GoMain.OUTPUT_PATH}\EnemyTeam";
-      S_MKDIR(path);
-      arrData = File.ReadAllBytes($@"{BASE_PATH}\Data2.smkf");
-      fixed (byte* lpTmp = arrData)
+      //
+      // EnemyTeam
+      //
       {
-         lpEnemyTeam = (C_EnemyTeam*)lpTmp;
+         path = $@"{DATA_PATH}\EnemyTeam";
+         S_MKDIR(path);
 
-         len = arrData.Length / sizeof(C_EnemyTeam);
+         lpEnemyTeam = (C_EnemyTeam*)listDataBuf[2].Item1;
+         len = listDataBuf[2].Item2 / sizeof(C_EnemyTeam);
+
          for (i = 0; i < len; i++)
          {
             _TEnemyTeam = new T_EnemyTeam();
@@ -132,14 +199,16 @@ public unsafe class GoData
          }
       }
 
-      path = $@"{GoMain.OUTPUT_PATH}\BattleField";
-      S_MKDIR(path);
-      arrData = File.ReadAllBytes($@"{GoMain.BASE_PATH}\Data5.smkf");
-      fixed (byte* lpTmp = arrData)
+      //
+      // BattleField
+      //
       {
-         lpBattleField = (C_BattleField*)lpTmp;
+         path = $@"{DATA_PATH}\BattleField";
+         S_MKDIR(path);
 
-         len = arrData.Length / sizeof(C_BattleField);
+         lpBattleField = (C_BattleField*)listDataBuf[5].Item1;
+         len = listDataBuf[5].Item2 / sizeof(C_BattleField);
+
          for (i = 0; i < len; i++)
          {
             _BattleField = new BattleField

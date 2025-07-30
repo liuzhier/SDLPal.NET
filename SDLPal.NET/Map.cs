@@ -187,7 +187,6 @@ public unsafe class PalMap
          bool     applyRatio = false
       )
       {
-         short    Segment, SegmentX, SegmentY;
          byte     x, y, h;
          int      w32, w16, h16, h8;
 
@@ -196,7 +195,7 @@ public unsafe class PalMap
          h16 = applyRatio ? H16 : 16;
          h8 = applyRatio ? H8 : 8;
 
-         h = (byte)(((X % W32) != 0) ? 1 : 0);
+         h = (byte)(((X % w32) != 0) ? 1 : 0);
          x = (byte)(X / 32);
          y = (byte)(Y / 16);
 
@@ -209,18 +208,20 @@ public unsafe class PalMap
             goto end;
          }
 
-         SegmentX = (short)(X % w32);
-         SegmentY = (short)(Y % h16);
+         goto end;
 
-         Segment = GetSegmentTable(SegmentY, SegmentX, applyRatio);
+#if false
+         short    Segment, SegmentX, SegmentY;
 
          x = (byte)(X / w32);
          y = (byte)(Y / h16);
          h = 0;
 
-         goto end;
+         SegmentX = (short)(X % w32);
+         SegmentY = (short)(Y % h16);
 
-#if false
+         Segment = GetSegmentTable(SegmentY, SegmentX, applyRatio);
+
          if (Segment != 0)
          {
             if ((X - w16) < 0 || (Y - h8) < 0)
@@ -494,7 +495,7 @@ public unsafe class PalMap
       //
       // Read the palette data
       //
-      path = $@"{MAP_MAIN_PATH}\PAT.MKF";
+      path = $@"{MAP_MAIN_PATH}\PALETTE";
 
       //
       // If the file does not exist, an error will be prompted and the game will be exited

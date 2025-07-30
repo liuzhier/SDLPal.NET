@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using static Enemy;
 using static GoMain;
 using static PalMap;
+using static PalCommon;
 
 using SHORT = System.Int16;
 using WORD = System.UInt16;
@@ -68,128 +69,118 @@ public unsafe class GoEnemy
    public static void Go()
    {
       List<Enemy>       listEnemy;
-      byte[]            arrBase, arrCore;
       int               i, ai, len;
       Base*             lpBaseOrigin, lpBase;
       Core*             lpCore;
       Enemy             enemy;
 
       listEnemy = new List<Enemy>();
-
-      arrBase = File.ReadAllBytes($@"{BASE_PATH}\DATA1.smkf");
-      arrCore = File.ReadAllBytes($@"{CORE_PATH}\SSS2.smkf");
-
+      lpBaseOrigin = (Base*)GoData.listDataBuf[1].Item1;
+      lpCore = (Core*)GoData.listCoreBuf[1].Item1;
+      lpCore += OBJ_ENEMY_BEGIN;
       len = OBJ_POISON_BEGIN - OBJ_ENEMY_BEGIN;
 
-      fixed (byte* tmpBase = arrBase)
-      fixed (byte* tmpCore = arrCore)
+      S_MKDIR($@"{DATA_PATH}\Enemy");
+
+      for (i = 0; i < len; i++, lpCore++)
       {
-         lpBaseOrigin = (Base*)tmpBase;
-         lpCore = (Core*)tmpCore;
-         lpCore += OBJ_ENEMY_BEGIN;
+         ai = i + 1;
+         lpBase = &lpBaseOrigin[lpCore->wEnemyID];
 
-         S_MKDIR($@"{OUTPUT_PATH}\Enemy");
-
-         for (i = 0; i < len; i++, lpCore++)
+         enemy = new Enemy
          {
-            ai = i + 1;
-            lpBase = &lpBaseOrigin[lpCore->wEnemyID];
-
-            enemy = new Enemy
+            Name = GoMsg.listWord[i + OBJ_ENEMY_BEGIN],
+            _Frame = new Enemy.Frame
             {
-               Name = GoMsg.listWord[i + OBJ_ENEMY_BEGIN],
-               _Frame = new Enemy.Frame
+               BitmapID = lpCore->wEnemyID,
+               Idle = lpBase->wIdleFrames,
+               Magic = lpBase->wMagicFrames,
+               Attack = lpBase->wAttackFrames,
+               IdleWaitFrames = lpBase->wIdleAnimSpeed,
+               ActWaitFrames = lpBase->wActWaitFrames,
+               OffsetPos = new Pos
                {
-                  BitmapID = lpCore->wEnemyID,
-                  Idle = lpBase->wIdleFrames,
-                  Magic = lpBase->wMagicFrames,
-                  Attack = lpBase->wAttackFrames,
-                  IdleWaitFrames = lpBase->wIdleAnimSpeed,
-                  ActWaitFrames = lpBase->wActWaitFrames,
-                  OffsetPos = new Pos
-                  {
-                     X = 0,
-                     Y = lpBase->wYPosOffset,
-                  },
+                  X = 0,
+                  Y = lpBase->wYPosOffset,
                },
-               _Sound = new Enemy.Sound
+            },
+            _Sound = new Enemy.Sound
+            {
+               AttackID = lpBase->wAttackSound,
+               ActionID = lpBase->wActionSound,
+               MagicID = lpBase->wMagicSound,
+               DeathID = lpBase->wDeathSound,
+               BeginBattleID = lpBase->wCallSound,
+            },
+            _Attribute = new Enemy.Attribute
+            {
+               Level = lpBase->wLevel,
+               HP = lpBase->wHealth,
+               MaxHP = lpBase->wHealth,
+               AttackStrength = lpBase->wAttackStrength,
+               MagicStrength = lpBase->wMagicStrength,
+               Defense = lpBase->wDefense,
+               Dexterity = lpBase->wDexterity,
+               FleeRate = lpBase->wFleeRate,
+            },
+            _Resistance = new Resistance
+            {
+               _Elemental = new Resistance.Elemental
                {
-                  AttackID = lpBase->wAttackSound,
-                  ActionID = lpBase->wActionSound,
-                  MagicID = lpBase->wMagicSound,
-                  DeathID = lpBase->wDeathSound,
-                  BeginBattleID = lpBase->wCallSound,
+                  Wind = lpBase->wElemResistance[0],
+                  Thunder = lpBase->wElemResistance[1],
+                  Water = lpBase->wElemResistance[2],
+                  Fire = lpBase->wElemResistance[3],
+                  Earth = lpBase->wElemResistance[4],
                },
-               _Attribute = new Enemy.Attribute
+               Physics = lpBase->wPhysicalResistance,
+               Poison = lpBase->wPoisonResistance,
+               Sorcery = lpCore->wResistanceToSorcery,
+               Ultimate = 0, // FIXME: ???
+            },
+            _Action = new Enemy.Action
+            {
+               MagicID = (ushort)Math.Max(lpBase->wMagic - OBJ_MAGIC_BEGIN + 1, 0),
+               MagicRate = lpBase->wMagicRate,
+               AttackEquivItemID = (ushort)Math.Max(lpBase->wAttackEquivItem - OBJ_ITEM_BEGIN + 1, 0),
+               AttackEquivItemRate = lpBase->wAttackEquivItemRate,
+               ActionCount = lpBase->wDualMove,
+            },
+            _BattleReward = new Enemy.BattleReward
+            {
+               StealItem = (ushort)Math.Max(lpBase->wStealItem - OBJ_ITEM_BEGIN + 1, 0),
+               StealItemCount = lpBase->nStealItem,
+               Exp = lpBase->wExp,
+               Level = 0,
+               Cash = lpBase->wCash,
+               SpoilsID = 0,
+               SpoilsCount = 0,
+               CollectValue = lpBase->wCollectValue,
+            },
+            _Script = new Enemy.Script
+            {
+               TurnStart = GoScript.AddTag(new GoScript.Tag
                {
-                  Level = lpBase->wLevel,
-                  HP = lpBase->wHealth,
-                  MaxHP = lpBase->wHealth,
-                  AttackStrength = lpBase->wAttackStrength,
-                  MagicStrength = lpBase->wMagicStrength,
-                  Defense = lpBase->wDefense,
-                  Dexterity = lpBase->wDexterity,
-                  FleeRate = lpBase->wFleeRate,
-               },
-               _Resistance = new Resistance
+                  Addr = lpCore->wScriptOnTurnStart,
+                  Name = $@"Enemy_{ai:D5}_TurnStart",
+               }).Name,
+               BattleWon = GoScript.AddTag(new GoScript.Tag
                {
-                  _Elemental = new Resistance.Elemental
-                  {
-                     Wind = lpBase->wElemResistance[0],
-                     Thunder = lpBase->wElemResistance[1],
-                     Water = lpBase->wElemResistance[2],
-                     Fire = lpBase->wElemResistance[3],
-                     Earth = lpBase->wElemResistance[4],
-                  },
-                  Physics = lpBase->wPhysicalResistance,
-                  Poison = lpBase->wPoisonResistance,
-                  Sorcery = lpCore->wResistanceToSorcery,
-                  Ultimate = 0, // FIXME: ???
-               },
-               _Action = new Enemy.Action
+                  Addr = lpCore->wScriptOnBattleEnd,
+                  Name = $@"Enemy_{ai:D5}_BattleWon",
+               }).Name,
+               ReadyToAction = GoScript.AddTag(new GoScript.Tag
                {
-                  MagicID = (ushort)Math.Max(lpBase->wMagic - OBJ_MAGIC_BEGIN + 1, 0),
-                  MagicRate = lpBase->wMagicRate,
-                  AttackEquivItemID = (ushort)Math.Max(lpBase->wAttackEquivItem - OBJ_ITEM_BEGIN + 1, 0),
-                  AttackEquivItemRate = lpBase->wAttackEquivItemRate,
-                  ActionCount = lpBase->wDualMove,
-               },
-               _BattleReward = new Enemy.BattleReward
-               {
-                  StealItem = (ushort)Math.Max(lpBase->wStealItem - OBJ_ITEM_BEGIN + 1, 0),
-                  StealItemCount = lpBase->nStealItem,
-                  Exp = lpBase->wExp,
-                  Level = 0,
-                  Cash = lpBase->wCash,
-                  SpoilsID = 0,
-                  SpoilsCount = 0,
-                  CollectValue = lpBase->wCollectValue,
-               },
-               _Script = new Enemy.Script
-               {
-                  TurnStart = GoScript.AddTag(new GoScript.Tag
-                  {
-                     Addr = lpCore->wScriptOnTurnStart,
-                     Name = $@"Enemy_{ai:D5}_TurnStart",
-                  }).Name,
-                  BattleWon = GoScript.AddTag(new GoScript.Tag
-                  {
-                     Addr = lpCore->wScriptOnBattleEnd,
-                     Name = $@"Enemy_{ai:D5}_BattleWon",
-                  }).Name,
-                  ReadyToAction = GoScript.AddTag(new GoScript.Tag
-                  {
-                     Addr = lpCore->wScriptOnReady,
-                     Name = $@"Enemy_{ai:D5}_ReadyToAction",
-                  }).Name,
-               },
-            };
+                  Addr = lpCore->wScriptOnReady,
+                  Name = $@"Enemy_{ai:D5}_ReadyToAction",
+               }).Name,
+            },
+         };
 
-            File.WriteAllText(
-               $@"{OUTPUT_PATH}\Enemy\{ai:D5}.json",
-               JsonConvert.SerializeObject(enemy, Formatting.Indented)
-            );
-         }
+         File.WriteAllText(
+            $@"{DATA_PATH}\Enemy\{ai:D5}.json",
+            JsonConvert.SerializeObject(enemy, Formatting.Indented)
+         );
       }
    }
 }

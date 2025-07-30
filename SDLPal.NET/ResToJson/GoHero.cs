@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 using static GoMain;
 using static GoScene;
+using static PalCommon;
 
 using PLAYERS = System.UInt16;
 using WORD = System.UInt16;
@@ -80,7 +81,6 @@ public unsafe class GoHero
    Go()
    {
       List<Hero>     listHero;
-      byte[]         arrBase, arrBase2, arrCore;
       int            i, ai, j, len, id;
       Base*          lpBase;
       Base2*         lpBase2;
@@ -88,148 +88,148 @@ public unsafe class GoHero
       Hero           hero;
 
       listHero = new List<Hero>();
-
-      arrBase = File.ReadAllBytes($@"{BASE_PATH}\DATA3.smkf");
-      arrBase2 = File.ReadAllBytes($@"{BASE_PATH}\DATA6.smkf");
-      arrCore = File.ReadAllBytes($@"{CORE_PATH}\SSS2.smkf");
-
+      lpBase = (Base*)GoData.listDataBuf[3].Item1;
+      lpBase2 = (Base2*)GoData.listDataBuf[6].Item1;
+      lpCore = (Core*)GoData.listCoreBuf[2].Item1;
+      lpCore += OBJ_HERO_BEGIN;
       len = OBJ_SYS2_BEGIN - OBJ_HERO_BEGIN;
 
-      fixed (byte* tmpBase = arrBase)
-      fixed (byte* tmpBase2 = arrBase2)
-      fixed (byte* tmpCore = arrCore)
+      S_MKDIR($@"{DATA_PATH}\Hero");
+
+      for (i = 0; i < len; i++, lpCore++)
       {
-         lpBase = (Base*)tmpBase;
-         lpBase2 = (Base2*)tmpBase2;
+         ai = i + 1;
 
-         lpCore = (Core*)tmpCore;
-         lpCore += OBJ_HERO_BEGIN;
-
-         S_MKDIR($@"{OUTPUT_PATH}\Hero");
-
-         for (i = 0; i < len; i++, lpCore++)
+         hero = new Hero
          {
-            ai = i + 1;
-
-            hero = new Hero
+            Name = GoMsg.listWord[OBJ_HERO_BEGIN + i],
+            CoveredBy = lpBase->rgwCoveredBy[i],
+            //WalkFrames = lpBase->rgwWalkFrames[i],
+            //WalkFrames = 9,
+            WalkFrames = 3,
+            Resistance = new Resistance
             {
-               Name = GoMsg.listWord[OBJ_HERO_BEGIN + i],
-               CoveredBy = lpBase->rgwCoveredBy[i],
-               //WalkFrames = lpBase->rgwWalkFrames[i],
-               //WalkFrames = 9,
-               WalkFrames = 3,
-               Resistance = new Resistance
+               _Elemental = new Resistance.Elemental
                {
-                  _Elemental = new Resistance.Elemental
-                  {
-                     Wind = lpBase->Wind[i] / 10,
-                     Thunder = lpBase->Thunder[i] / 10,
-                     Water = lpBase->Water[i] / 10,
-                     Fire = lpBase->Fire[i] / 10,
-                     Earth = lpBase->Earth[i] / 10,
-                  },
-                  Physics = 0.3f,
-                  Poison = lpBase->rgwPoisonResistance[i] / 10,
-                  Sorcery = 0.3f,
-                  Ultimate = 0,
-                  Leechcraft = 0,
-                  Light = 0,
-                  Evil = 0,
+                  Wind = lpBase->Wind[i] / 10,
+                  Thunder = lpBase->Thunder[i] / 10,
+                  Water = lpBase->Water[i] / 10,
+                  Fire = lpBase->Fire[i] / 10,
+                  Earth = lpBase->Earth[i] / 10,
                },
-               _Magic = new Hero.Magic
-               {
-                  Cooperative = Math.Max(lpBase->rgwCooperativeMagic[i] - OBJ_MAGIC_BEGIN + 1, 0),
-                  listLearned = new HashSet<int>(),
-                  listLearnable = new HashSet<Hero.Magic.Learnable>(),
-               },
-               _HeroBase = new HeroBase
-               {
-                  AvatarID = lpBase->rgwAvatar[i],
-                  SpriteIDInBattle = lpBase->rgwSpriteNumInBattle[i],
-                  SpriteID = lpBase->rgwSpriteNum[i],
-                  AttackAll = lpBase->rgwAttackAll[i],
-                  Level = lpBase->rgwLevel[i],
-                  MaxHP = lpBase->rgwMaxHP[i],
-                  MaxMP = lpBase->rgwMaxMP[i],
-                  HP = lpBase->rgwHP[i],
-                  MP = lpBase->rgwMP[i],
-                  _Equip = new HeroBase.Equip
-                  {
-                     Head = Math.Max(lpBase->Head[i] - OBJ_ITEM_BEGIN + 1, 0),
-                     Body = Math.Max(lpBase->Body[i] - OBJ_ITEM_BEGIN + 1, 0),
-                     Armour = Math.Max(lpBase->Armour[i] - OBJ_ITEM_BEGIN + 1, 0),
-                     Backside = Math.Max(lpBase->Backside[i] - OBJ_ITEM_BEGIN + 1, 0),
-                     Hand = Math.Max(lpBase->Hand[i] - OBJ_ITEM_BEGIN + 1, 0),
-                     Foot = Math.Max(lpBase->Foot[i] - OBJ_ITEM_BEGIN + 1, 0),
-                  },
-                  _Attribute = new HeroBase.Attribute
-                  {
-                     AttackStrength = lpBase->rgwAttackStrength[i],
-                     MagicStrength = lpBase->rgwMagicStrength[i],
-                     Defense = lpBase->rgwDefense[i],
-                     Dexterity = lpBase->rgwDexterity[i],
-                     FleeRate = lpBase->rgwFleeRate[i],
-                  },
-                  PoisonResistance = lpBase->rgwPoisonResistance[i],
-                  _ElementalResistance = new HeroBase.ElementalResistance
-                  {
-                     Wind = lpBase->Wind[i],
-                     Thunder = lpBase->Thunder[i],
-                     Water = lpBase->Water[i],
-                     Fire = lpBase->Fire[i],
-                     Earth = lpBase->Earth[i],
-                  },
-               },
-               _Sound = new Hero.Sound
-               {
-                  Death = lpBase->rgwDeathSound[i],
-                  Attack = lpBase->rgwAttackSound[i],
-                  Weapon = lpBase->rgwWeaponSound[i],
-                  Critical = lpBase->rgwCriticalSound[i],
-                  Magic = lpBase->rgwMagicSound[i],
-                  Cover = lpBase->rgwCoverSound[i],
-                  Dying = lpBase->rgwDyingSound[i],
-               },
-               _Script = new Hero.Script
-               {
-                  FriendDeath = GoScript.AddTag(new GoScript.Tag
-                  {
-                     Addr = lpCore->wScriptOnFriendDeath,
-                     Name = $@"Hero_{ai:D5}_FriendDeath",
-                  }).Name,
-                  Dying = GoScript.AddTag(new GoScript.Tag
-                  {
-                     Addr = lpCore->wScriptOnDying,
-                     Name = $@"Hero_{ai:D5}_Dying",
-                  }).Name,
-               },
-            };
-
-            for (j = 0; j < 32; j++)
+               Physics = 0.3f,
+               Poison = lpBase->rgwPoisonResistance[i] / 10,
+               Sorcery = 0.3f,
+               Ultimate = 0,
+               Leechcraft = 0,
+               Light = 0,
+               Evil = 0,
+            },
+            _Magic = new Hero.Magic
             {
-               id = lpBase->rgwMagic[j * 6 + i];
+               Cooperative = Math.Max(lpBase->rgwCooperativeMagic[i] - OBJ_MAGIC_BEGIN + 1, 0),
+               listLearned = new HashSet<int>(),
+               listLearnable = new HashSet<Hero.Magic.Learnable>(),
+            },
+            _HeroBase = new HeroBase
+            {
+               AvatarID = lpBase->rgwAvatar[i],
+               SpriteIDInBattle = lpBase->rgwSpriteNumInBattle[i],
+               SpriteID = lpBase->rgwSpriteNum[i],
+               AttackAll = lpBase->rgwAttackAll[i],
+               Level = lpBase->rgwLevel[i],
+               MaxHP = lpBase->rgwMaxHP[i],
+               MaxMP = lpBase->rgwMaxMP[i],
+               HP = lpBase->rgwHP[i],
+               MP = lpBase->rgwMP[i],
+               _Equip = new HeroBase.Equip
+               {
+                  Head = Math.Max(lpBase->Head[i] - OBJ_ITEM_BEGIN + 1, 0),
+                  Body = Math.Max(lpBase->Body[i] - OBJ_ITEM_BEGIN + 1, 0),
+                  Armour = Math.Max(lpBase->Armour[i] - OBJ_ITEM_BEGIN + 1, 0),
+                  Backside = Math.Max(lpBase->Backside[i] - OBJ_ITEM_BEGIN + 1, 0),
+                  Hand = Math.Max(lpBase->Hand[i] - OBJ_ITEM_BEGIN + 1, 0),
+                  Foot = Math.Max(lpBase->Foot[i] - OBJ_ITEM_BEGIN + 1, 0),
+               },
+               _Attribute = new HeroBase.Attribute
+               {
+                  AttackStrength = lpBase->rgwAttackStrength[i],
+                  MagicStrength = lpBase->rgwMagicStrength[i],
+                  Defense = lpBase->rgwDefense[i],
+                  Dexterity = lpBase->rgwDexterity[i],
+                  FleeRate = lpBase->rgwFleeRate[i],
+               },
+               PoisonResistance = lpBase->rgwPoisonResistance[i],
+               _ElementalResistance = new HeroBase.ElementalResistance
+               {
+                  Wind = lpBase->Wind[i],
+                  Thunder = lpBase->Thunder[i],
+                  Water = lpBase->Water[i],
+                  Fire = lpBase->Fire[i],
+                  Earth = lpBase->Earth[i],
+               },
+            },
+            _Sound = new Hero.Sound
+            {
+               Death = lpBase->rgwDeathSound[i],
+               Attack = lpBase->rgwAttackSound[i],
+               Weapon = lpBase->rgwWeaponSound[i],
+               Critical = lpBase->rgwCriticalSound[i],
+               Magic = lpBase->rgwMagicSound[i],
+               Cover = lpBase->rgwCoverSound[i],
+               Dying = lpBase->rgwDyingSound[i],
+            },
+            _Script = new Hero.Script
+            {
+               FriendDeath = GoScript.AddTag(new GoScript.Tag
+               {
+                  Addr = lpCore->wScriptOnFriendDeath,
+                  Name = $@"Hero_{ai:D5}_FriendDeath",
+               }).Name,
+               Dying = GoScript.AddTag(new GoScript.Tag
+               {
+                  Addr = lpCore->wScriptOnDying,
+                  Name = $@"Hero_{ai:D5}_Dying",
+               }).Name,
+            },
+         };
 
-               if (id == 0) continue;
+         for (j = 0; j < 32; j++)
+         {
+            id = lpBase->rgwMagic[j * 6 + i];
 
-               id -= OBJ_MAGIC_BEGIN - 1;
-
-               hero._Magic.listLearned.Add((ushort)id);
+            if (id <= 0)
+            {
+               continue;
             }
 
-            for (j = 0; j < arrBase2.Length / sizeof(int) / 5; j++)
-            {
-               hero._Magic.listLearnable.Add(new Hero.Magic.Learnable
-               {
-                  Level = lpBase2[j].Val[2 * i],
-                  MagicID = lpBase2[j].Val[2 * i + 1],
-               });
-            }
+            if (id == 0) continue;
 
-            File.WriteAllText(
-               $@"{OUTPUT_PATH}\Hero\{ai:D5}.json",
-               JsonConvert.SerializeObject(hero, Formatting.Indented)
-            );
+            id -= OBJ_MAGIC_BEGIN - 1;
+
+            hero._Magic.listLearned.Add((ushort)id);
          }
+
+         for (j = 0; j < GoData.listDataBuf[6].Item2 / sizeof(int) / 5; j++)
+         {
+            id = lpBase2[j].Val[2 * i + 1];
+
+            if (id <= 0)
+            {
+               continue;
+            }
+
+            hero._Magic.listLearnable.Add(new Hero.Magic.Learnable
+            {
+               Level = lpBase2[j].Val[2 * i],
+               MagicID = id,
+            });
+         }
+
+         File.WriteAllText(
+            $@"{DATA_PATH}\Hero\{ai:D5}.json",
+            JsonConvert.SerializeObject(hero, Formatting.Indented)
+         );
       }
    }
 }

@@ -790,7 +790,7 @@ public unsafe class PalVideo
                // Back up a whole row of pixels
                //
                pPixelsCurr = pPixels + pitch * i;
-               S_MEMCPY(pPixels, pRow, pitch);
+               S_MEMCPY(pPixels, pRow, (nuint)pitch);
                S_MEMSET(pRow, 0xFF, pitch);
 
                //
@@ -803,7 +803,7 @@ public unsafe class PalVideo
                // Start copying the first half of the pixels
                //
                pRowCurr = pRow + begin;
-               S_MEMCPY(pRowCurr, pPixelsCurr, len);
+               S_MEMCPY(pRowCurr, pPixelsCurr, (nuint)len);
 
                //
                // Start copying the second half of the pixel

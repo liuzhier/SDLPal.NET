@@ -25,7 +25,7 @@ public struct HeroBase
    public   int                     HP;                        // current HP
    public   int                     MP;                        // current MP
 
-   [JsonProperty("_Equip")]
+   [JsonProperty("Equip")]
    public   Equip                   _Equip;                    // equipments
 
    [JsonProperty("Attribute")]

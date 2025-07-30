@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using static GoMain;
+using static PalCommon;
 
 public unsafe class GoMsg
 {
@@ -31,8 +32,6 @@ public unsafe class GoMsg
       GoCodeDesc("SceneID.txt", out dictScene);
       GoCodeDesc("SpriteID.txt", out dictSprite);
       GoCodeDesc("BattleFieldID.txt", out dictBattleField);
-
-      S_MKDIR($@"{GoMain.OUTPUT_PATH}");
    }
 
    public static void
@@ -64,29 +63,23 @@ public unsafe class GoMsg
    )
    {
       int         i, len, size;
-      byte[]      arrData, arrTalk, arrWord;
+      byte[]      arrTalk, arrWord;
       int*        ipIndex;
       string      str;
 
       listTalk = new List<string>();
+      ipIndex = (int*)GoData.listCoreBuf[3].Item1;
+      arrTalk = File.ReadAllBytes($@"{GAME_PATH}\M.MSG");
+      len = GoData.listCoreBuf[3].Item2 / sizeof(int) - 1;
 
-      arrData = File.ReadAllBytes($@"{CORE_PATH}\SSS3.SMKF");
-      fixed (byte* bpTmp = arrData)
+      for (i = 0; i < len; i++)
       {
-         ipIndex = (int*)bpTmp;
-
-         arrTalk = File.ReadAllBytes($@"{GAME_PATH}\M.MSG");
-
-         len = arrData.Length / sizeof(int) - 1;
-         for (i = 0; i < len; i++)
-         {
-            size = ipIndex[i + 1] - ipIndex[i];
-            arrWord = new byte[size];
-            Array.Copy(arrTalk, ipIndex[i], arrWord, 0, arrWord.Length);
-            str = big5.GetString(arrWord).TrimEnd();
-            str = Strings.StrConv(str, VbStrConv.SimplifiedChinese);
-            listTalk.Add(str);
-         }
+         size = ipIndex[i + 1] - ipIndex[i];
+         arrWord = new byte[size];
+         Array.Copy(arrTalk, ipIndex[i], arrWord, 0, arrWord.Length);
+         str = big5.GetString(arrWord).TrimEnd();
+         str = Strings.StrConv(str, VbStrConv.SimplifiedChinese);
+         listTalk.Add(str);
       }
    }
 

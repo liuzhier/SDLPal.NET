@@ -7,10 +7,11 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-
 using static GoMain;
 using static GoScene;
+using static PalCommon;
 using static PalMap;
+using static PalSave;
 
 public unsafe class GoScript
 {
@@ -137,7 +138,6 @@ public unsafe class GoScript
       Core*    lpCore
    )
    {
-      byte[]               arrScene;
       GoScene._Scene*      lpScene;
       BlockPos             block;
       int                  i, Cmd, SceneCount, SceneID, EventID;
@@ -145,6 +145,8 @@ public unsafe class GoScript
       List<string>         listParameter;
       ushort*              wp;
       short*               sp;
+
+      lpScene = (GoScene._Scene*)GoData.listDataBuf[1].Item1;
 
       void
       Addr(
@@ -161,10 +163,8 @@ public unsafe class GoScript
       void
       Str(
          string      str
-      )
-      {
-         listParameter.Add($"{str}");
-      }
+      ) =>
+      listParameter.Add($"{str}");
 
       void
       Val(
@@ -251,34 +251,26 @@ public unsafe class GoScript
       void
       Flt(
          float    Value
-      )
-      {
-         Str($"{Value:F2}");
-      }
+      ) =>
+      Str($"{Value:F2}");
 
       void
       SMagic(
          decimal     Param
-      )
-      {
-         Val(Math.Max(Param - OBJ_MAGIC_BEGIN + 1, 0));
-      }
+      ) =>
+      Val(Math.Max(Param - OBJ_MAGIC_BEGIN + 1, 0));
 
       void
       SItem(
          decimal     Param
-      )
-      {
-         Val(Math.Max(Param - OBJ_ITEM_BEGIN + 1, 0));
-      }
+      ) =>
+      Val(Math.Max(Param - OBJ_ITEM_BEGIN + 1, 0));
 
       void
       SPoison(
          decimal     Param
-      )
-      {
-         Val(Math.Max(Param - OBJ_POISON_BEGIN + 1, 0));
-      }
+      ) =>
+      Val(Math.Max(Param - OBJ_POISON_BEGIN + 1, 0));
 
       void
       SFace(
@@ -335,22 +327,17 @@ end:
             return;
          }
 
-         fixed (byte* pTmp = arrScene)
+         for (i = 1; i < SceneCount; i++)
          {
-            lpScene = (GoScene._Scene*)pTmp;
-
-            for (i = 1; i < SceneCount; i++)
+            if (lpScene[i].wEventObjectIndex > EventOriginID)
             {
-               if (lpScene[i].wEventObjectIndex > EventOriginID)
-               {
-                  SceneID = i;
-                  EventID = EventOriginID - lpScene[SceneID - 1].wEventObjectIndex;
-                  return;
-               }
+               SceneID = i;
+               EventID = EventOriginID - lpScene[SceneID - 1].wEventObjectIndex;
+               return;
             }
-
-            throw new Exception($@"Out-of-bounds EventOriginID: {EventOriginID}");
          }
+
+         throw new Exception($@"Out-of-bounds EventOriginID: {EventOriginID}");
       }
 
       void
@@ -369,8 +356,7 @@ end:
 
       SceneID = -1;
       EventID = -1;
-      arrScene = File.ReadAllBytes($@"{CORE_PATH}\SSS1.SMKF");
-      SceneCount = arrScene.Length / sizeof(GoScene._Scene);
+      SceneCount = GoData.listDataBuf[1].Item2 / sizeof(GoScene._Scene);
       block = new BlockPos();
 
       Cmd = lpCore->Command;
@@ -1210,7 +1196,6 @@ end:
    public static void
    Go()
    {
-      byte[]            arrCore;
       int               i, len;
       string            path;
       Tag               tag;
@@ -1220,33 +1205,26 @@ end:
       Init();
 
       listStr = new List<string>();
+      lpCore = (Core*)GoData.listCoreBuf[4].Item1;
+      len = GoData.listCoreBuf[4].Item2 / sizeof(Core);
 
-      arrCore = File.ReadAllBytes($@"{CORE_PATH}\SSS4.smkf");
-
-      len = arrCore.Length / sizeof(Core);
-
-      fixed (byte* tmpCore = arrCore)
+      for (i = 0; i < len; i++, lpCore++)
       {
-         lpCore = (Core*)tmpCore;
-
-         for (i = 0; i < len; i++, lpCore++)
+         if (IsSrcBegin)
          {
-            if (IsSrcBegin)
+            IsSrcBegin = false;
+
+            AddTag(new Tag
             {
-               IsSrcBegin = false;
-
-               AddTag(new Tag
-               {
-                  Addr = i,
-                  Name = $@"Scr_0x{i:X4}",
-               });
-            }
-
-            listStr.Add(MakeFunc(lpCore));
+               Addr = i,
+               Name = $@"Scr_0x{i:X4}",
+            });
          }
+
+         listStr.Add(MakeFunc(lpCore));
       }
 
-      path = $@"{OUTPUT_PATH}\Script";
+      path = $@"{DATA_PATH}\Script";
       S_MKDIR(path);
       using (StreamWriter writer = new StreamWriter($@"{path}\ScriptEntry.js"))
       {
