@@ -1,8 +1,0 @@
-{
-  "Name": "仙灵岛·莲池·连",
-  "MapID": 25,
-  "Script": {
-    "ScrEnter": "Scene_00018_Enter",
-    "ScrTeleport": "Scene_00018_Teleport"
-  }
-}

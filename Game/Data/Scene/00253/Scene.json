@@ -1,8 +1,0 @@
-{
-  "Name": "回魂仙梦·余杭",
-  "MapID": 199,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

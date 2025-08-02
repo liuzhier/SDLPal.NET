@@ -1,8 +1,0 @@
-{
-  "Name": "苏州·客栈·各单间",
-  "MapID": 36,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

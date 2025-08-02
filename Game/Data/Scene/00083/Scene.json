@@ -1,8 +1,0 @@
-{
-  "Name": "山道·扬州前",
-  "MapID": 78,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

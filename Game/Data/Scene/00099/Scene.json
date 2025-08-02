@@ -1,8 +1,0 @@
-{
-  "Name": "扬州·民居",
-  "MapID": 94,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

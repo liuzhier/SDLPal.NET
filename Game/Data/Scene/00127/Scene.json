@@ -1,8 +1,0 @@
-{
-  "Name": "长安·酒楼·一层",
-  "MapID": 115,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "Name": "长安·妓院·二楼",
-  "MapID": 118,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

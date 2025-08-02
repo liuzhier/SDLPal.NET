@@ -1,8 +1,0 @@
-{
-  "Name": "南绍王宫·外·空",
-  "MapID": 211,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

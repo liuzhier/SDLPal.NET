@@ -1,8 +1,0 @@
-{
-  "Name": "扬州·客栈·灶间",
-  "MapID": 88,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

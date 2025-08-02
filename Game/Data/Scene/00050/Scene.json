@@ -1,8 +1,0 @@
-{
-  "Name": "白河村·米行",
-  "MapID": 58,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

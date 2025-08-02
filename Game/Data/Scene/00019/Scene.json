@@ -1,8 +1,0 @@
-{
-  "Name": "仙灵岛·洞天",
-  "MapID": 8,
-  "Script": {
-    "ScrEnter": "Scene_00019_Enter",
-    "ScrTeleport": "Null"
-  }
-}

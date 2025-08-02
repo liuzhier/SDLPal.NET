@@ -1,8 +1,0 @@
-{
-  "Name": "山路·白苗驿站·驿站外",
-  "MapID": 101,
-  "Script": {
-    "ScrEnter": "Scene_00106_Enter",
-    "ScrTeleport": "Null"
-  }
-}

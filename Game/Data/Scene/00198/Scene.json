@@ -1,8 +1,0 @@
-{
-  "Name": "忆往昔·尚书府二人谐心",
-  "MapID": 109,
-  "Script": {
-    "ScrEnter": "Scene_00198_Enter",
-    "ScrTeleport": "Null"
-  }
-}

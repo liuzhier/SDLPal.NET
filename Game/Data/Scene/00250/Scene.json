@@ -1,8 +1,0 @@
-{
-  "Name": "回魂仙梦·余杭·十里坡",
-  "MapID": 4,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Event_00248_00002_Trigger"
-  }
-}

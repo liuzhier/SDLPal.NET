@@ -1,8 +1,0 @@
-{
-  "Name": "圣姑室外·剑圣黯离",
-  "MapID": 201,
-  "Script": {
-    "ScrEnter": "Scene_00177_Enter",
-    "ScrTeleport": "Null"
-  }
-}

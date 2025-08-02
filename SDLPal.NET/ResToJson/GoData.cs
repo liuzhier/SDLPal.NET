@@ -62,7 +62,7 @@ public unsafe class GoData
 
       S_MKDIR(GAME_PATH);
 
-      fs = C_fopen($@"{PAL_DOS_PATH}/DATA.MKF");
+      fs = C_fopen($@"{PAL_DOS_PATH}\DATA.MKF");
       len = PalUnpak.GetMKFChunkCount(fs);
 
       for (i = 0; i < len; i++)

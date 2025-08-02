@@ -1,8 +1,0 @@
-{
-  "Name": "试炼窟·二层·未知",
-  "MapID": 220,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Scene_00213_Teleport"
-  }
-}

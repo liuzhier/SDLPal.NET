@@ -21,229 +21,119 @@ public unsafe partial class PalUnpak
       return JsonConvert.DeserializeObject<T>(File.ReadAllText(value));
    }
 
-   public static byte
-   CalcShadowColor(
-      byte     bSourceColor
-   ) => (byte)((bSourceColor & 0xF0) | ((bSourceColor & 0x0F) >> 1));
-
-   public static void
-   DrawRLE(
-      nint     pRLE,
-      nint     pSurface,
-      Pos      pos,
-      bool     fIsShadow = false
+   public static int
+   GetSpriteFrameCount(
+      nint     pSprite
    )
    /*++
      Purpose:
 
-       Blit an RLE-compressed bitmap to an SDL surface.
-       NOTE: Assume the surface is already locked, and the surface is a 8-bit one.
+       Get the total number of frames of a sprite.
 
      Parameters:
 
-       [IN]  pRLE - pointer to the RLE-compressed bitmap to be decoded.
-
-       [OUT] pSurface - pointer to the destination SDL surface.
-
-       [IN]  pos - position of the destination area.
-
-       [IN]  fIsShadow - flag to mention whether blit source color or just shadow.
+       [IN]  pSprite - pointer to the sprite.
 
      Return value:
 
-       0 = success, -1 = error.
+       Number of frames of the sprite.
 
    --*/
    {
-      uint     i, j, k, sx;
-      int      x, y;
-      uint     uiLen = 0;
-      uint     uiWidth = 0;
-      uint     uiHeight = 0;
-      uint     uiSrcX = 0;
-      byte     T;
-      int      dx = pos.X;
-      int      dy = pos.Y;
+      byte*    lpSprite;
 
-      int      iRleOffset = 0, iPixelsOffset = 0;
+      if (pSprite == 0) return 0;
+
+      lpSprite = (byte*)pSprite;
+
+      return (short)((lpSprite[0] | (lpSprite[1] << 8)) - 1);
+   }
+
+   public static int
+   GetSpriteFrameSize(
+      nint     pBuffer,
+      int      iChunkNum,
+      int      iSMKFSize
+   )
+   /*++
+     Purpose:
+
+       Get the size of a chunk in an SMKF archive.
+
+     Parameters:
+
+       [IN]  pBuffer - pointer to the destination buffer.
+
+       [IN]  iChunkNum - the number of the chunk in the SMKF archive.
+
+       [IN]  iChunkNum - the size of SMKF archive.
+
+     Return value:
+
+       Integer value which indicates the size of the chunk.
+       -1 if the chunk does not exist.
+
+   --*/
+   {
+      int      iOffset, iNextOffset, iChunkCount, size;
+      byte*    lpSprite;
+
+      lpSprite = (byte*)pBuffer;
+      iOffset = 0;
+      iNextOffset = 0;
 
       //
-      // Check for NULL pointer.
+      // Check whether the wChunkNum is out of range..
       //
-      if (pRLE == 0 || pSurface == 0)
+      iChunkCount = GetSpriteFrameCount(pBuffer);
+
+      if (iChunkNum >= iChunkCount)
       {
-         return;
+         return -1;
       }
 
-      byte*             lpBitmapRLE = (byte*)pRLE;
-      SDL.Surface*      lpDstSurface = (SDL.Surface*)pSurface;
-      byte*             pPixels = (byte*)lpDstSurface->Pixels;
+      //
+      // Get the offset of the specified chunk and the next chunk.
+      //
+      iOffset     = SwapEndian.LE16(((ushort*)pBuffer)[iChunkNum]) << 1;
+      iNextOffset = SwapEndian.LE16(((ushort*)pBuffer)[iChunkNum + 1]) << 1;
 
-      //
-      // Skip the 0x00000002 in the file header.
-      //
-      if (lpBitmapRLE[iRleOffset] == 0x02 && lpBitmapRLE[iRleOffset + 1] == 0x00 &&
-          lpBitmapRLE[iRleOffset + 2] == 0x00 && lpBitmapRLE[iRleOffset + 3] == 0x00)
+      if (!S_B(iOffset))
       {
-         iRleOffset += 4;
+         return -1;
+      }
+
+      if (iOffset == 0x18444)
+      {
+         iOffset = (ushort)iOffset;
+      }
+
+      if (iNextOffset == 0x18444)
+      {
+         iNextOffset = (ushort)iNextOffset;
+      }
+
+      if (!S_B(iNextOffset) || iChunkNum == iChunkCount
+         || iNextOffset < iOffset || iNextOffset > iSMKFSize)
+      {
+         iNextOffset = iSMKFSize;
+      }
+
+      size = (ushort)(iNextOffset - iOffset);
+
+      if (size > iSMKFSize)
+      {
+         return -1;
       }
 
       //
-      // Get the width and height of the bitmap.
+      // Return the length of the chunk.
       //
-      uiWidth = (uint)(lpBitmapRLE[iRleOffset] | (lpBitmapRLE[iRleOffset + 1] << 8));
-      uiHeight = (uint)(lpBitmapRLE[iRleOffset + 2] | (lpBitmapRLE[iRleOffset + 3] << 8));
-
-      //
-      // Check whether bitmap intersects the surface.
-      //
-      if (uiWidth + dx <= 0 || dx >= lpDstSurface->Width ||
-          uiHeight + dy <= 0 || dy >= lpDstSurface->Height)
-      {
-         goto end;
-      }
-
-      //
-      // Calculate the total length of the bitmap.
-      // The bitmap is 8-bpp, each pixel will use 1 BYTE.
-      //
-      uiLen = uiWidth * uiHeight;
-
-      //
-      // Start decoding and blitting the bitmap.
-      //
-      iRleOffset += 4;
-      for (i = 0; i < uiLen;)
-      {
-         T = lpBitmapRLE[iRleOffset++];
-         if (((T & 0x80) != 0) && (T <= (0x80 + uiWidth)))
-         {
-            i += (uint)(T - 0x80);
-            uiSrcX += (uint)(T - 0x80);
-
-            if (uiSrcX >= uiWidth)
-            {
-               uiSrcX -= uiWidth;
-               dy++;
-            }
-         }
-         else
-         {
-            //
-            // Prepare coordinates.
-            //
-            j = 0;
-            sx = uiSrcX;
-            x = (int)(dx + uiSrcX);
-            y = dy;
-
-            //
-            // Skip the points which are out of the surface.
-            //
-            if (y < 0)
-            {
-               j += (uint)(-y * uiWidth);
-               y = 0;
-            }
-            else if (y >= lpDstSurface->Height)
-            {
-               goto end; // No more pixels needed, break out
-            }
-
-            while (j < T)
-            {
-               //
-               // Skip the points which are out of the surface.
-               //
-               if (x < 0)
-               {
-                  j -= (uint)x;
-
-                  if (j >= T) break;
-
-                  sx -= (uint)x;
-                  x = 0;
-               }
-               else if (x >= lpDstSurface->Width)
-               {
-                  j += uiWidth - sx;
-                  x = (int)(x - sx);
-                  sx = 0;
-                  y++;
-
-                  if (y >= lpDstSurface->Height)
-                  {
-                     goto end; // No more pixels needed, break out
-                  }
-
-                  continue;
-               }
-
-               //
-               // Put the pixels in row onto the surface
-               //
-               k = T - j;
-
-               if (lpDstSurface->Width - x < k) k = (uint)(lpDstSurface->Width - x);
-               if (uiWidth - sx < k) k = uiWidth - sx;
-
-               sx += k;
-               iPixelsOffset = y * lpDstSurface->Width;
-
-               if (fIsShadow)
-               {
-                  j += k;
-
-                  for (; k != 0; k--)
-                  {
-                     pPixels[iPixelsOffset + x] = CalcShadowColor(pPixels[iPixelsOffset + x]);
-                     x++;
-                  }
-               }
-               else
-               {
-                  for (; k != 0; k--)
-                  {
-                     pPixels[iPixelsOffset + x] = lpBitmapRLE[iRleOffset + j];
-                     j++;
-                     x++;
-                  }
-               }
-
-               if (sx >= uiWidth)
-               {
-                  sx -= uiWidth;
-                  x = (int)(x - uiWidth);
-                  y++;
-
-                  if (y >= lpDstSurface->Height)
-                  {
-                     goto end; // No more pixels needed, break out
-                  }
-               }
-            }
-
-            iRleOffset += T;
-            i += T;
-            uiSrcX += T;
-
-            while (uiSrcX >= uiWidth)
-            {
-               uiSrcX -= uiWidth;
-               dy++;
-            }
-         }
-      }
-
-   end:
-      //
-      // Success
-      //
-      return;
+      return size;
    }
 
    public static nint
-   SpriteGetFrame(
+   GetSpriteFrame(
       nint     pSprite,
       int      FrameID
    )
@@ -294,34 +184,6 @@ public unsafe partial class PalUnpak
       offset = ((lpSprite[FrameID] | (lpSprite[FrameID + 1] << 8)) << 1);
       if (offset == 0x18444) offset = (ushort)offset;
       return (nint)(&lpSprite[offset]);
-   }
-
-   public static int
-   SpriteGetFrameCount(
-      nint     pSprite
-   )
-   /*++
-     Purpose:
-
-       Get the total number of frames of a sprite.
-
-     Parameters:
-
-       [IN]  pSprite - pointer to the sprite.
-
-     Return value:
-
-       Number of frames of the sprite.
-
-   --*/
-   {
-      byte*    lpSprite;
-
-      if (pSprite == 0) return 0;
-
-      lpSprite = (byte*)pSprite;
-
-      return (ushort)((lpSprite[0] | (lpSprite[1] << 8)) - 1);
    }
 
    public static int
@@ -517,6 +379,61 @@ public unsafe partial class PalUnpak
 
          C_fseek(fs, GetMKFChunkOffset(fs, iChunkID), SeekOrigin.Begin);
          C_fread(fs, iChunkLen, pDest);
+      }
+
+      return (pDest, iChunkLen);
+   }
+
+   public static (nint, int)
+   GetMKFChunk(
+      nint     pMKF,
+      int      iChunkID
+   )
+   /*++
+     Purpose:
+
+       Read a chunk from an MKF archive into pDest.
+
+     Parameters:
+
+       [IN]  fs - pointer to the fopen'ed MKF file.
+
+       [IN]  iChunkNum - the number of the chunk in the MKF archive to read.
+
+     Return value:
+
+       None.
+
+   --*/
+   {
+      int      iChunkCount, iChunkLen, iOffset, iOffsetNext;
+      nint     pDest;
+      uint*    pChunk;
+
+      if (pMKF == NULL)
+      {
+         S_FAILED(
+            $@"Unpak.GetMKFChunk",
+            "The MKF pointer is empty"
+         );
+      }
+
+      pChunk = (uint*)pMKF;
+
+      //
+      // Get the length of the chunk.
+      //
+      iChunkCount = (int)SwapEndian.LE32(pChunk[0]) / sizeof(int) - 1;
+      pDest = NULL;
+      iChunkLen = 0;
+
+      if (iChunkID >= 0 && iChunkID <= iChunkCount)
+      {
+         iOffset = (int)SwapEndian.LE32(pChunk[iChunkID]);
+         iOffsetNext = (int)SwapEndian.LE32(pChunk[iChunkID + 1]);
+
+         pDest = pMKF + iOffset;
+         iChunkLen = iOffsetNext - iOffset;
       }
 
       return (pDest, iChunkLen);

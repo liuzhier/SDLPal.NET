@@ -1,8 +1,0 @@
-{
-  "Name": "余杭·废屋",
-  "MapID": 13,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

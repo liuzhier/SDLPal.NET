@@ -1,8 +1,0 @@
-{
-  "Name": "大理·汉人聚居地·屠杀",
-  "MapID": 167,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

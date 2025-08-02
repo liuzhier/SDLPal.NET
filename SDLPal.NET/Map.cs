@@ -54,6 +54,7 @@ public unsafe class PalMap
          return SegmentTable[y * 32 + x];
       }
    }
+
    public   static   byte[]
    SegmentTable = new byte[16 * 32]
    {
@@ -362,7 +363,7 @@ public unsafe class PalMap
             {
                _TileData = new TileData();
 
-               _TileData.IsObstacle = (arrData[iOffset + 1] & 0x20) != 0;
+               _TileData.IsObstacle = S_B(arrData[iOffset + 1] & 0x20);
                _TileData.LowID      = (short)(arrData[iOffset++] | (((arrData[iOffset] & 0x10) >> 4) << 8));
                _TileData.LowLayer   = (byte)(arrData[iOffset++] & 0xF);
                _TileData.HighID     = (short)((arrData[iOffset++] | (((arrData[iOffset] & 0x10) >> 4) << 8)) - 1);
@@ -400,7 +401,7 @@ public unsafe class PalMap
       //
       S_ARRCPY(arrData, out pTileSprite);
 
-      arrTileTex = new nint[PalUnpak.SpriteGetFrameCount(pTileSprite)];
+      arrTileTex = new nint[PalUnpak.GetSpriteFrameCount(pTileSprite)];
 
       //
       // Initialize the temporary surface
@@ -437,7 +438,7 @@ public unsafe class PalMap
          // Draw the map tile to the 8-bit surface
          //
          SDL.FillSurfaceRect(pSurf, 0, 0xFF);
-         PalUnpak.DrawRLE(PalUnpak.SpriteGetFrame(pTileSprite, i), pSurf, POS_ZERO);
+         PalUnpak.DrawRLE(PalUnpak.GetSpriteFrame(pTileSprite, i), pSurf, POS_ZERO);
 
          //
          // Convert the surface from 8 bits to 32 bits
@@ -521,6 +522,8 @@ public unsafe class PalMap
             palette[i].A = 0xFF;
          }
       }
+
+      palette[i - 1].A = 0;
 
       pPalette = SDL.CreatePalette(palette.Length);
       SDL.SetPaletteColors(pPalette, palette, 0, palette.Length);

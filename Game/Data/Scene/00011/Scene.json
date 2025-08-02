@@ -1,8 +1,0 @@
-{
-  "Name": "余杭·山神庙里",
-  "MapID": 19,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

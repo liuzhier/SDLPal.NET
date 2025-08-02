@@ -7,11 +7,13 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+
 using static GoMain;
 using static GoScene;
 using static PalCommon;
 using static PalMap;
 using static PalSave;
+using static SafeSys;
 
 public unsafe class GoScript
 {
@@ -110,7 +112,7 @@ public unsafe class GoScript
       All
    }
 
-   static readonly int[] arrFaceIndex = [
+   public static readonly int[] arrFaceIndex = [
       0,    1,
       11,
       21,   27,

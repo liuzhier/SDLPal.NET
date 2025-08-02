@@ -1,8 +1,0 @@
-{
-  "Name": "蜀山·前山",
-  "MapID": 132,
-  "Script": {
-    "ScrEnter": "Scene_00155_Enter",
-    "ScrTeleport": "Null"
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "Name": "灵山",
-  "MapID": 149,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Scene_00179_Teleport"
-  }
-}

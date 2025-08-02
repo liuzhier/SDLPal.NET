@@ -1,8 +1,0 @@
-{
-  "Name": "隐龙窟·近迹",
-  "MapID": 39,
-  "Script": {
-    "ScrEnter": "Scene_00042_Enter",
-    "ScrTeleport": "Null"
-  }
-}

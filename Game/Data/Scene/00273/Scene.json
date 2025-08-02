@@ -1,8 +1,0 @@
-{
-  "Name": "火麒麟洞·1·空",
-  "MapID": 186,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Scene_00266_Teleport"
-  }
-}

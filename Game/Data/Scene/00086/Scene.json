@@ -1,8 +1,0 @@
-{
-  "Name": "扬州·4",
-  "MapID": 93,
-  "Script": {
-    "ScrEnter": "Scene_00085_Enter",
-    "ScrTeleport": "Null"
-  }
-}

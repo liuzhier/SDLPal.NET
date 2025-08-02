@@ -330,7 +330,7 @@ public unsafe class PalResource
       nint        pTex, pTex2;
       bool        fLoadOld;
 
-      path = $@"{IMG_CHAR_PATH}\{iSpriteID}\";
+      path = $@"New_{IMG_CHAR_PATH}\{iSpriteID}";
 
       fLoadOld = !Directory.Exists(path);
 
@@ -340,12 +340,14 @@ public unsafe class PalResource
          // The new version of the image does not exist.
          // Try loading the old version of the image
          //
-         path = $@"{IMG_MGO_PATH}\{iSpriteID - 1}-";
+         path = $@"{IMG_CHAR_PATH}\{iSpriteID}";
+
+         S_DIR_EXISTS(path);
       }
 
       for (i = 0; ; i++)
       {
-         imgpath = $@"{path}{i}.png";
+         imgpath = $@"{path}\{i}.png";
 
          if (!File.Exists(imgpath))
          {

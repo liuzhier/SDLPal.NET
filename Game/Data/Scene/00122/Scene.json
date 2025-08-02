@@ -1,8 +1,0 @@
-{
-  "Name": "长安·尚书府·刘晋元居所·原始",
-  "MapID": 112,
-  "Script": {
-    "ScrEnter": "Scene_00122_Enter",
-    "ScrTeleport": "Null"
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "Name": "回魂仙梦·余杭·集市·铁匠铺",
-  "MapID": 21,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

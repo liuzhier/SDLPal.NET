@@ -1,8 +1,0 @@
-{
-  "Name": "忆往昔·欢喜冤家擂前约",
-  "MapID": 31,
-  "Script": {
-    "ScrEnter": "Scene_00193_Enter",
-    "ScrTeleport": "Null"
-  }
-}

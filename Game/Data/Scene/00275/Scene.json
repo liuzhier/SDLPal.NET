@@ -1,8 +1,0 @@
-{
-  "Name": "大理·雨后",
-  "MapID": 165,
-  "Script": {
-    "ScrEnter": "Scene_00275_Enter",
-    "ScrTeleport": "Null"
-  }
-}

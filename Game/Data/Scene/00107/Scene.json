@@ -1,8 +1,0 @@
-{
-  "Name": "长安城外·田园摸牛",
-  "MapID": 102,
-  "Script": {
-    "ScrEnter": "Scene_00107_Enter",
-    "ScrTeleport": "Null"
-  }
-}

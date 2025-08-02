@@ -1,8 +1,0 @@
-{
-  "Name": "余杭·盛渔村",
-  "MapID": 1,
-  "Script": {
-    "ScrEnter": "Scene_00004_Enter",
-    "ScrTeleport": "Null"
-  }
-}

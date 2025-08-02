@@ -1,8 +1,0 @@
-{
-  "Name": "白河村·韩医仙诊厅",
-  "MapID": 49,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

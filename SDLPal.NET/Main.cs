@@ -96,7 +96,7 @@ public unsafe class PalMain
       Environment.Exit(0);
    }
 
-#if !GO_RES_TO_JSON
+#if GO_RES_TO_JSON
    [STAThread]
    public static void
    Main(
@@ -131,18 +131,18 @@ public unsafe class PalMain
       string[]    args
    )
    {
-      Console.WriteLine("Warning: This operation will lose previously unsaved content.");
-      Console.WriteLine("Please press Enter four times in a row to confirm and continue.");
-      Console.WriteLine("1:");
-      Console.ReadLine();
-      Console.WriteLine("2:");
-      Console.ReadLine();
-      Console.WriteLine("3:");
-      Console.ReadLine();
-      Console.WriteLine("4:");
-      Console.ReadLine();
-      Console.WriteLine("The game content is being undownloaded.");
-      Console.WriteLine("It may take 1 to 2 minutes. Please wait a moment...");
+      //Console.WriteLine("Warning: This operation will lose previously unsaved content.");
+      //Console.WriteLine("Please press Enter four times in a row to confirm and continue.");
+      //Console.WriteLine("1:");
+      //Console.ReadLine();
+      //Console.WriteLine("2:");
+      //Console.ReadLine();
+      //Console.WriteLine("3:");
+      //Console.ReadLine();
+      //Console.WriteLine("4:");
+      //Console.ReadLine();
+      //Console.WriteLine("The game content is being undownloaded.");
+      //Console.WriteLine("It may take 1 to 2 minutes. Please wait a moment...");
 
       GoMain.Go();
    }

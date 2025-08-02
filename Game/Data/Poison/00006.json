@@ -1,9 +1,0 @@
-{
-  "Name": "鹤顶红毒",
-  "PoisonLevel": 3,
-  "ColorHex": "",
-  "Script": {
-    "Player": "Poison_00006_Player",
-    "Enemy": "Poison_00006_Enemy"
-  }
-}

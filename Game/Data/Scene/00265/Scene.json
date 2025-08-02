@@ -1,8 +1,0 @@
-{
-  "Name": "大理·女娲神殿·防",
-  "MapID": 175,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

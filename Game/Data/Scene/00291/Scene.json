@@ -1,8 +1,0 @@
-{
-  "Name": "无底深渊·1",
-  "MapID": 190,
-  "Script": {
-    "ScrEnter": "Scene_00291_Enter",
-    "ScrTeleport": "Null"
-  }
-}

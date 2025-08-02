@@ -1,8 +1,0 @@
-{
-  "Name": "土路·试炼窟外·1",
-  "MapID": 212,
-  "Script": {
-    "ScrEnter": "Scene_00214_Enter",
-    "ScrTeleport": "Scene_00214_Enter"
-  }
-}

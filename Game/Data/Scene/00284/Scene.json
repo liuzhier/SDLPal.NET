@@ -1,8 +1,0 @@
-{
-  "Name": "南绍王宫·地牢·门开",
-  "MapID": 184,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

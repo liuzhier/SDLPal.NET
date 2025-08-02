@@ -1,8 +1,0 @@
-{
-  "Name": "锁妖塔·底层·未被缚",
-  "MapID": 74,
-  "Script": {
-    "ScrEnter": "Scene_00152_Enter",
-    "ScrTeleport": "Null"
-  }
-}

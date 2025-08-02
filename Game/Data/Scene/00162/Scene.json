@@ -1,8 +1,0 @@
-{
-  "Name": "蜀山云海·后段",
-  "MapID": 138,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Scene_00161_Teleport"
-  }
-}

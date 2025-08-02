@@ -1,8 +1,0 @@
-{
-  "Name": "忆往昔·忧逍遥月如离堡",
-  "MapID": 33,
-  "Script": {
-    "ScrEnter": "Scene_00195_Enter",
-    "ScrTeleport": "Null"
-  }
-}

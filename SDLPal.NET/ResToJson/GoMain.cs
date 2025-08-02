@@ -22,46 +22,20 @@ public class GoMain
       OBJ_POISON_BEGIN  = 0x0227;
 
    public static void
-   S_MKDIR(
-      string      path
-   )
-   {
-      SafeSys.S_MKDIR(path, false);
-   }
-
-   public static void
-   S_FAILED(
-      string      funcName,
-      string      error
-   )
-   {
-      string logFatal;
-
-      logFatal = $"{funcName} failed: {error}";
-
-      if (error.Last() != '.')
-      {
-         logFatal += '.';
-      }
-
-      //
-      // Write the error message to the log
-      //
-      throw new Exception(logFatal);
-   }
-   
-   public static bool
-   S_B(
-      decimal     val
-   )
-   {
-      return SafeSys.S_B(val);
-   }
-
-   public static void
    Init()
    {
-      S_MKDIR(WORK_PATH);
+      PalLog.Init();
+      GoData.Init();
+      GoMsg.Init();
+      PalMap.Init();
+   }
+
+   public static void
+   Free()
+   {
+      GoData.Free();
+      PalLog.Free();
+      PalMap.Free();
    }
 
    public static void
@@ -71,13 +45,45 @@ public class GoMain
       //
       // Customize the game working directory in DEBUG mode
       //
-      Environment.CurrentDirectory = WORK_PATH;
+      Environment.CurrentDirectory = $@"{WORK_PATH}\";
 #endif // DEBUG
 
-      GoSound.Go();
+#if DEBUG_IMG_CHECKOUT
+      {
+         int         i, j;
+         string      pathA, pathB, pathC, pathD, pathE, pathF;
 
-      GoMsg.Init();
-      GoData.Init();
+         pathA = $@"{IMG_PATH}\MGO";
+         pathB = $@"{IMG_PATH}\MGO1";
+
+         for (i = 0; i < 635; i++)
+         {
+            pathC = $@"{pathA}\{i}";
+            pathD = $@"{pathB}\{i}";
+
+            for (j = 0; ; j++)
+            {
+               pathE = $@"{pathC}-{j}.png";
+               pathF = $@"{pathD}-{j}.png";
+
+               if (!File.Exists(pathE))
+               {
+                  break;
+               }
+
+               if (!File.Exists(pathF))
+               {
+                  File.Copy(pathE, $@"{IMG_PATH}\MGO2\{i}-{j}.png", true);
+               }
+            }
+         }
+      }
+#endif // DEBUG_IMG_CHECKOUT
+
+      Init();
+
+      GoSound.Go();
+      GoImage.Go();
 
       GoData.Go();
       GoHero.Go();
@@ -88,6 +94,6 @@ public class GoMain
       GoScene.Go();
       GoScript.Go();
 
-      GoData.Free();
+      Free();
    }
 }

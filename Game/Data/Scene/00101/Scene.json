@@ -1,8 +1,0 @@
-{
-  "Name": "蛤蟆谷·后段",
-  "MapID": 98,
-  "Script": {
-    "ScrEnter": "Scene_00101_Enter",
-    "ScrTeleport": "Null"
-  }
-}

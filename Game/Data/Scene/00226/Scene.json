@@ -1,8 +1,0 @@
-{
-  "Name": "试炼窟·三层·所有伏",
-  "MapID": 224,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Scene_00213_Teleport"
-  }
-}

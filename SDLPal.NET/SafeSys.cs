@@ -168,6 +168,19 @@ public unsafe class SafeSys
    }
 
    public static void
+   S_DIR_EXISTS(
+      string      path
+   )
+   {
+      if (Directory.Exists(path)) return;
+
+      S_FAILED(
+         "S_FILE_EXISTS",
+         $@"The directory '{Path.GetFullPath(path)}' does not exist"
+      );
+   }
+
+   public static void
    S_MKDIR(
       string      path,
       bool        fDelExists = false
@@ -300,24 +313,6 @@ public unsafe class SafeSys
 
    #region Memory R/W API
 
-   private static nint
-   memset(
-      nint     dst,
-      int      c,
-      long     len
-   )
-   {
-      NativeMemory.Fill((void*)dst, (nuint)len, (byte)c);
-      return dst;
-   }
-
-   private static nint
-   memmove(nint dst, nint src, long len)
-   {
-      NativeMemory.Copy((void*)src, (void*)dst, (nuint)len);
-      return dst;
-   }
-
    public static void
    S_FREE(
       nint     pSrc
@@ -424,9 +419,9 @@ public unsafe class SafeSys
 
    public static nint
    S_MEMSET(
-      nint     pSrc,
-      int      value,
-      long     len
+      nint     pDest,
+      byte     value,
+      long     count
    )
    /*++
      Purpose:
@@ -445,13 +440,18 @@ public unsafe class SafeSys
 
    --*/
    {
-      return memset(pSrc, value, len);
+      if (pDest != NULL)
+      {
+         NativeMemory.Fill((void*)pDest, (nuint)count, value);
+      }
+
+      return pDest;
    }
 
    public static nint
    S_MEMSET(
       Array    arr,
-      int      value,
+      byte     value,
       long     len   = -1
    )
    {
@@ -489,7 +489,8 @@ public unsafe class SafeSys
 
    --*/
    {
-      return memmove(pDest, pSrc, len);
+      NativeMemory.Copy((void*)pSrc, (void*)pDest, (nuint)len);
+      return pDest;
    }
 
    public static nint
@@ -511,7 +512,7 @@ public unsafe class SafeSys
 
    --*/
    {
-        return (nint)NativeMemory.AllocZeroed((nuint)len);
+      return (nint)NativeMemory.AllocZeroed((nuint)len);
    }
 
    public static void
@@ -573,7 +574,7 @@ public unsafe class SafeSys
       SeekOrigin     origin
    ) => fs.Seek(offset, SeekOrigin.Begin);
 
-   public static void
+   public static int
    C_fread(
       FileStream     fs,
       int            size,
@@ -582,8 +583,10 @@ public unsafe class SafeSys
    {
       if (size > 0)
       {
-         fs.Read(new Span<byte>((void*)dest, size));
+         return fs.Read(new Span<byte>((void*)dest, size));
       }
+
+      return -2;
    }
 
    public static void

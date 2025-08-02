@@ -1,8 +1,0 @@
-{
-  "Name": "白河村",
-  "MapID": 46,
-  "Script": {
-    "ScrEnter": "Scene_00049_Enter",
-    "ScrTeleport": "Null"
-  }
-}

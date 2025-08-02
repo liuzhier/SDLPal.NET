@@ -1,8 +1,0 @@
-{
-  "Name": "长安·水仙尊王庙外",
-  "MapID": 103,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "Name": "毒仙林·迷宫",
-  "MapID": 129,
-  "Script": {
-    "ScrEnter": "Scene_00139_Enter",
-    "ScrTeleport": "Scene_00138_Teleport"
-  }
-}

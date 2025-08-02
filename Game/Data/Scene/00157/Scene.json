@@ -1,8 +1,0 @@
-{
-  "Name": "蜀山仙剑派正殿·外",
-  "MapID": 133,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

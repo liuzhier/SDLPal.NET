@@ -1,8 +1,0 @@
-{
-  "Name": "桃源村·褒奖",
-  "MapID": 158,
-  "Script": {
-    "ScrEnter": "Scene_00183_Enter",
-    "ScrTeleport": "Null"
-  }
-}

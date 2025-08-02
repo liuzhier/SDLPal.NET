@@ -1,8 +1,0 @@
-{
-  "Name": "扬州·牢房",
-  "MapID": 83,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

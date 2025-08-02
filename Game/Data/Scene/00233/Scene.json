@@ -1,8 +1,0 @@
-{
-  "Name": "回魂仙梦·水底秘道·前段",
-  "MapID": 189,
-  "Script": {
-    "ScrEnter": "Scene_00233_Enter",
-    "ScrTeleport": "Null"
-  }
-}

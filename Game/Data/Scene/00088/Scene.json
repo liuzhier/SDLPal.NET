@@ -1,8 +1,0 @@
-{
-  "Name": "飞贼之家·无·地牢入口·可以进入",
-  "MapID": 82,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

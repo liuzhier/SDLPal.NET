@@ -21,17 +21,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <FilesToCopy Include="$(SolutionDir)bin\libavif-16.dll" />
-    <FilesToCopy Include="$(SolutionDir)bin\libtiff-6.dll" />
-    <FilesToCopy Include="$(SolutionDir)bin\libwebp-7.dll" />
-    <FilesToCopy Include="$(SolutionDir)bin\libwebpdemux-2.dll" />
-    <FilesToCopy Include="$(SolutionDir)bin\SDL3.dll" />
-    <FilesToCopy Include="$(SolutionDir)bin\SDL3_image.dll" />
-    <FilesToCopy Include="$(SolutionDir)bin\SDL3_mixer.dll" />
-    <FilesToCopy Include="$(SolutionDir)bin\SDL3_net.dll" />
-    <FilesToCopy Include="$(SolutionDir)bin\SDL3_rtf.dll" />
-    <FilesToCopy Include="$(SolutionDir)bin\SDL3_shadercross.dll" />
-    <FilesToCopy Include="$(SolutionDir)bin\SDL3_ttf.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\Win32\x64\libavif-16.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\Win32\x64\libtiff-6.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\Win32\x64\libwebp-7.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\Win32\x64\libwebpdemux-2.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\Win32\x64\SDL3.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\Win32\x64\SDL3_image.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\Win32\x64\SDL3_mixer.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\Win32\x64\SDL3_net.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\Win32\x64\SDL3_rtf.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\Win32\x64\SDL3_shadercross.dll" />
+    <FilesToCopy Include="$(SolutionDir)bin\Win32\x64\SDL3_ttf.dll" />
   </ItemGroup>
 
   <Target Name="CopyDllToOutDir" BeforeTargets="Build">

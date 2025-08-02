@@ -1,8 +1,0 @@
-{
-  "Name": "桃花源·决战木道人",
-  "MapID": 160,
-  "Script": {
-    "ScrEnter": "Scene_00181_Enter",
-    "ScrTeleport": "Null"
-  }
-}

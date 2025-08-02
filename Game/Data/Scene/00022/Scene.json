@@ -1,8 +1,0 @@
-{
-  "Name": "苏州·外",
-  "MapID": 18,
-  "Script": {
-    "ScrEnter": "Scene_00022_Enter",
-    "ScrTeleport": "Null"
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "Name": "余杭·老王家·老丁家",
-  "MapID": 11,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

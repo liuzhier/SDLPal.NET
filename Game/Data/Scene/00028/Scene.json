@@ -1,8 +1,0 @@
-{
-  "Name": "苏州·客栈·赌厅",
-  "MapID": 27,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "Name": "苏州·林家堡·西厢房·墙破",
-  "MapID": 33,
-  "Script": {
-    "ScrEnter": "Scene_00036_Enter",
-    "ScrTeleport": "Null"
-  }
-}

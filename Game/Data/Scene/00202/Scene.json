@@ -1,8 +1,0 @@
-{
-  "Name": "大理·城郊·正常",
-  "MapID": 162,
-  "Script": {
-    "ScrEnter": "Scene_00202_Enter",
-    "ScrTeleport": "Null"
-  }
-}

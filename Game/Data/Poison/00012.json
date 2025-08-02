@@ -1,9 +1,0 @@
-{
-  "Name": "碧血蚕附",
-  "PoisonLevel": 4,
-  "ColorHex": "",
-  "Script": {
-    "Player": "Null",
-    "Enemy": "Poison_00012_Enemy"
-  }
-}

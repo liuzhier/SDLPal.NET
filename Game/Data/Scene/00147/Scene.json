@@ -1,8 +1,0 @@
-{
-  "Name": "锁妖塔·五层·姜清",
-  "MapID": 144,
-  "Script": {
-    "ScrEnter": "Scene_00147_Enter",
-    "ScrTeleport": "Null"
-  }
-}

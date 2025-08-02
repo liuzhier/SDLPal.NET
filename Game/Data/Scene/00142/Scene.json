@@ -1,8 +1,0 @@
-{
-  "Name": "忆往昔·尚书府蝶仙化形",
-  "MapID": 106,
-  "Script": {
-    "ScrEnter": "Scene_00142_Enter",
-    "ScrTeleport": "Null"
-  }
-}

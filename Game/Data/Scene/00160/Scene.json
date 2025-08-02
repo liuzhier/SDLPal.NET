@@ -1,8 +1,0 @@
-{
-  "Name": "仙剑派弟子房间",
-  "MapID": 136,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

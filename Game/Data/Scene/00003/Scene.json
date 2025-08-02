@@ -1,8 +1,0 @@
-{
-  "Name": "余杭·客栈大厅",
-  "MapID": 10,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

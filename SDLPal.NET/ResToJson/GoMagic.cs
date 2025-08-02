@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using static GoMain;
 using static PalMap;
 using static PalCommon;
+using static SafeSys;
 
 using SHORT = System.Int16;
 using WORD = System.UInt16;
@@ -200,8 +201,8 @@ public unsafe class GoMagic
             {
                UsableOutsideBattle = S_B(lpCore->wFlags & (1 << 0)),
                UsableInBattle = S_B(lpCore->wFlags & (1 << 1)),
-               UsableToHero = S_B(lpCore->wFlags & (1 << 3)),
-               UsableToEnemy = !S_B(lpCore->wFlags & (1 << 3)),
+               UsableToHero = !S_B(lpCore->wFlags & (1 << 3)),
+               UsableToEnemy = S_B(lpCore->wFlags & (1 << 3)),
                ApplyToAllHero = S_B(lpCore->wFlags & (1 << 4)),
                ApplyToAllEnemy = S_B(lpCore->wFlags & (1 << 4)),
             },

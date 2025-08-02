@@ -1,8 +1,0 @@
-{
-  "Name": "恍惚·林月如",
-  "MapID": 20,
-  "Script": {
-    "ScrEnter": "Scene_00172_Enter",
-    "ScrTeleport": "Null"
-  }
-}

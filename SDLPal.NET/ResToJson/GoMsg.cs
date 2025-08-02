@@ -26,8 +26,8 @@ public unsafe class GoMsg
       gbk = Encoding.GetEncoding("GBK");
       big5 = Encoding.GetEncoding("BIG5");
 
-      GoWord("WORD_GBK.DAT", out listWord);
-      GoTalk("MSG.DAT", out listTalk);
+      GoWord("WORD.DAT", out listWord);
+      GoTalk("M.MSG", out listTalk);
       GoDesc("DESC.txt", out dictDesc);
       GoCodeDesc("SceneID.txt", out dictScene);
       GoCodeDesc("SpriteID.txt", out dictSprite);
@@ -45,7 +45,7 @@ public unsafe class GoMsg
 
       listWord = new List<string>();
 
-      arrWords = File.ReadAllBytes($@"{CFG_PATH}\{name}");
+      arrWords = File.ReadAllBytes($@"{PAL_WIN_PATH}\{name}");
       arrWord = new byte[10];
 
       len = arrWords.Length / 10;
@@ -69,7 +69,7 @@ public unsafe class GoMsg
 
       listTalk = new List<string>();
       ipIndex = (int*)GoData.listCoreBuf[3].Item1;
-      arrTalk = File.ReadAllBytes($@"{GAME_PATH}\M.MSG");
+      arrTalk = File.ReadAllBytes($@"{PAL_DOS_PATH}\{name}");
       len = GoData.listCoreBuf[3].Item2 / sizeof(int) - 1;
 
       for (i = 0; i < len; i++)

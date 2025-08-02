@@ -1,8 +1,0 @@
-{
-  "Name": "长安·尚书府·大厅",
-  "MapID": 110,
-  "Script": {
-    "ScrEnter": "Scene_00118_Enter",
-    "ScrTeleport": "Null"
-  }
-}

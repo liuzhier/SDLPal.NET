@@ -1,8 +1,0 @@
-{
-  "Name": "苏州·城东民居",
-  "MapID": 38,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

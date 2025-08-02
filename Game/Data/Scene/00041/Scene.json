@@ -1,8 +1,0 @@
-{
-  "Name": "隐龙窟·迷宫·终·蛇妖男",
-  "MapID": 131,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Scene_00040_Teleport"
-  }
-}

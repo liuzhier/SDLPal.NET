@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 using static GoMain;
 using static PalCommon;
+using static SafeSys;
 
 using WORD = System.UInt16;
 

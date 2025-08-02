@@ -1,8 +1,0 @@
-{
-  "Name": "树洞·开",
-  "MapID": 155,
-  "Script": {
-    "ScrEnter": "Scene_00187_Enter",
-    "ScrTeleport": "Null"
-  }
-}

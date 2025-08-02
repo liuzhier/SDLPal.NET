@@ -1,8 +1,0 @@
-{
-  "Name": "圣姑家·李逍遥醒来",
-  "MapID": 202,
-  "Script": {
-    "ScrEnter": "Scene_00174_Enter",
-    "ScrTeleport": "Null"
-  }
-}

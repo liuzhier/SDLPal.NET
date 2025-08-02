@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using static GoMain;
 using static GoScene;
 using static PalCommon;
+using static SafeSys;
 
 using PLAYERS = System.UInt16;
 using WORD = System.UInt16;

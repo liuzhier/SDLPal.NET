@@ -1,8 +1,0 @@
-{
-  "Name": "桃花源·迷宫·后",
-  "MapID": 159,
-  "Script": {
-    "ScrEnter": "Scene_00190_Enter",
-    "ScrTeleport": "Scene_00190_Teleport"
-  }
-}

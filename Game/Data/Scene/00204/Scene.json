@@ -1,8 +1,0 @@
-{
-  "Name": "大理·祭坛·正常",
-  "MapID": 176,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

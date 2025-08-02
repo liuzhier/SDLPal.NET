@@ -11,6 +11,7 @@ using WORD = System.UInt16;
 
 using static GoMain;
 using static PalCommon;
+using static SafeSys;
 
 public unsafe class GoPoison
 {

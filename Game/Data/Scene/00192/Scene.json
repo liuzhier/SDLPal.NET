@@ -1,8 +1,0 @@
-{
-  "Name": "神木林·迷宫",
-  "MapID": 151,
-  "Script": {
-    "ScrEnter": "Scene_00192_Enter",
-    "ScrTeleport": "Null"
-  }
-}

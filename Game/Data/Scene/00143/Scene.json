@@ -1,8 +1,0 @@
-{
-  "Name": "忆往昔·晋元房双亲订婚",
-  "MapID": 114,
-  "Script": {
-    "ScrEnter": "Scene_00143_Enter",
-    "ScrTeleport": "Null"
-  }
-}

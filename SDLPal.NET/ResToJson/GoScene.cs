@@ -12,6 +12,7 @@ using static GoMain;
 using static PalMap;
 using static PalSave;
 using static PalCommon;
+using static SafeSys;
 
 using SHORT = System.Int16;
 using USHORT = System.UInt16;

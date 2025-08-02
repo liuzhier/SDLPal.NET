@@ -1,8 +1,0 @@
-{
-  "Name": "锁妖塔·八层",
-  "MapID": 141,
-  "Script": {
-    "ScrEnter": "Scene_00146_Enter",
-    "ScrTeleport": "Null"
-  }
-}

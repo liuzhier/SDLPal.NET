@@ -1,8 +1,0 @@
-{
-  "Name": "大理·城郊·战·天降甘霖·新的生机",
-  "MapID": 162,
-  "Script": {
-    "ScrEnter": "Scene_00261_Enter",
-    "ScrTeleport": "Null"
-  }
-}

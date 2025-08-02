@@ -12,6 +12,7 @@ using static Enemy;
 using static GoMain;
 using static PalMap;
 using static PalCommon;
+using static SafeSys;
 
 using SHORT = System.Int16;
 using WORD = System.UInt16;
@@ -76,7 +77,7 @@ public unsafe class GoEnemy
 
       listEnemy = new List<Enemy>();
       lpBaseOrigin = (Base*)GoData.listDataBuf[1].Item1;
-      lpCore = (Core*)GoData.listCoreBuf[1].Item1;
+      lpCore = (Core*)GoData.listCoreBuf[2].Item1;
       lpCore += OBJ_ENEMY_BEGIN;
       len = OBJ_POISON_BEGIN - OBJ_ENEMY_BEGIN;
 

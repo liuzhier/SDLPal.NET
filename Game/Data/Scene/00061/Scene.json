@@ -1,8 +1,0 @@
-{
-  "Name": "黑水镇",
-  "MapID": 52,
-  "Script": {
-    "ScrEnter": "Scene_00061_Enter",
-    "ScrTeleport": "Null"
-  }
-}

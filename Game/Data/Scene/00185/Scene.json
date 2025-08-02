@@ -1,8 +1,0 @@
-{
-  "Name": "神木林·凤凰巢",
-  "MapID": 152,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

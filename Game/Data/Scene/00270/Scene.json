@@ -1,8 +1,0 @@
-{
-  "Name": "大理·汉人聚居地·商业区·空",
-  "MapID": 169,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

@@ -1,9 +1,0 @@
-{
-  "Name": "瘴毒",
-  "PoisonLevel": 1,
-  "ColorHex": "",
-  "Script": {
-    "Player": "Poison_00003_Player",
-    "Enemy": "Poison_00003_Enemy"
-  }
-}

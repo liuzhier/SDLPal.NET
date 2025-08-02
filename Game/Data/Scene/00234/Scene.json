@@ -1,8 +1,0 @@
-{
-  "Name": "回魂仙梦·南绍王宫·地牢·开",
-  "MapID": 184,
-  "Script": {
-    "ScrEnter": "Scene_00234_Enter",
-    "ScrTeleport": "Null"
-  }
-}

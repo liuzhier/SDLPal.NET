@@ -1,8 +1,0 @@
-{
-  "Name": "田园·蛤蟆谷前",
-  "MapID": 96,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

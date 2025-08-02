@@ -1,8 +1,0 @@
-{
-  "Name": "大理·商业区",
-  "MapID": 166,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

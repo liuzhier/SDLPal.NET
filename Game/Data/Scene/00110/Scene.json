@@ -1,8 +1,0 @@
-{
-  "Name": "长安城外·白苗驿站·驿站内",
-  "MapID": 126,
-  "Script": {
-    "ScrEnter": "Null",
-    "ScrTeleport": "Null"
-  }
-}

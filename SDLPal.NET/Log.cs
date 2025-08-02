@@ -32,6 +32,8 @@ public class PalLog
    {
       string      logPath;
 
+      S_MKDIR(LOG_PATH);
+
       try
       {
 #if DEBUG
