@@ -310,12 +310,13 @@ public unsafe class PalInput
 
    --*/
    {
-      int         iKeyCount, i;
-      bool[]      arrKeyState;
-      ulong       dwCurrentTime = SDL.GetTicks();
-      SDL.Keymod     keymod;
+      int                     iKeyCount, i;
+      ReadOnlySpan<bool>      arrKeyState;
+      ulong                   dwCurrentTime;
+      SDL.Keymod              keymod;
 
       arrKeyState = SDL.GetKeyboardState(out iKeyCount);
+      dwCurrentTime = SDL.GetTicks();
 
       for (i = 0; i < g_KeyDict.Count; i++)
       {

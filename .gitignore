@@ -3,9 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
-# Pal game resource
+# My resource
 [Pp][Aa][Ll]/[Dd][Oo][Ss]/*
 [Pp][Aa][Ll]/[Ww][Ii][Nn]/*
+[Ll]og
+[Gg]ame/[Oo]rigin/*
+![Bb]in/*
 
 # User-specific files
 *.rsuser
@@ -40,8 +43,6 @@ bld/
 
 # Build results on 'Bin' directories
 **/[Bb]in/*
-!/[Bb]in/Win32/x64/*.dll
-!/[Bb]in/Win32/x64/*.exe
 # Uncomment if you have tasks that rely on *.refresh files to move binaries
 # (https://github.com/github/gitignore/pull/3736)
 #!**/[Bb]in/*.refresh

@@ -133,6 +133,10 @@ public unsafe class GoScript
       strJson = File.ReadAllText($@"{CFG_PATH}\Func.json");
 
       listFunc = JsonConvert.DeserializeObject<List<string[]>>(strJson);
+
+      S_MKDIR(SCRIPT_PATH);
+      S_FileCopy($@"{CFG_PATH}\Script", "SrciptLib.js", SCRIPT_PATH);
+      S_DirCopy($@"{CFG_PATH}\Script\.vscode", "*.code-workspace", $@"{SCRIPT_PATH}\.vscode");
    }
 
    static string
@@ -1226,9 +1230,7 @@ end:
          listStr.Add(MakeFunc(lpCore));
       }
 
-      path = $@"{DATA_PATH}\Script";
-      S_MKDIR(path);
-      using (StreamWriter writer = new StreamWriter($@"{path}\ScriptEntry.js"))
+      using (StreamWriter writer = new StreamWriter($@"{SCRIPT_PATH}\ScriptEntry.js"))
       {
          for (i = 0; i < listStr.Count; i++)
          {

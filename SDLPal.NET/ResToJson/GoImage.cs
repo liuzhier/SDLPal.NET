@@ -155,7 +155,7 @@ public unsafe class GoImage
          }
 
          pSurface = SC_Surface(w, h, SDL.PixelFormat.Index8);
-         SDL.SetSurfacePalette(pSurface, PalMap.pPalette);
+         SDL.SetSurfacePalette(pSurface, GoData.listPaletteBuf[0].Item1);
          SDL.SetSurfaceColorKey(pSurface, true, 0xFF);
          SDL.FillSurfaceRect(pSurface, NULL, 0xFF);
          PalUnpak.DrawRLE(pBufSprite, pSurface, POS_ZERO);
@@ -239,7 +239,7 @@ public unsafe class GoImage
             }
 
             pSurface = SC_Surface(w, h, SDL.PixelFormat.Index8);
-            SDL.SetSurfacePalette(pSurface, PalMap.pPalette);
+            SDL.SetSurfacePalette(pSurface, GoData.listPaletteBuf[0].Item1);
             SDL.SetSurfaceColorKey(pSurface, true, 0xFF);
 
             SDL.FillSurfaceRect(pSurface, NULL, 0xFF);
@@ -275,6 +275,8 @@ public unsafe class GoImage
    public static void
    GoPalette() => GoCompressedData("PAT.MKF", MAP_MAIN_PATH);
 
+   static   int[]    RngPaletteID => [0, 0, 0, 2, 0, 0, 3, 0, 0, 0, 0, 0];
+
    public static void
    GoRNG()
    {
@@ -290,8 +292,6 @@ public unsafe class GoImage
       countChunk = PalUnpak.GetMKFChunkCount(fsIn);
 
       pSurface = SC_Surface(320, 200, SDL.PixelFormat.Index8);
-      SDL.SetSurfacePalette(pSurface, PalMap.pPalette);
-      SDL.SetSurfaceColorKey(pSurface, true, 0xFF);
       rng = S_MALLOC(iBufferSize);
 
       S_MKDIR(IMG_RNG_PATH);
@@ -309,6 +309,8 @@ public unsafe class GoImage
          S_MKDIR(path);
 
          S_MEMSET(rng, 0, iBufferSize);
+         SDL.SetSurfacePalette(pSurface, GoData.listPaletteBuf[RngPaletteID[i]].Item1);
+         SDL.SetSurfaceColorKey(pSurface, true, 0xFF);
          SDL.FillSurfaceRect(pSurface, NULL, 0xFF);
 
          for (j = 0; ; j++)
@@ -357,13 +359,13 @@ public unsafe class GoImage
    {
       Init();
 
-      //GoItem();
-      //GoFace();
-      //GoChar();
+      GoItem();
+      GoFace();
+      GoChar();
       GoTile();
       GoMap();
       GoPalette();
-      File.Copy(MAP_EDITOR_PATH, $@"{MAP_MAIN_PATH}\{MAP_EDITOR_NAME}", true);
+      S_FileCopy(CFG_PATH, MAP_EDITOR_NAME, MAP_MAIN_PATH);
       GoRNG();
 
       Free();

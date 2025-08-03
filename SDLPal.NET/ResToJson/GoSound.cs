@@ -34,5 +34,7 @@ public unsafe class GoSound
          C_fclose(fsOut);
          S_FREE(pBuf);
       }
+
+      S_DirCopy($@"{PAL_WIN_PATH}\MUSICS", "*.MID", MUS_PATH);
    }
 }

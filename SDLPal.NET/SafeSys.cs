@@ -1,9 +1,12 @@
-﻿using SDL3;
+﻿using Chinese;
+using SDL3;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.JavaScript;
 using System.Security.Cryptography;
@@ -11,7 +14,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
-
 using static HeroBase;
 using static PalCommon;
 using static PalConfig;
@@ -19,7 +21,7 @@ using static PalMap;
 using static PalSave;
 using static PalVideo;
 
-public unsafe class SafeSys
+public unsafe partial class SafeSys
 {
    public static bool
    S_B(
@@ -551,6 +553,41 @@ public unsafe class SafeSys
       S_ARRCPY(arr, out pDest, len);
    }
 
+   public static void
+   S_DirCopy(
+      string      pathIn,
+      string      fileFullName,
+      string      pathOut
+   )
+   {
+      IEnumerable<string>     pngFiles;
+
+      S_MKDIR(pathOut);
+
+      pngFiles = Directory.EnumerateFiles(pathIn, fileFullName);
+
+      foreach (string pngFile in pngFiles)
+      {
+         S_FileCopy(pathIn, Path.GetFileName(pngFile), pathOut);
+      }
+   }
+
+   public static void
+   S_FileCopy(
+      string      pathIn,
+      string      pathFileIn,
+      string      pathOut,
+      string      pathFileOut = null
+   )
+   {
+      if (pathFileOut == null || pathFileOut == "")
+      {
+         pathFileOut = pathFileIn;
+      }
+
+      File.Copy($@"{pathIn}\{pathFileIn}", $@"{pathOut}\{pathFileOut}", true);
+   }
+
    #endregion Memory R/W API
 
 
@@ -653,6 +690,55 @@ public unsafe class SafeSys
       }
 
       return color;
+   }
+
+   public static (nint, int)
+   SC_Palette(
+      nint     pPatBuf,
+      int      len,
+      int      colorKey = 0xFF
+   )
+   {
+      int                  i;
+      PalMap.Palette*      lpPat;
+      SDL.Color[]          palette;
+
+      lpPat = (PalMap.Palette*)pPatBuf;
+      len = int.Min(len / sizeof(PalMap.Palette), 256);
+
+      palette = new SDL.Color[len];
+
+      for (i = 0; i < len; i++)
+      {
+         palette[i].R = (byte)(lpPat[i].R << 2);
+         palette[i].G = (byte)(lpPat[i].G << 2);
+         palette[i].B = (byte)(lpPat[i].B << 2);
+         palette[i].A = 0xFF;
+      }
+
+      palette[colorKey].A = 0;
+
+      pPalette = SDL.CreatePalette(palette.Length);
+      SDL.SetPaletteColors(pPalette, palette, 0, palette.Length);
+
+      return (pPalette, len);
+   }
+
+   public static void
+   SF_Palette(
+   ref   nint     pPalette
+   )
+   {
+      SDL.DestroyPalette(pPalette);
+      pPalette = NULL;
+   }
+
+   public static void
+   SF_Palette(
+      nint     pPalette
+   )
+   {
+      SF_Palette(ref pPalette);
    }
 
    public static uint
@@ -867,6 +953,22 @@ public unsafe class SafeSys
 
 
    #region String Conversion API
+
+   public static string
+   S_TW2CN(
+      string      text
+   )
+   {
+      return ChineseConverter.ToSimplified(text);
+   }
+
+   public static string
+   S_CN2TW(
+      string      text
+   )
+   {
+      return ChineseConverter.ToTraditional(text);
+   }
 
    public static bool
    S_BOOL(

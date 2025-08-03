@@ -489,9 +489,7 @@ public unsafe class PalMap
    {
       string            path;
       byte[]            arrData;
-      Palette*          lpPat;
-      int               i, len;
-      SDL.Color[]       palette;
+      int               len;
 
       //
       // Read the palette data
@@ -509,24 +507,8 @@ public unsafe class PalMap
       arrData = File.ReadAllBytes(path);
       fixed (byte* bpTmp = arrData)
       {
-         lpPat = (Palette*)(bpTmp + sizeof(int) * 2);
-
-         len = (arrData.Length - sizeof(int) * 2) / sizeof(Palette);
-         palette = new SDL.Color[len];
-
-         for (i = 0; i < len; i++)
-         {
-            palette[i].R = (byte)(lpPat[i].R << 2);
-            palette[i].G = (byte)(lpPat[i].G << 2);
-            palette[i].B = (byte)(lpPat[i].B << 2);
-            palette[i].A = 0xFF;
-         }
+         (pPalette, len) = SC_Palette((nint)(bpTmp + sizeof(uint) * 2), arrData.Length);
       }
-
-      palette[i - 1].A = 0;
-
-      pPalette = SDL.CreatePalette(palette.Length);
-      SDL.SetPaletteColors(pPalette, palette, 0, palette.Length);
 
       pTileFRect = SC_FRect(new SDL.FRect
       {
@@ -608,7 +590,7 @@ public unsafe class PalMap
       FreeTile();
 
       S_FREE(ref pTileFRect);
-      S_FREE(ref pPalette);
+      SF_Palette(ref pPalette);
    }
 
    public static void

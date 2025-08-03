@@ -27,7 +27,6 @@ public class GoMain
       PalLog.Init();
       GoData.Init();
       GoMsg.Init();
-      PalMap.Init();
    }
 
    public static void
@@ -35,7 +34,6 @@ public class GoMain
    {
       GoData.Free();
       PalLog.Free();
-      PalMap.Free();
    }
 
    public static void

@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using static SafeSys;
 using static GoMain;
 using static PalCommon;
 
@@ -32,6 +32,8 @@ public unsafe class GoMsg
       GoCodeDesc("SceneID.txt", out dictScene);
       GoCodeDesc("SpriteID.txt", out dictSprite);
       GoCodeDesc("BattleFieldID.txt", out dictBattleField);
+
+      S_DirCopy($@"{CFG_PATH}\Font", "Master.ttf", $@"{GAME_PATH}\Font");
    }
 
    public static void
@@ -78,7 +80,7 @@ public unsafe class GoMsg
          arrWord = new byte[size];
          Array.Copy(arrTalk, ipIndex[i], arrWord, 0, arrWord.Length);
          str = big5.GetString(arrWord).TrimEnd();
-         str = Strings.StrConv(str, VbStrConv.SimplifiedChinese);
+         str = S_TW2CN(str);
          listTalk.Add(str);
       }
    }

@@ -50,14 +50,15 @@ public unsafe class GoData
       public int Exp;
    }
 
-   public   static   List<(nint, int)>     listDataBuf = [];
-   public   static   List<(nint, int)>     listCoreBuf = [];
+   public   static   List<(nint, int)>     listDataBuf      = [];
+   public   static   List<(nint, int)>     listCoreBuf      = [];
+   public   static   List<(nint, int)>     listPaletteBuf   = [];
 
    public static void
    Init()
    {
       int            i, len, size;
-      void*          pData;
+      nint           pData;
       FileStream     fs;
 
       S_MKDIR(GAME_PATH);
@@ -78,6 +79,17 @@ public unsafe class GoData
       for (i = 0; i < len; i++)
       {
          listCoreBuf.Add(PalUnpak.ReadMKFChunk(fs, i));
+      }
+
+      C_fclose(fs);
+
+      fs = C_fopen($@"{PAL_WIN_PATH}/PAT.MKF");
+      len = PalUnpak.GetMKFChunkCount(fs);
+
+      for (i = 0; i < len; i++)
+      {
+         (pData, size) = PalUnpak.ReadMKFChunk(fs, i);
+         listPaletteBuf.Add(SC_Palette(pData, size));
       }
 
       C_fclose(fs);
@@ -107,6 +119,16 @@ public unsafe class GoData
       }
 
       listCoreBuf.Clear();
+
+      for (i = 0; i < listPaletteBuf.Count; i++)
+      {
+         if (listPaletteBuf[i].Item1 != NULL)
+         {
+            S_FREE(listPaletteBuf[i].Item1);
+         }
+      }
+
+      listPaletteBuf.Clear();
    }
 
    public static void
