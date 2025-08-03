@@ -421,9 +421,9 @@ FodyWeavers.xsd
 *.msm
 *.msp
 
-Pal/**
-!Pal/.gitkeep
-!Pal/Dos
-!Pal/Dos/.gitkeep
-!Pal/Win
-!Pal/Win/.gitkeep
+[Pp]al/**
+![Pp]al/.gitkeep
+![Pp]al/[Do]os
+![Pp]al/[Dd]os/.gitkeep
+![Pp]al/[Ww]in
+![Pp]al/[Ww]in/.gitkeep
